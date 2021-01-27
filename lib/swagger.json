@@ -1,0 +1,138 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is FundooNotes api",
+        "version": "1.0.0",
+        "title": "FundoNotes",
+        "email": "sampleEmail",
+        "host": "localhost:2001",
+        "basePath": "/"
+    },
+    "tags": [{
+        "name": "FundooNotes",
+        "description": "Everything about FundooNotes"
+    }],
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/FundooNotes": {
+            "get": {
+                "tags": [
+                    "FundooNotes"
+                ],
+                "summary": "retrive all FundooNotes",
+                "description": "retrive all FundooNotes",
+                "responses": {
+                    "200": {
+                        "description": "Note found successfully"
+                    },
+                    "404": {
+                        "description": "Note not found "
+                    },
+                    "500": {
+                        "description": "could not find notes"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "FundooNotes"
+                ],
+                "description": "create a new note",
+                "summary": "create a note",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [{
+                    "name": " Note ",
+                    "in": "body",
+                    "type": "string",
+                    "required": true
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Note created successfully"
+                    },
+                    "400": {
+                        "description": "Note cannot be empty"
+                    }
+                }
+            }
+        },
+        "/FundooNotes/{id}": {
+            "parameters": [{
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "description": "find Note by ID",
+                "type": "string"
+            }],
+            "put": {
+                "tags": [
+                    "FundooNotes"
+                ],
+                "summary": "Update an existing Note",
+                "description": "find by ID and update",
+                "operationId": "updateNote",
+                "parameters": [{
+                    "name": " Note ",
+                    "in": "body",
+                    "type": "string",
+                    "required": true
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Note updated successfully"
+                    },
+                    "404": {
+                        "description": "Note not found "
+                    },
+                    "500": {
+                        "description": "could not find Notes"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "FundooNotes"
+                ],
+                "summary": "Delete a Note",
+                "in": "path",
+                "description": "delete a Note by its ID",
+                "operationId": "deleteNote",
+                "responses": {
+                    "200": {
+                        "description": "Note deleted successfully"
+                    },
+                    "404": {
+                        "description": "Note not found not found"
+                    },
+                    "500": {
+                        "description": "could not delete Note"
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "FundooNotes"
+                ],
+                "summary": "Get single Note",
+                "responses": {
+                    "200": {
+                        "description": "Note found successfully"
+                    }
+                }
+            }
+        }
+    }
+}

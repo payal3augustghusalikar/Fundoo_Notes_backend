@@ -1,0 +1,44 @@
+{
+    "name": "fundoonotesapi",
+    "version": "1.0.0",
+    "description": "",
+    "main": "server.js",
+    "directories": {
+        "lib": "lib",
+        "test": "test"
+    },
+    "dependencies": {
+        "bluebird": "^3.7.2",
+        "body-parser": "^1.19.0",
+        "cors": "^2.8.5",
+        "debug": "^4.3.1",
+        "dotenv": "^8.2.0",
+        "express": "^4.17.1",
+        "fetch": "^1.1.0",
+        "get-uri": "^3.0.2",
+        "joi": "^17.3.0",
+        "mongodb": "^3.6.3",
+        "mongodb-bluebird": "^0.1.2",
+        "mongoose": "^5.11.13",
+        "mongoose-events": "^0.3.9",
+        "swagger-jsdoc": "^6.0.0",
+        "swagger-ui-express": "^4.1.6",
+        "uri": "^0.1.0",
+        "uri-js": "^4.4.0",
+        "winston": "^3.3.3",
+        "winston-mongodb": "^5.0.5"
+    },
+    "devDependencies": {
+        "chai": "^4.2.0",
+        "chai-http": "^4.3.0",
+        "mocha": "^8.2.1",
+        "nodemon": "^2.0.6",
+        "should": "^13.2.3"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node server.js"
+    },
+    "author": "",
+    "license": "ISC"
+}
