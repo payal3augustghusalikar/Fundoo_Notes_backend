@@ -1,11 +1,9 @@
 {
     "name": "fundoonotesapi",
     "version": "1.0.0",
-    "description": "",
     "main": "server.js",
     "directories": {
-        "lib": "lib",
-        "test": "test"
+        "lib": "lib"
     },
     "dependencies": {
         "bluebird": "^3.7.2",
@@ -32,13 +30,22 @@
         "chai": "^4.2.0",
         "chai-http": "^4.3.0",
         "mocha": "^8.2.1",
-        "nodemon": "^2.0.6",
+        "nodemon": "^2.0.7",
         "should": "^13.2.3"
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "node server.js"
+        "start": "nodemon server.js"
     },
     "author": "",
-    "license": "ISC"
+    "license": "ISC",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/payalghusalikar/Fundoo_Notes_Api.git"
+    },
+    "bugs": {
+        "url": "https://github.com/payalghusalikar/Fundoo_Notes_Api/issues"
+    },
+    "homepage": "https://github.com/payalghusalikar/Fundoo_Notes_Api#readme",
+    "description": ""
 }

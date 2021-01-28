@@ -1,12 +1,36 @@
 const mongoose = require('mongoose');
 
-const NoteSchema = mongoose.Schema({
-    name: String,
-    message: String
+const NoteSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
+
+    emailId: {
+        type: String,
+        unique: true,
+        required: true
+    },
+
+    password: {
+        type: String,
+        required: true
+    },
 }, {
     timestamps: true
 });
-const Note = mongoose.model('Note', NoteSchema);
+
+NoteSchema.pre("save", async function(next) {
+    if (this.isModified("password")) {
+        console.log(`current password is ${this.password}`);
+        this.password = await bcrypt.hash(this.password, 10);
+        console.log(`new current password is ${this.password}`);
+    }
+    next();
+})
+
+
+const Note = new mongoose.model('Note', NoteSchema);
 
 class NoteModel {
 
@@ -18,7 +42,8 @@ class NoteModel {
     create = (noteInfo, callback) => {
         const note = new Note({
             name: noteInfo.name,
-            message: noteInfo.message || "Empty Message"
+            emailId: noteInfo.emailId,
+            password: noteInfo.password
         });
 
         note.save({}, (error, data) => {

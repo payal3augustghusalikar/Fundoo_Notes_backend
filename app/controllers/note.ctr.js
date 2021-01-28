@@ -2,10 +2,14 @@ const noteService = require('../services/note.svc.js');
 const Joi = require('joi');
 const logger = require('../../logger/logger.js');
 
-const ControllerDataValidation = Joi.object({
-    name: Joi.string().regex(/^[a-zA-Z ]+$/).min(3).required(),
-    message: Joi.string().regex(/^[a-zA-Z ]+$/).min(3).required()
-})
+// const ControllerDataValidation = Joi.object().keys({
+//         name: Joi.string().regex(/^[a-zA-Z ]+$/).min(3).max(16).required(),
+//         // username: Joi.string().alphanum().min(6).max(16).required(),
+//         emailId: Joi.string().regex(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/).required(),
+//         password: Joi.string().regex(/^[a-zA-Z0-9]{6,16}$/).min(6).required()
+
+//     })
+//.with('name', 'emailId', 'password');
 
 
 class NoteController {
@@ -15,16 +19,17 @@ class NoteController {
      */
     create = (req, res) => {
         const noteInfo = {
-            name: req.body.name,
-            message: req.body.message
-        }
-        const validation = ControllerDataValidation.validate(noteInfo);
-        if (validation.error) {
-            return res.status(400).send({
-                success: false,
-                message: "please enter valid details"
-            });
-        }
+                name: req.body.name,
+                emailId: req.body.emailId,
+                password: req.body.password
+            }
+            // const validation = ControllerDataValidation.validate(noteInfo);
+            // if (validation.error) {
+            //     return res.status(400).send({
+            //         success: false,
+            //         message: "please enter valid details"
+            //     });
+            // }
         noteService.create(noteInfo, (error, data) => {
             if (error) {
                 logger.error("Some error occurred while creating note")
@@ -99,20 +104,20 @@ class NoteController {
                         message: "Note not found with id : " + noteID
                     });
                 }
-                logger.info("note found with id " + req.params.noteID);
+                logger.info("note found with id " + req.params.noteId);
                 return res.send({
                     success: true,
                     status_code: 200,
-                    message: "Note found with id " + req.params.noteID,
+                    message: "Note found with id " + req.params.noteId,
                     data: (data)
                 })
             });
         } catch (error) {
-            logger.error("could not found note with id" + req.params.noteID);
+            logger.error("could not found note with id" + req.params.noteId);
             return res.send({
                 success: false,
                 status_code: 500,
-                message: "error retrieving note with id " + req.params.noteID
+                message: "error retrieving note with id " + req.params.noteId
             })
         }
     }
