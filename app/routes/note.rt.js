@@ -1,6 +1,7 @@
 module.exports = (app) => {
 
     const notes = require('../controllers/note.ctr.js');
+    const user = require('../controllers/user.ctr.js');
 
     // Create a new note
     app.post('/notes', notes.create);
@@ -16,4 +17,10 @@ module.exports = (app) => {
 
     // Delete a note with noteId
     app.delete('/notes/:noteId', notes.delete);
+
+    // register a new user
+    app.post('/newRegister', user.register);
+
+    // Login existing user
+    app.post('/login', user.login);
 }

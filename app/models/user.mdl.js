@@ -1,0 +1,97 @@
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt')
+
+const UserSchema = mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
+
+    emailId: {
+        type: String,
+        unique: true,
+        required: true
+    },
+
+    password: {
+        type: String,
+        required: true
+    },
+}, {
+    timestamps: true
+});
+
+// UserSchema.pre("save", async function(next) {
+//     if (this.isModified("password")) {
+//         console.log(`current password is ${this.password}`);
+//         this.password = await bcrypt.hash(this.password, 10);
+//         console.log(`new current password is ${this.password}`);
+//     }
+//     next();
+// })
+
+
+const User = mongoose.model('User', UserSchema);
+
+class UserModel {
+
+    /**
+     * @param {*} userInfo 
+     * @param {*} callback 
+     */
+    register = (userInfo, callback) => {
+        const user = new User({
+            name: userInfo.name,
+            emailId: userInfo.emailId,
+            password: userInfo.password
+        });
+
+        user.save({}, (error, data) => {
+            if (error)
+                return callback(error, null);
+            else
+                return callback(null, data);
+        });
+    }
+
+    findAll = (callback) => {
+        User.find((error, data) => {
+            if (error)
+                return callback(error, null);
+            else
+                return callback(null, data);
+        });
+    }
+
+    login = (userLoginData, callback) => {
+        User.findById(userLoginData, (error, data) => {
+            if (error)
+                return callback(error, null);
+            else
+                return callback(null, data);
+        });
+    }
+
+    //     update = (userInfo, callback) => {
+    //         User.findByIdAndUpdate(userInfo.userLoginData, {
+    //             name: userInfo.name,
+    //             message: userInfo.message || "Empty Message"
+    //         }, { new: true }, (error, data) => {
+    //             if (error)
+    //                 return callback(error, null);
+    //             else
+    //                 return callback(null, data);
+    //         });
+    //     }
+
+    //     deleteById = (userLoginData, callback) => {
+    //         User.findByIdAndRemove(userLoginData, (error, data) => {
+    //             if (error)
+    //                 return callback(error, null);
+    //             else
+    //                 return callback(null, data);
+    //         });
+    //     }
+}
+
+module.exports = new UserModel();
