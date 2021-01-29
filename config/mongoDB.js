@@ -11,28 +11,28 @@ var blueBird = require('bluebird');
 var mongoose = require('mongoose');
 var debug = require('debug');
 var d = debug('mongo-db-instance');
-var isState = function (state) {
+var isState = function(state) {
     return mongoose.connection.readyState === mongoose.Connection.STATES[state];
 };
 
 /**
-* @constructor
-* @param {string} uri     - Mongoose connection URI.
-* @see http://mongoosejs.com/docs/connections.html
-* @param {object} options - Mongoose connection options.
-*/
+ * @constructor
+ * @param {string} uri     - Mongoose connection URI.
+ * @see http://mongoosejs.com/docs/connections.html
+ * @param {object} options - Mongoose connection options.
+ */
 function MongoDBAdapter(uri, options) {
     this.uri = uri;
     this.options = options;
 }
 
 /**
-* @description Add connection listeners without adding more than one for each event.
-* This is done to avoid:
-*   'warning: possible EventEmitter memory leak detected. 11 listeners added'
-* More info: https://github.com/joyent/node/issues/5108
-*/
-MongoDBAdapter.prototype.addConnectionListener = function (event, cb) {
+ * @description Add connection listeners without adding more than one for each event.
+ * This is done to avoid:
+ *   'warning: possible EventEmitter memory leak detected. 11 listeners added'
+ * More info: https://github.com/joyent/node/issues/5108
+ */
+MongoDBAdapter.prototype.addConnectionListener = function(event, cb) {
     var listeners = mongoose.connection.on;
     if (!listeners || !listeners[event] || listeners[event].length === 0) {
         mongoose.connection.once(event, cb.bind(this));
@@ -40,20 +40,20 @@ MongoDBAdapter.prototype.addConnectionListener = function (event, cb) {
 };
 
 /**
-* @description Returns a promise that gets resolved when successfully connected to MongoDB URI, or rejected otherwise.
-* @returns {Promise} Returns promise
-*/
-MongoDBAdapter.prototype.connect = function () {
-    return new blueBird(function (resolve, reject) {
+ * @description Returns a promise that gets resolved when successfully connected to MongoDB URI, or rejected otherwise.
+ * @returns {Promise} Returns promise
+ */
+MongoDBAdapter.prototype.connect = function() {
+    return new blueBird(function(resolve, reject) {
         if (isState('connected')) {
             d(DEBUG_ALREADY_CONNECTED, this.uri);
             return resolve(this.uri);
         }
-        this.addConnectionListener('error', function (err) {
+        this.addConnectionListener('error', function(err) {
             d(DEBUG_CONNECTION_ERROR, this.uri);
             return reject(err);
         });
-        this.addConnectionListener('open', function () {
+        this.addConnectionListener('open', function() {
             d(DEBUG_CONNECTED, this.uri);
             return resolve(this.uri);
         });
@@ -68,27 +68,20 @@ MongoDBAdapter.prototype.connect = function () {
 
 const uri = process.env.MONGODB_URL;
 
-var mongoDBAdapter = new MongoDBAdapter(uri,
-    {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useFindAndModify: false,
-        useUnifiedTopology: true
-    });
+var mongoDBAdapter = new MongoDBAdapter(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true,
+    useCreateIndex: true
+        //mongoose.set('useCreateIndex', true)
+});
 mongoDBAdapter.connect()
     .then(uri =>
         console.log("Connected to " + uri))
     .catch(err =>
         console.log("Could not connect database", err));
 
-   
+
 
 module.exports = MongoDBAdapter;
-
-
-
-
-
-
-
-

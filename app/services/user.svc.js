@@ -7,7 +7,6 @@ class userService {
      * @param callback is the callback for controller
      */
 
-
     register = (userInfo, callback) => {
         // register a User
         User.register(userInfo, (error, data) => {
@@ -16,7 +15,6 @@ class userService {
             return callback(null, data);
         })
     }
-
 
     /**
      * @description Find all the Users and return response to controller
@@ -39,35 +37,6 @@ class userService {
      */
     login = (userLoginInfo, callback) => {
         User.login(userLoginInfo, (error, data) => {
-            if (error)
-                return callback(error, null);
-            else
-                return callback(null, data);
-        });
-    }
-
-    /**
-     * @description Update User by id and return response to controller
-     * @method update is used to update User by ID
-     * @param callback is the callback for controller
-     */
-    update = (userInfo, callback) => {
-        User.update(userInfo, (error, data) => {
-            if (error)
-                return callback(error, null);
-            else
-                return callback(null, data);
-        });
-    }
-
-
-    /**
-     * @description Delete User by id and return response to controller
-     * @method deleteById is used to remove User by ID
-     * @param callback is the callback for controller
-     */
-    delete = (userLoginInfo, callback) => {
-        User.deleteById(userLoginInfo, (error, data) => {
             if (error)
                 return callback(error, null);
             else
