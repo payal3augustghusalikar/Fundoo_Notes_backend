@@ -5,13 +5,13 @@ const bcrypt = require('bcrypt')
 var jwt = require('jsonwebtoken');
 
 const ControllerDataValidation = Joi.object().keys({
-        name: Joi.string().regex(/^[a-zA-Z ]+$/).min(3).max(16).required(),
-        // username: Joi.string().alphanum().min(6).max(16).required(),
-        emailId: Joi.string().regex(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/).required(),
-        password: Joi.string().regex(/^[a-zA-Z0-9]{6,16}$/).min(6).required()
+    name: Joi.string().regex(/^[a-zA-Z ]+$/).min(3).max(16).required(),
+    // username: Joi.string().alphanum().min(6).max(16).required(),
+    emailId: Joi.string().regex(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/).required(),
+    password: Joi.string().regex(/^[a-zA-Z0-9]{6,16}$/).min(6).required()
 
-    })
-    // .with('name', 'emailId', 'password');
+})
+
 
 
 class userController {
@@ -72,21 +72,31 @@ class userController {
                 emailId: req.body.emailId,
                 password: req.body.password
             }
+
+            const validation = ControllerDataValidation.validate(userLoginInfo);
+            if (validation.error) {
+                return res.status(400).send({
+                    success: false,
+                    message: "please enter valid details"
+                });
+            }
+
             userService.login(userLoginInfo, (error, data) => {
-                if (error) {
-                    logger.error("Error retrieving user with emailid " + req.body.emailId)
-                    return res.status(500).send({
-                        success: false,
-                        message: "Error retrieving user with emailid " + req.body.emailId
-                    });
-                }
-                if (!data) {
-                    logger.warn("user not found with emailid: " + req.body.emailId)
-                    return res.status(404).send({
-                        success: false,
-                        message: "user not found with emailid : " + req.body.emailId
-                    });
-                } else if (data.length < 1) {
+                // if (error) {
+                //     logger.error("Error retrieving user with emailid " + req.body.emailId)
+                //     return res.status(500).send({
+                //         success: false,
+                //         message: "Error retrieving user with emailid " + req.body.emailId
+                //     });
+                // }
+                // if (!data) {
+                //     logger.warn("user not found with emailid: " + req.body.emailId)
+                //     return res.status(404).send({
+                //         success: false,
+                //         message: "user not found with emailid : " + req.body.emailId
+                //     });
+                // } else 
+                if (data.length < 1) {
                     logger.info("user not exist with emailid" + req.body.emailId);
                     return res.status(404).send({
                         success: false,
@@ -113,7 +123,7 @@ class userController {
                     });
                 return res.status(200).send({
                     success: true,
-                    message: "user found",
+                    message: "login successfull",
                     token: token
                 })
             });
