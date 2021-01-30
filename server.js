@@ -39,7 +39,7 @@ const swaggerDocument = require('./lib/swagger.json')
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Require Notes routes  
-require('./app/routes/note.rt.js')(app);
+require('./app/routes/route.js')(app);
 
 const port = process.env.PORT || 2001;
 // listen for requests using callback
