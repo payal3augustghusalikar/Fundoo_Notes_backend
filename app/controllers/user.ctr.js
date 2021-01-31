@@ -3,10 +3,7 @@ const Joi = require("joi");
 const logger = require("../../logger/logger.js");
 const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
-
-
-
-
+var helper = require("../../middleware/helper.js");
 
 const emailIdPattern = Joi.string()
     .regex(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)
@@ -24,12 +21,17 @@ const ControllerDataValidation = Joi.object().keys({
         .required(),
     emailId: emailIdPattern,
     password: passwordPattern,
+    // confirmPassword: passwordPattern,
 });
-
 
 const ControllerDataValidation1 = Joi.object().keys({
     emailId: emailIdPattern,
     password: passwordPattern,
+    // confirmPassword: passwordPattern,
+});
+
+const confirmPasswordVallidate = Joi.object().keys({
+    confirmPassword: passwordPattern,
 });
 
 class userController {
@@ -37,39 +39,51 @@ class userController {
      * @description register and save a new user
      * @param res is used to send the response
      */
-    register = (req, res) => {
-        const userInfo = {
-            name: req.body.name,
-            emailId: req.body.emailId,
-            password: req.body.password,
-        };
 
+    register = (req, res) => {
         try {
-            const validation = ControllerDataValidation.validate(userInfo);
-            if (validation.error) {
+            var confirmPassword = req.body.confirmPassword;
+            var password = req.body.password;
+
+            if (password !== confirmPassword) {
                 return res.status(400).send({
                     success: false,
-                    message: "please enter valid details",
+                    message: "Password not match",
                 });
-            }
+            } else {
+                const userInfo = {
+                    name: req.body.name,
+                    emailId: req.body.emailId,
+                    password: password,
+                    // confirmPassword: confirmPassword
+                };
 
-            userService.register(userInfo, (error, data) => {
-                if (error) {
-                    logger.error(
-                        "Some error occurred while creating new user " + req.body.name
-                    );
-                    return res.status(500).send({
+                const validation = ControllerDataValidation.validate(userInfo);
+                if (validation.error) {
+                    return res.status(400).send({
                         success: false,
-                        message: "email id exist " + req.body.name,
+                        message: "please enter valid details",
                     });
                 }
-                logger.info("user added successfully !");
-                res.status(200).send({
-                    success: true,
-                    message: "user added successfully !",
-                    data: data,
+
+                userService.register(userInfo, (error, data) => {
+                    if (error) {
+                        logger.error(
+                            "Some error occurred while creating new user, " + req.body.name
+                        );
+                        return res.status(500).send({
+                            success: false,
+                            message: "error occured, " + req.body.emailId,
+                        });
+                    }
+                    logger.info("user added successfully !");
+                    res.status(200).send({
+                        success: true,
+                        message: "user added successfully !",
+                        data: data,
+                    });
                 });
-            });
+            }
         } catch (error) {
             logger.error("Some error occurred while creating user");
             return res.status(500).send({
@@ -86,18 +100,34 @@ class userController {
      */
     login = (req, res) => {
         try {
-            const userLoginInfo = {
-                emailId: req.body.emailId,
-                password: req.body.password,
-            };
+            var confirmPassword = req.body.confirmPassword;
+            var password = req.body.password;
 
-            const validation1 = ControllerDataValidation1.validate(userLoginInfo);
-            if (validation1.error) {
+            if (password !== confirmPassword) {
                 return res.status(400).send({
                     success: false,
-                    message: "Please enter valid details",
+                    message: "Password not match",
                 });
-            } else
+            } else {
+                const userLoginInfo = {
+                    emailId: req.body.emailId,
+                    password: password,
+                    //  confirmPassword: req.body.confirmpassword,
+                };
+                // var confirmPassword = req.body.confirmpassword;
+                // if (password !== confirmPassword) {
+                //     return res.status(400).send({
+                //         success: false,
+                //         message: "Password not match",
+                //     });
+                // } else {
+                //  const validation1 = ControllerDataValidation1.validate(userLoginInfo);
+                // if (validation1.error) {
+                //     return res.status(400).send({
+                //         success: false,
+                //         message: "Please enter valid details",
+                //     });
+                // } else
                 userService.login(userLoginInfo, (error, data) => {
                     if (data.length < 1) {
                         logger.info("user not exist with emailid" + req.body.emailId);
@@ -120,20 +150,23 @@ class userController {
                             }
                         );
                     }
-                    var token = jwt.sign({
-                            emailId: data[0].emailId,
-                            id: data[0]._id,
-                        },
-                        "secret", {
-                            expiresIn: "1h",
-                        }
-                    );
+                    // var token = jwt.sign({
+                    //         emailId: data[0].emailId,
+                    //         id: data[0]._id,
+                    //     },
+                    //     "secret", {
+                    //         expiresIn: "1h",
+                    //     }
+                    // );
+
+                    var token = helper.createToken(data);
                     return res.status(200).send({
                         success: true,
                         message: "login successfull",
                         token: token,
                     });
                 });
+            }
         } catch (error) {
             logger.error("could not found user with emailid" + req.body.emailId);
             return res.send({

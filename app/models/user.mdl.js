@@ -17,6 +17,11 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: true
     },
+
+    // confirmPassword: {
+    //     type: String,
+    //     required: true
+    // }
 }, {
     timestamps: true
 });
@@ -26,6 +31,7 @@ UserSchema.pre("save", async function(next) {
         console.log(`current password is ${this.password}`);
         this.password = await bcrypt.hash(this.password, 10);
         console.log(`new current password is ${this.password}`);
+        this.confirmPassword = undefined;
     }
     next();
 })
