@@ -17,11 +17,6 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: true
     },
-
-    // confirmPassword: {
-    //     type: String,
-    //     required: true
-    // }
 }, {
     timestamps: true
 });
@@ -53,15 +48,6 @@ class UserModel {
         });
 
         user.save({}, (error, data) => {
-            if (error)
-                return callback(error, null);
-            else
-                return callback(null, data);
-        });
-    }
-
-    findAll = (callback) => {
-        User.find({}, (error, data) => {
             if (error)
                 return callback(error, null);
             else

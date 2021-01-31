@@ -21,13 +21,11 @@ const ControllerDataValidation = Joi.object().keys({
         .required(),
     emailId: emailIdPattern,
     password: passwordPattern,
-    // confirmPassword: passwordPattern,
 });
 
 const ControllerDataValidation1 = Joi.object().keys({
     emailId: emailIdPattern,
     password: passwordPattern,
-    // confirmPassword: passwordPattern,
 });
 
 const confirmPasswordVallidate = Joi.object().keys({
@@ -55,7 +53,6 @@ class userController {
                     name: req.body.name,
                     emailId: req.body.emailId,
                     password: password,
-                    // confirmPassword: confirmPassword
                 };
 
                 const validation = ControllerDataValidation.validate(userInfo);
@@ -112,22 +109,8 @@ class userController {
                 const userLoginInfo = {
                     emailId: req.body.emailId,
                     password: password,
-                    //  confirmPassword: req.body.confirmpassword,
+
                 };
-                // var confirmPassword = req.body.confirmpassword;
-                // if (password !== confirmPassword) {
-                //     return res.status(400).send({
-                //         success: false,
-                //         message: "Password not match",
-                //     });
-                // } else {
-                //  const validation1 = ControllerDataValidation1.validate(userLoginInfo);
-                // if (validation1.error) {
-                //     return res.status(400).send({
-                //         success: false,
-                //         message: "Please enter valid details",
-                //     });
-                // } else
                 userService.login(userLoginInfo, (error, data) => {
                     if (data.length < 1) {
                         logger.info("user not exist with emailid" + req.body.emailId);
@@ -150,15 +133,6 @@ class userController {
                             }
                         );
                     }
-                    // var token = jwt.sign({
-                    //         emailId: data[0].emailId,
-                    //         id: data[0]._id,
-                    //     },
-                    //     "secret", {
-                    //         expiresIn: "1h",
-                    //     }
-                    // );
-
                     var token = helper.createToken(data);
                     return res.status(200).send({
                         success: true,
@@ -175,39 +149,6 @@ class userController {
                 message: "error retrieving user with emailid " + req.body.emailId,
             });
         }
-    };
-
-    /**
-     * @description Find all the user
-     * @method findAll is service class method
-     */
-    findAll = (req, res) => {
-        userService.findAll((error, data) => {
-            try {
-                if (error) {
-                    logger.error("Some error occurred while retrieving users");
-                    res.send({
-                        success: false,
-                        status_code: 404,
-                        message: `user not found`,
-                    });
-                }
-                logger.info("Successfully retrieved users !");
-                res.send({
-                    success: true,
-                    status_code: 200,
-                    message: `user found`,
-                    data: data,
-                });
-            } catch (error) {
-                logger.error("user not found");
-                res.send({
-                    success: false,
-                    status_code: 500,
-                    message: `user not found`,
-                });
-            }
-        });
     };
 }
 

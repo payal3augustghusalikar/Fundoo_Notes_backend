@@ -17,20 +17,6 @@ class userService {
     }
 
     /**
-     * @description Find all the Users and return response to controller
-     * @method findAll is used to retrieve Users
-     * @param callback is the callback for controller
-     */
-    findAll = (callback) => {
-        User.findAll((error, data) => {
-            if (error)
-                return callback(error, null);
-            else
-                return callback(null, data);
-        });
-    }
-
-    /**
      * @description Find User by id and return response to controller
      * @method login is used to retrieve User by ID
      * @param callback is the callback for controller
