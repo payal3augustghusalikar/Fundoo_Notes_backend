@@ -1,5 +1,6 @@
 const User = require('../models/user.mdl.js');
-
+var helper = require("../../middleware/helper.js");
+const bcrypt = require("bcrypt");
 class userService {
     /**
      * @description register and save User then send response to controller
@@ -22,11 +23,40 @@ class userService {
      * @param callback is the callback for controller
      */
     login = (userLoginInfo, callback) => {
+
         User.find(userLoginInfo, (error, data) => {
+            //    var token = helper.createToken(data);
+
             if (error)
                 return callback(error, null);
-            else
-                return callback(null, data);
+            else if (data) {
+                //  data = JSON.parse(data)
+                // const token = util.generateToken(data)
+                const token = helper.createToken(data);
+                data.token = token
+                    //  return callBack(null, data)
+            } else {
+                bcrypt.compare(
+                    userLoginInfo.password,
+                    data[0].password,
+                    function(err, result) {
+                        (err) ?
+                        res.status(404).send({
+                                success: false,
+                                message: "auth Failed",
+                            }):
+                            //     console.log(result)
+                            // console.log(userLoginInfo.password)
+                            // console.log(data[0].password)
+                            token = helper.createToken(data);
+                        data.token = token
+                            // console.log(data[0])
+                            // console.log(token)
+                    }
+                );
+            }
+
+            return callback(null, data);
         });
     }
 
