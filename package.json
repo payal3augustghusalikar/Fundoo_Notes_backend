@@ -1,13 +1,12 @@
 {
     "name": "fundoonotesapi",
     "version": "1.0.0",
-    "description": "",
     "main": "server.js",
     "directories": {
-        "lib": "lib",
-        "test": "test"
+        "lib": "lib"
     },
     "dependencies": {
+        "bcrypt": "^5.0.0",
         "bluebird": "^3.7.2",
         "body-parser": "^1.19.0",
         "cors": "^2.8.5",
@@ -17,10 +16,12 @@
         "fetch": "^1.1.0",
         "get-uri": "^3.0.2",
         "joi": "^17.3.0",
+        "jsonwebtoken": "^8.5.1",
         "mongodb": "^3.6.3",
         "mongodb-bluebird": "^0.1.2",
         "mongoose": "^5.11.13",
         "mongoose-events": "^0.3.9",
+        "password-reset-nodemailer": "0.0.1",
         "swagger-jsdoc": "^6.0.0",
         "swagger-ui-express": "^4.1.6",
         "uri": "^0.1.0",
@@ -32,13 +33,22 @@
         "chai": "^4.2.0",
         "chai-http": "^4.3.0",
         "mocha": "^8.2.1",
-        "nodemon": "^2.0.6",
+        "nodemon": "^2.0.7",
         "should": "^13.2.3"
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "node server.js"
+        "start": "nodemon server.js"
     },
     "author": "",
-    "license": "ISC"
+    "license": "ISC",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/payalghusalikar/Fundoo_Notes_Api.git"
+    },
+    "bugs": {
+        "url": "https://github.com/payalghusalikar/Fundoo_Notes_Api/issues"
+    },
+    "homepage": "https://github.com/payalghusalikar/Fundoo_Notes_Api#readme",
+    "description": ""
 }
