@@ -88,21 +88,6 @@ class userController {
                             message: "Auth Failed",
                         });
                     }
-                    // } else {
-                    //     bcrypt.compare(
-                    //         req.body.password,
-                    //         data[0].password,
-                    //         function(err, result) {
-                    //             if (err) {
-                    //                 res.status(404).send({
-                    //                     success: false,
-                    //                     message: "auth Failed",
-                    //                 });
-                    //             }
-                    //         }
-                    //     );
-                    // }
-                    // var token = helper.createToken(data);
                     return res.status(200).send({
                         success: true,
                         message: "login successfull",
@@ -119,6 +104,7 @@ class userController {
             });
         }
     };
+
     forgotPassword = (req, res) => {
         try {
             const userInfo = {
