@@ -1,9 +1,7 @@
 /**
  * @module        middlewares
  * @file          user.controller.js
- * @description  controllers is reponsible to accept request and send the response
- *               Controller resolve the error using the service layer by invoking its services
- * @requires    
+ * @description  controllers takes request and send the response   
  * @author       Payal Ghusalikar <payal.ghusalikar9@gmail.com>
 *  @since         26/01/2021  
 -----------------------------------------------------------------------------------------------*/
@@ -45,19 +43,6 @@ class userController {
                         message: validation.error.message,
                     }) :
                     userService.register(userInfo, (error, data) => {
-                        //   if (error) {
-                        //     logger.error(
-                        //       "Some error occurred while creating new user, " +
-                        //         req.body.name
-                        //         (error) ?
-
-                        //     );
-                        //     return res.status(500).send({
-                        //       success: false,
-                        //       message: error.message,
-                        //     });
-                        //   }
-
                         return error ?
                             res.status(500).send({
                                 success: false,
@@ -68,13 +53,6 @@ class userController {
                                 message: "user added successfully !",
                                 data: data,
                             });
-
-                        //   logger.info("user added successfully !");
-                        //   res.status(200).send({
-                        //     success: true,
-                        //     message: "user added successfully !",
-                        //     data: data,
-                        //   });
                     });
             }
         } catch (error) {
@@ -106,17 +84,6 @@ class userController {
                     emailId: req.body.emailId,
                     password: password,
                 };
-
-                // password !== confirmPassword ?
-                //     res.status(400).send({
-                //         success: false,
-                //         message: "Password not match",
-                //     }) :
-                //     (userLoginInfo = {
-                //         emailId: req.body.emailId,
-                //         password: password,
-                //     });
-
                 userService.login(userLoginInfo, (error, data) => {
                     if (data.length < 1) {
                         logger.info("user not exist with emailid" + req.body.emailId);
@@ -156,60 +123,6 @@ class userController {
             });
         }
     };
-
-    //     try {
-    //         var confirmPassword = req.body.confirmPassword;
-    //         var password = req.body.password;
-
-    //         if (password !== confirmPassword) {
-    //             return res.status(400).send({
-    //                 success: false,
-    //                 message: "Password not match",
-    //             });
-    //         } else {
-    //             const userLoginInfo = {
-    //                 emailId: req.body.emailId,
-    //                 password: password,
-    //             };
-    //             userService.login(userLoginInfo, (error, data) => {
-    //                 if (data.length < 1) {
-    //                     logger.info("user not exist with emailid" + req.body.emailId);
-    //                     return res.status(404).send({
-    //                         success: false,
-    //                         status_code: 404,
-    //                         message: "Auth Failed",
-    //                     });
-    //                 } else {
-    //                     bcrypt.compare(
-    //                         req.body.password,
-    //                         data.password,
-    //                         function(err, result) {
-    //                             if (err) {
-    //                                 res.status(404).send({
-    //                                     success: false,
-    //                                     message: "auth Failed",
-    //                                 });
-    //                             }
-    //                         }
-    //                     );
-    //                 }
-    //                 var token = helper.createToken(data);
-    //                 return res.status(200).send({
-    //                     success: true,
-    //                     message: "login successfull",
-    //                     token: token,
-    //                 });
-    //             });
-    //         }
-    //     } catch (error) {
-    //         logger.error("could not found user with emailid" + req.body.emailId);
-    //         return res.send({
-    //             success: false,
-    //             status_code: 500,
-    //             message: "error retrieving user with emailid " + req.body.emailId,
-    //         });
-    //     }
-    // };
 
     forgotPassword = (req, res) => {
         try {
