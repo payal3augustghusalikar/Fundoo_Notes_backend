@@ -23,9 +23,7 @@ const UserSchema = mongoose.Schema({
 
 UserSchema.pre("save", async function(next) {
     if (this.isModified("password")) {
-        console.log(`current password is ${this.password}`);
         this.password = await bcrypt.hash(this.password, 10);
-        console.log(`new current password is ${this.password}`);
         this.confirmPassword = undefined;
     }
     next();
@@ -40,7 +38,7 @@ class UserModel {
      * @param {*} userInfo 
      * @param {*} callback 
      */
-    register = (userInfo, callback) => {
+    save = (userInfo, callback) => {
         const user = new User({
             name: userInfo.name,
             emailId: userInfo.emailId,
@@ -55,7 +53,7 @@ class UserModel {
         });
     }
 
-    login = (userLoginData, callback) => {
+    find = (userLoginData, callback) => {
         User.find(userLoginData, (error, data) => {
             if (error)
                 return callback(error, null);
@@ -63,6 +61,29 @@ class UserModel {
                 return callback(null, data);
         });
     }
+
+    forgotPassword = (userData, callBack) => {
+        userModel.findOne(userData, (error, data) => {
+            if (error) {
+                logger.error('Some error occurred')
+                return callBack(new Error("Some error occurred"), null)
+            } else if (!data) {
+                logger.error('User not found with this email Id')
+                return callBack(new Error("User not found with this email Id"), null)
+            } else {
+                const token = util.generateToken(data);
+                userData.token = token
+                util.nodeEmailSender(userData, (error, data) => {
+                    if (error) {
+                        logger.error('Some error occurred while sending email')
+                        return callBack(new Error("Some error occurred while sending email"), null)
+                    }
+                    return callBack(null, data)
+                })
+            }
+        })
+    }
+
 }
 
 module.exports = new UserModel();

@@ -7,16 +7,6 @@ const cors = require('cors');
 const app = express();
 app.use(cors())
 
-
-// app.use((req, res, next) => {
-//     res.header('Access-Control-Allow-Origin', '*')
-//     res.header('Access-Control-Allow-Origin', "Origin, X-requested-Width, Content-type, Accept, Authorization")
-//     if (req.method === 'OPTIONS') {
-//         res.header('Access-Control-Allow-Origin', 'PUT', 'POST', 'DELETE', 'GET');
-//         return res.status(200).json({});
-//     }
-// })
-
 // parse requests of content-type - application/x-www-form-urlencoded - extended is a key
 app.use(bodyParser.urlencoded({ extended: true }))
 

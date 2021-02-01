@@ -9,7 +9,7 @@ class userService {
 
     register = (userInfo, callback) => {
         // register a User
-        User.register(userInfo, (error, data) => {
+        User.save(userInfo, (error, data) => {
             if (error)
                 return callback(error, null);
             return callback(null, data);
@@ -22,13 +22,36 @@ class userService {
      * @param callback is the callback for controller
      */
     login = (userLoginInfo, callback) => {
-        User.login(userLoginInfo, (error, data) => {
+        User.find(userLoginInfo, (error, data) => {
             if (error)
                 return callback(error, null);
             else
                 return callback(null, data);
         });
     }
+
+
+
+    forgotPassword = (userInfo, callback) => {
+        userModel.findOne(userInfo, (error, data) => {
+            if (error) {
+                logger.error('Some error occurred')
+                return callBack(new Error("Some error occurred"), null)
+            } else if (!data) {
+                logger.error('User with this email Id dosent exist')
+                return callback(new Error("User with this email Id dosent exist"), null)
+            } else {
+                helper.nodeEmailSender(userInfo, (error, data) => {
+                    if (error) {
+                        logger.error('Some error occurred while sending email')
+                        return callback(new Error("Some error occurred while sending email"), null)
+                    }
+                    return callback(null, data)
+                })
+            }
+        })
+    }
+
 }
 
 module.exports = new userService();

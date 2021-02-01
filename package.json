@@ -21,6 +21,7 @@
         "mongodb-bluebird": "^0.1.2",
         "mongoose": "^5.11.13",
         "mongoose-events": "^0.3.9",
+        "password-reset-nodemailer": "0.0.1",
         "swagger-jsdoc": "^6.0.0",
         "swagger-ui-express": "^4.1.6",
         "uri": "^0.1.0",

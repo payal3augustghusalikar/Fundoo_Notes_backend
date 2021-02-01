@@ -8,4 +8,7 @@ module.exports = (app) => {
 
     // Login existing user
     app.post('/login', user.login);
+
+    //forget password
+    app.post('/forgot-password', user.forgotPassword)
 }

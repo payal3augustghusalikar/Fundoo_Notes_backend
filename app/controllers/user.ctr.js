@@ -1,36 +1,20 @@
+/**
+ * @module        middlewares
+ * @file          user.controller.js
+ * @description  controllers is reponsible to accept request and send the response
+ *               Controller resolve the error using the service layer by invoking its services
+ * @requires    
+ * @author       Payal Ghusalikar <payal.ghusalikar9@gmail.com>
+*  @since         26/01/2021  
+-----------------------------------------------------------------------------------------------*/
+
 const userService = require("../services/user.svc.js");
-const Joi = require("joi");
+
 const logger = require("../../logger/logger.js");
 const bcrypt = require("bcrypt");
-var jwt = require("jsonwebtoken");
 var helper = require("../../middleware/helper.js");
-
-const emailIdPattern = Joi.string()
-    .regex(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)
-    .required();
-const passwordPattern = Joi.string()
-    .regex(/^[a-zA-Z0-9]{6,16}$/)
-    .min(6)
-    .required();
-
-const ControllerDataValidation = Joi.object().keys({
-    name: Joi.string()
-        .regex(/^[a-zA-Z ]+$/)
-        .min(3)
-        .max(16)
-        .required(),
-    emailId: emailIdPattern,
-    password: passwordPattern,
-});
-
-const ControllerDataValidation1 = Joi.object().keys({
-    emailId: emailIdPattern,
-    password: passwordPattern,
-});
-
-const confirmPasswordVallidate = Joi.object().keys({
-    confirmPassword: passwordPattern,
-});
+nodemailer = require('nodemailer');
+var vallidator = require("../../middleware/vallidation.js");
 
 class userController {
     /**
@@ -53,13 +37,14 @@ class userController {
                     name: req.body.name,
                     emailId: req.body.emailId,
                     password: password,
+                    // confirmPassword: confirmPassword
                 };
 
-                const validation = ControllerDataValidation.validate(userInfo);
+                const validation = vallidator.validate(userInfo)
                 if (validation.error) {
                     return res.status(400).send({
                         success: false,
-                        message: "please enter valid details",
+                        message: validation.error.message
                     });
                 }
 
@@ -70,7 +55,7 @@ class userController {
                         );
                         return res.status(500).send({
                             success: false,
-                            message: "error occured, " + req.body.emailId,
+                            message: error.message
                         });
                     }
                     logger.info("user added successfully !");
@@ -85,7 +70,7 @@ class userController {
             logger.error("Some error occurred while creating user");
             return res.status(500).send({
                 success: false,
-                message: "Some error occurred while creating user",
+                message: error.message,
             });
         }
     };
@@ -109,7 +94,6 @@ class userController {
                 const userLoginInfo = {
                     emailId: req.body.emailId,
                     password: password,
-
                 };
                 userService.login(userLoginInfo, (error, data) => {
                     if (data.length < 1) {
@@ -120,9 +104,7 @@ class userController {
                             message: "Auth Failed",
                         });
                     } else {
-                        bcrypt.compare(
-                            req.body.password,
-                            data[0].password,
+                        bcrypt.compare(req.body.password, data[0].password,
                             function(err, result) {
                                 if (err) {
                                     res.status(404).send({
@@ -150,6 +132,53 @@ class userController {
             });
         }
     };
+
+    forgotPassword = (req, res) => {
+        try {
+            const userInfo = {
+                emailId: req.body.emailId
+            }
+            const validationResult = emailIdPattern.validate(userInfo.emailId)
+
+            if (validationResult.error) {
+                logger.error(error.message)
+                return res.status(400).send({
+                    success: false,
+                    message: "please Enter correct email id"
+                });
+            }
+            userService.forgotPassword(userInfo, (error, user) => {
+                if (error) {
+                    logger.error(error.message)
+                    return res.status(500).send({
+                        success: false,
+                        message: "error occured"
+                    });
+                } else if (!user) {
+                    logger.error("Authorization failed")
+                    return res.status(401).send({
+                        success: false,
+                        message: "Authorization failed"
+                    });
+                } else {
+                    logger.info("Email has been sent !")
+
+                    return res.status(200).send({
+                        success: true,
+                        message: "Email has been sent !"
+                    });
+                }
+            })
+        } catch (error) {
+            logger.error("Some error occurred !")
+
+            return res.status(500).send({
+                success: false,
+                message: "Authorization failed"
+            });
+
+        }
+    }
 }
 
 module.exports = new userController();
