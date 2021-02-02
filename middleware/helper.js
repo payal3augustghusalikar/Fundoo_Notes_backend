@@ -1,8 +1,8 @@
 var jwt = require("jsonwebtoken");
 const logger = require("../../logger/logger");
-//var fs = require("fs");
 var nodemailer = require("nodemailer");
-//var ejs = require("ejs");
+require('dotenv').config();
+const ejs = require('ejs')
 
 class Helper {
     createToken = (data) => {
@@ -30,69 +30,72 @@ class Helper {
         }
     };
 
-    // emailSender = (userInfo, callBack) => {
-    //     var transporter = nodemailer.createTransport({
-    //         auth: {
-    //             user: "payal.ghusalikar9@gmail.com",
-    //             pass: "ghjbvb",
-    //         },
-    //     });
-    //     var currentDateTime = new Date();
-    //     var mailOptions = {
-    //         from: "payal.ghusalikar9@gmail.com",
-    //         to: "payal.ghusalikar9@gmail.com",
-    //         subject: "Reset Password",
-    //         html: "<h3> Hello </h3>\
-    //   <a href=`http://localhost:2001/resetPassword/" + currentDateTime + "+++" + userInfo.email + "`>click on this link </a>\
-    //   "
-    //     };
-    //     transporter.sendMail(mailOptions, function(error, info) {
-    //         if (error)
-    //             logger.info(error);
+    emailSender = (userInfo, callback) => {
+        var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS,
+            },
+        });
 
-    //         else
-    //             logger.info("mail Sent")
+        ejs.renderFile("app/view/forgotPassword.ejs", { link: process.env.URL + userInfo.token }, (error, htmldata) => {
+            var currentDateTime = new Date();
+            var mailOptions = {
+                from: process.env.EMAIL_USER,
+                to: process.env.EMAIL_RECEIVER,
+                subject: "Reset Password",
+                html: htmldata
+            };
+            transporter.sendMail(mailOptions, function(error, data) {
+                if (error) {
+                    logger.info(error);
+                    return callback(error, null);
+                } else
+                    logger.info("mail Sent")
+                console.log('Message sent: ' + data);
+                return callback(null, data)
 
-    //     })
-    // };
+            })
+        });
+
+        //<a href=`http://localhost:2001/resetPassword/ " + currentDateTime + "+++ " + userInfo.email + "`>click on this link </a>\ "
+
+        // emailSender = (userInfo, callBack) => {
+        //     transporter = nodemailer.createTransport({
+        //         host: 'smtp.zoho.com',
+        //         port: 465,
+        //         secure: true, // use SSL
+        //         auth: {
+        //             user: 'testmail@zoho.com',
+        //             pass: '123456'
+        //         }
+        //     });
+
+        //     ejs.renderFile(__dirname + "/test.ejs", { name: 'Stranger' }, function(err, data) {
+        //         if (err) {
+        //             console.log(err);
+        //         } else {
+        //             var mainOptions = {
+        //                 from: '"Tester" testmail@zoho.com',
+        //                 to: "totest@zoho.com",
+        //                 subject: 'Hello, world',
+        //                 html: data
+        //             };
+        //             console.log("html data ======================>", mainOptions.html);
+        //             transporter.sendMail(mainOptions, function(err, info) {
+        //                 if (err) {
+        //                     console.log(err);
+        //                 } else {
+        //                     console.log('Message sent: ' + info.response);
+        //                 }
+        //             });
+        //         }
+
+        //     });
 
 
-
-    //     emailSender = (userInfo, callBack) => {
-    //         transporter = nodemailer.createTransport({
-    //             host: 'smtp.zoho.com',
-    //             port: 465,
-    //             secure: true, // use SSL
-    //             auth: {
-    //                 user: 'testmail@zoho.com',
-    //                 pass: '123456'
-    //             }
-    //         });
-
-    //         ejs.renderFile(__dirname + "/test.ejs", { name: 'Stranger' }, function(err, data) {
-    //             if (err) {
-    //                 console.log(err);
-    //             } else {
-    //                 var mainOptions = {
-    //                     from: '"Tester" testmail@zoho.com',
-    //                     to: "totest@zoho.com",
-    //                     subject: 'Hello, world',
-    //                     html: data
-    //                 };
-    //                 console.log("html data ======================>", mainOptions.html);
-    //                 transporter.sendMail(mainOptions, function(err, info) {
-    //                     if (err) {
-    //                         console.log(err);
-    //                     } else {
-    //                         console.log('Message sent: ' + info.response);
-    //                     }
-    //                 });
-    //             }
-
-    //         });
-
-
-    //     }
+        // }
+    }
 }
-
 module.exports = new Helper();

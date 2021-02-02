@@ -110,20 +110,20 @@ class userController {
             const userInfo = {
                 emailId: req.body.emailId,
             };
-            const validationResult = emailIdPattern.validate(userInfo.emailId);
-            if (validationResult.error) {
-                logger.error(error.message);
-                return res.status(400).send({
-                    success: false,
-                    message: "please Enter correct email id",
-                });
-            }
+            // const validationResult = emailIdPattern.validate(userInfo.emailId);
+            // if (validationResult.error) {
+            //     logger.error(error.message);
+            //     return res.status(400).send({
+            //         success: false,
+            //         message: "please Enter correct email id, " + error.message,
+            //     });
+            // }
             userService.forgotPassword(userInfo, (error, user) => {
                 if (error) {
                     logger.error(error.message);
                     return res.status(500).send({
                         success: false,
-                        message: "error occured",
+                        message: "error occured " + error.message,
                     });
                 } else if (!user) {
                     logger.error("Authorization failed");
@@ -143,7 +143,7 @@ class userController {
             logger.error("Some error occurred !");
             return res.status(500).send({
                 success: false,
-                message: "Authorization failed",
+                message: "Authorization failed  " + error.message,
             });
         }
     };

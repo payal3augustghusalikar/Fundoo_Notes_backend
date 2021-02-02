@@ -51,15 +51,26 @@ class userService {
 
 
     forgotPassword = (userInfo, callback) => {
-        userModel.findOne(userInfo, (error, data) => {
+        User.findOne(userInfo, (error, data) => {
             if (error) {
                 logger.error('Some error occurred')
-                return callBack(new Error("Some error occurred"), null)
+                return callback(new Error("Some error occurred"), null)
             } else if (!data) {
                 logger.error('User with this email Id dosent exist')
                 return callback(new Error("User with this email Id dosent exist"), null)
             } else {
-                helper.nodeEmailSender(userInfo, (error, data) => {
+                const token = helper.createToken(data);
+                userInfo.token = token
+                console.log(token)
+                    // helper.emailSender(userInfo, (error, data) => {
+                    //     if (error) {
+                    //         logger.error('Some error occurred while sending email')
+                    //         return callback(new Error("Some error occurred while sending email"), null)
+                    //     }
+                    // return callback(null, data)
+                    //})
+                helper.emailSender(userInfo, (error, data) => {
+                    console.log("userInfo" + userInfo)
                     if (error) {
                         logger.error('Some error occurred while sending email')
                         return callback(new Error("Some error occurred while sending email"), null)
