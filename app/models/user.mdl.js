@@ -47,7 +47,7 @@ class UserModel {
             password: userInfo.password
         });
 
-        user.save({}, (error, data) => {
+        user.save((error, data) => {
             if (error)
                 return callback(error, null);
             else
@@ -73,15 +73,7 @@ class UserModel {
                 logger.error('User not found with this email Id')
                 return callback(new Error("User not found with this email Id"), null)
             } else {
-                // const token = helper.createToken(data);
-                // userInfo.token = token
-                // helper.emailSender(userInfo, (error, data) => {
-                //     if (error) {
-                //         logger.error('Some error occurred while sending email')
-                //         return callback(new Error("Some error occurred while sending email"), null)
-                //     }
                 return callback(null, data)
-                    //})
             }
         })
     }

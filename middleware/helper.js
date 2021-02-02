@@ -1,8 +1,8 @@
 var jwt = require("jsonwebtoken");
 const logger = require("../../logger/logger");
 var nodemailer = require("nodemailer");
-require('dotenv').config();
-const ejs = require('ejs')
+require("dotenv").config();
+const ejs = require("ejs");
 
 class Helper {
     createToken = (data) => {
@@ -33,31 +33,42 @@ class Helper {
     emailSender = (userInfo, callback) => {
         var transporter = nodemailer.createTransport({
             service: 'gmail',
+            PORT: process.env.PORT,
+            secure: true,
             auth: {
+
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS,
             },
         });
+        http: //localhost:2001/resetPassword/ " + currentDateTime + "+++ " + userInfo.email + "
+            // var currentDateTime = new Date();
+            ejs.renderFile(
+                // "app/view/forgotPassword.ejs", { link: userInfo.token },
+                "app/view/forgotPassword.ejs", { link: "http://localhost:2001/ " + userInfo.email + userInfo.token },
 
-        ejs.renderFile("app/view/forgotPassword.ejs", { link: process.env.URL + userInfo.token }, (error, htmldata) => {
-            var currentDateTime = new Date();
-            var mailOptions = {
-                from: process.env.EMAIL_USER,
-                to: process.env.EMAIL_RECEIVER,
-                subject: "Reset Password",
-                html: htmldata
-            };
-            transporter.sendMail(mailOptions, function(error, data) {
-                if (error) {
-                    logger.info(error);
-                    return callback(error, null);
-                } else
-                    logger.info("mail Sent")
-                console.log('Message sent: ' + data);
-                return callback(null, data)
 
-            })
-        });
+                (error, htmldata) => {
+
+                    var mailOptions = {
+                        from: process.env.EMAIL_USER,
+                        to: process.env.EMAIL_RECEIVER,
+                        subject: "Reset Password",
+                        html: htmldata,
+
+                    };
+                    transporter.sendMail(mailOptions, function(error, data) {
+                        if (error) {
+                            logger.info(error);
+                            console.log("mail not sent: " + error.message);
+                            return callback(error, null);
+                            // return callback(null, data);
+                        } else logger.info("mail Sent");
+                        console.log("mail sent: " + data);
+                        return callback(null, data);
+                    });
+                }
+            );
 
         //<a href=`http://localhost:2001/resetPassword/ " + currentDateTime + "+++ " + userInfo.email + "`>click on this link </a>\ "
 
@@ -94,8 +105,7 @@ class Helper {
 
         //     });
 
-
         // }
-    }
+    };
 }
 module.exports = new Helper();
