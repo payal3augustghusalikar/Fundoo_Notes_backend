@@ -1,3 +1,5 @@
+var helper = require("../../middleware/helper.js");
+
 module.exports = (app) => {
 
 
@@ -10,7 +12,7 @@ module.exports = (app) => {
     app.post('/login', user.login);
 
     //forget password
-    app.post('/forgot-password', user.forgotPassword);
+    app.post('/forgot-password', helper.verifyToken, user.forgotPassword);
 
 
     // Reset password

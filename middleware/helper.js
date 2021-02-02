@@ -22,6 +22,8 @@ class Helper {
             console.log(token);
             var decode = jwt.verify(token, process.env.SECRET_KEY);
             req.userData = decode;
+            console.log("");
+            console.log("token verified");
             next();
         } catch (error) {
             res.status(401).send({

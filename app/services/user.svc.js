@@ -62,13 +62,6 @@ class userService {
                 const token = helper.createToken(data);
                 userInfo.token = token
                 console.log(token)
-                    // helper.emailSender(userInfo, (error, data) => {
-                    //     if (error) {
-                    //         logger.error('Some error occurred while sending email')
-                    //         return callback(new Error("Some error occurred while sending email"), null)
-                    //     }
-                    // return callback(null, data)
-                    //})
                 helper.emailSender(userInfo, (error, data) => {
                     console.log("userInfo" + userInfo)
                     if (error) {
