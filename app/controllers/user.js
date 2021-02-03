@@ -140,36 +140,50 @@ class userController {
 
     resetPassword = (req, res) => {
         try {
-            const resetPasswordData = {
-                    newPassword: req.body.newPassword
-                }
-                // const validationResult = vallidator.validate(resetPasswordData.newPassword)
-                // return validationResult.error ?
-                //     res.status(400).send({
-                //         success: false,
-                //         message: validation.error.message,
-                //     }) :
-            userService.resetPassword(resetPasswordData, (error, data) => {
-                if (error) {
-                    logger.error(error.message)
-                    return res.status(500).send({
-                        success: false,
-                        message: error.message,
-                    });
-                } else if (!data) {
-                    logger.error("Authorization failed")
-                    return res.status(500).send({
-                        success: false,
-                        message: "Authorization failed  " + error.message,
-                    });
-                } else {
-                    logger.info("Password has benn changed !")
-                    return res.status(200).send({
-                        success: true,
-                        message: "Password has been changed ",
-                    });
-                }
-            })
+            //  console.log("controller token ", helper.token);
+
+            var newPassword = req.body.newPassword;
+            var confirmPassword = req.body.confirmPassword;
+            var token = req.headers.authorization.split(" ")[1];
+            if (newPassword !== confirmPassword) {
+                res.status(400).send({
+                    success: false,
+                    message: "Password not match",
+                })
+            } else {
+                const resetPasswordData = {
+                        newPassword: newPassword,
+                        confirmPassword: confirmPassword,
+                        token: token
+                    }
+                    //     validationResult = vallidator.validate(resetPasswordData.newPassword)
+                    // return validationResult.error ?
+                    //     res.status(400).send({
+                    //         success: false,
+                    //         message: validation.error.message,
+                    //     }) :
+                userService.resetPassword(resetPasswordData, (error, data) => {
+                    if (error) {
+                        logger.error(error.message)
+                        return res.status(500).send({
+                            success: false,
+                            message: error.message,
+                        });
+                    } else if (!data) {
+                        logger.error("Authorization failed")
+                        return res.status(500).send({
+                            success: false,
+                            message: "Authorization failed  " + error.message,
+                        });
+                    } else {
+                        logger.info("Password has been changed !")
+                        return res.status(200).send({
+                            success: true,
+                            message: "Password has been changed ",
+                        });
+                    }
+                })
+            }
         } catch (error) {
             logger.error("Some error occurred !")
             return res.status(500).send({

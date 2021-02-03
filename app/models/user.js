@@ -79,7 +79,7 @@ class UserModel {
     }
 
     update = (userInfo, callback) => {
-        User.findOneAndUpdate(userInfo.emailId, { password: userInfo.newPassword }, { new: true }, (error, data) => {
+        User.findByIdAndUpdate(userInfo.userId, { password: userInfo.newPassword }, { new: true }, (error, data) => {
             if (error)
                 return callback(error, null);
             else

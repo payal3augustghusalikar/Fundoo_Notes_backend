@@ -21,10 +21,14 @@ class Helper {
             var token = req.headers.authorization.split(" ")[1];
             console.log(token);
             var decode = jwt.verify(token, process.env.SECRET_KEY);
+            console.log(decode)
             req.userData = decode;
+            console.log(decode)
             console.log("");
             console.log("token verified");
+
             next();
+
         } catch (error) {
             res.status(401).send({
                 error: "unauthorized",

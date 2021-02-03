@@ -2,6 +2,8 @@ const User = require('../models/user.js');
 var helper = require("../../middleware/helper.js");
 const bcrypt = require("bcrypt");
 const logger = require('../../../logger/logger.js');
+var jwt = require("jsonwebtoken");
+
 class userService {
     /**
      * @description register and save User then send response to controller
@@ -53,7 +55,7 @@ class userService {
     /**
      * @description Update greeting by id and return response to controller
      * @method update is used to update greeting by ID
-     * @param callBack is the callBack for controller
+     * @param callback is the callback for controller
      */
     forgotPassword = (userInfo, callback) => {
         User.findOne(userInfo, (error, data) => {
@@ -83,15 +85,22 @@ class userService {
     /**
      * @description Update user and return response to controller
      * @method update is used to update user
-     * @param callBack is the callBack for controller
+     * @param callback is the callback for controller
      */
-    resetPassword = (userInfo, callBack) => {
-        console.log("service token ", token);
+    resetPassword = (userInfo, callback) => {
+
+        var decode = jwt.verify(userInfo.token, process.env.SECRET_KEY);
+        var userId = decode.id
+        console.log(userId)
+        console.log("service token ", userInfo.token);
+
+        userInfo.userId = userId
+        console.log("id", userId)
         User.update(userInfo, (error, data) => {
             if (error)
-                return callBack(error, null);
+                return callback(error, null);
             else
-                return callBack(null, data);
+                return callback(null, data);
         });
     }
 }
