@@ -78,6 +78,14 @@ class UserModel {
         })
     }
 
+    update = (userInfo, callback) => {
+        User.findOneAndUpdate(userInfo.emailId, { password: userInfo.newPassword }, { new: true }, (error, data) => {
+            if (error)
+                return callback(error, null);
+            else
+                return callback(null, data);
+        });
+    }
 }
 
 module.exports = new UserModel();

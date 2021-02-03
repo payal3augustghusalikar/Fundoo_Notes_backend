@@ -1,4 +1,4 @@
-const User = require('../models/user.mdl.js');
+const User = require('../models/user.js');
 var helper = require("../../middleware/helper.js");
 const bcrypt = require("bcrypt");
 const logger = require('../../../logger/logger.js');
@@ -18,11 +18,11 @@ class userService {
         })
     }
 
-    /**
-     * @description Find User by id and return response to controller
-     * @method login is used to retrieve User by ID
-     * @param callback is the callback for controller
-     */
+
+
+
+
+
     login = (userLoginInfo, callback) => {
 
         User.find(userLoginInfo, (error, data) => {
@@ -50,6 +50,11 @@ class userService {
     }
 
 
+    /**
+     * @description Update greeting by id and return response to controller
+     * @method update is used to update greeting by ID
+     * @param callBack is the callBack for controller
+     */
     forgotPassword = (userInfo, callback) => {
         User.findOne(userInfo, (error, data) => {
             if (error) {
@@ -72,6 +77,22 @@ class userService {
                 })
             }
         })
+    }
+
+
+    /**
+     * @description Update user and return response to controller
+     * @method update is used to update user
+     * @param callBack is the callBack for controller
+     */
+    resetPassword = (userInfo, callBack) => {
+        console.log("service token ", token);
+        User.update(userInfo, (error, data) => {
+            if (error)
+                return callBack(error, null);
+            else
+                return callBack(null, data);
+        });
     }
 }
 

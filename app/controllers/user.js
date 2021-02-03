@@ -1,11 +1,11 @@
 /**
  * @module        middlewares
- * @file          user.controller.js
+ * @file          user.js
  * @description  controllers takes request and send the response   
  * @author       Payal Ghusalikar <payal.ghusalikar9@gmail.com>
 *  @since         26/01/2021  
 -----------------------------------------------------------------------------------------------*/
-const userService = require("../services/user.svc.js");
+const userService = require("../services/user.js");
 const logger = require("../../logger/logger.js");
 nodemailer = require("nodemailer");
 var vallidator = require("../../middleware/vallidation.js");
@@ -138,41 +138,38 @@ class userController {
     };
 
 
-
-
-
-
     resetPassword = (req, res) => {
         try {
             const resetPasswordData = {
-                newPassword: req.body.newPassword
-            }
-            const validationResult = vallidator.validate(resetPasswordData.newPassword)
-            return validationResult.error ?
-                res.status(400).send({
-                    success: false,
-                    message: validation.error.message,
-                }) :
-
-                userService.resetPassword(resetPasswordData, (error, data) => {
-                    if (error) {
-                        logger.error(error.message)
-                        const response = { success: false, message: error.message };
-                        return res.status(500).send(response)
-                    } else if (!data) {
-                        logger.error("Authorization failed")
-                        return res.status(500).send({
-                            success: false,
-                            message: "Authorization failed  " + error.message,
-                        });
-                    } else {
-                        logger.info("Password has benn changed !")
-                        return res.status(200).send({
-                            success: true,
-                            message: "Password has been changed ",
-                        });
-                    }
-                })
+                    newPassword: req.body.newPassword
+                }
+                // const validationResult = vallidator.validate(resetPasswordData.newPassword)
+                // return validationResult.error ?
+                //     res.status(400).send({
+                //         success: false,
+                //         message: validation.error.message,
+                //     }) :
+            userService.resetPassword(resetPasswordData, (error, data) => {
+                if (error) {
+                    logger.error(error.message)
+                    return res.status(500).send({
+                        success: false,
+                        message: error.message,
+                    });
+                } else if (!data) {
+                    logger.error("Authorization failed")
+                    return res.status(500).send({
+                        success: false,
+                        message: "Authorization failed  " + error.message,
+                    });
+                } else {
+                    logger.info("Password has benn changed !")
+                    return res.status(200).send({
+                        success: true,
+                        message: "Password has been changed ",
+                    });
+                }
+            })
         } catch (error) {
             logger.error("Some error occurred !")
             return res.status(500).send({
