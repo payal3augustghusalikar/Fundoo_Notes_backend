@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt')
+var helper = require("../../middleware/helper.js");
+const logger = require("../../logger/logger.js");
 
 const UserSchema = mongoose.Schema({
     name: {
@@ -45,7 +47,7 @@ class UserModel {
             password: userInfo.password
         });
 
-        user.save({}, (error, data) => {
+        user.save((error, data) => {
             if (error)
                 return callback(error, null);
             else
@@ -62,28 +64,28 @@ class UserModel {
         });
     }
 
-    forgotPassword = (userData, callBack) => {
-        userModel.findOne(userData, (error, data) => {
+    findOne = (userInfo, callback) => {
+        User.findOne(userInfo, (error, data) => {
             if (error) {
                 logger.error('Some error occurred')
-                return callBack(new Error("Some error occurred"), null)
+                return callback(new Error("Some error occurred"), null)
             } else if (!data) {
                 logger.error('User not found with this email Id')
-                return callBack(new Error("User not found with this email Id"), null)
+                return callback(new Error("User not found with this email Id"), null)
             } else {
-                const token = util.generateToken(data);
-                userData.token = token
-                util.nodeEmailSender(userData, (error, data) => {
-                    if (error) {
-                        logger.error('Some error occurred while sending email')
-                        return callBack(new Error("Some error occurred while sending email"), null)
-                    }
-                    return callBack(null, data)
-                })
+                return callback(null, data)
             }
         })
     }
 
+    update = (userInfo, callback) => {
+        User.findByIdAndUpdate(userInfo.userId, { password: userInfo.newPassword }, { new: true }, (error, data) => {
+            if (error)
+                return callback(error, null);
+            else
+                return callback(null, data);
+        });
+    }
 }
 
 module.exports = new UserModel();
