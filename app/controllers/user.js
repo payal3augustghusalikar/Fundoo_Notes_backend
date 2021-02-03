@@ -106,6 +106,12 @@ class userController {
         }
     };
 
+    /**
+     * @description takes request and sends responce 
+     * @description calls the service class method
+     * @param {*} req 
+     * @param {*} res 
+     */
     forgotPassword = (req, res) => {
         try {
             const userInfo = {
@@ -141,11 +147,15 @@ class userController {
         }
     };
 
-
+    /**
+     * @description takes request and sends responce 
+     * @description reset the password
+     * @description takes the token from headers
+     * @param {*} req 
+     * @param {*} res 
+     */
     resetPassword = (req, res) => {
         try {
-            //  console.log("controller token ", helper.token);
-
             var newPassword = req.body.newPassword;
             var confirmPassword = req.body.confirmPassword;
             var token = req.headers.authorization.split(" ")[1];

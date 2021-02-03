@@ -13,14 +13,13 @@ const logger = require('../../../logger/logger.js');
 var jwt = require("jsonwebtoken");
 
 class userService {
+
     /**
      * @description register and save User then send response to controller
      * @method register is used to save the User
      * @param callback is the callback for controller
      */
-
     register = (userInfo, callback) => {
-        // register a User
         User.save(userInfo, (error, data) => {
             if (error)
                 return callback(error, null);
@@ -28,11 +27,11 @@ class userService {
         })
     }
 
-
-
-
-
-
+    /**
+     * @description takes userInfo and calls model class method
+     * @param {*} userLoginInfo 
+     * @param {*} callback is the callback for controller
+     */
     login = (userLoginInfo, callback) => {
 
         User.find(userLoginInfo, (error, data) => {
@@ -59,11 +58,10 @@ class userService {
         });
     }
 
-
     /**
      * @description Update greeting by id and return response to controller
-     * @method update is used to update greeting by ID
-     * @param callback is the callback for controller
+     * @param {*} userInfo 
+     * @param {*} callback 
      */
     forgotPassword = (userInfo, callback) => {
         User.findOne(userInfo, (error, data) => {
@@ -89,19 +87,16 @@ class userService {
         })
     }
 
-
     /**
      * @description Update user and return response to controller
-     * @method update is used to update user
-     * @param callback is the callback for controller
+     * @param {*} userInfo 
+     * @param {*} callback 
      */
     resetPassword = (userInfo, callback) => {
-
         var decode = jwt.verify(userInfo.token, process.env.SECRET_KEY);
         var userId = decode.id
         console.log(userId)
         console.log("service token ", userInfo.token);
-
         userInfo.userId = userId
         console.log("id", userId)
         User.update(userInfo, (error, data) => {

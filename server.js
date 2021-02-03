@@ -4,7 +4,7 @@
  * @description  connecting to server and rendering all routes
  * @author       Payal Ghusalikar <payal.ghusalikar9@gmail.com>
 *  @since        27/01/2021  
------------------------------------------------------------------------
+-----------------------------------------------------------------------*/
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -42,7 +42,7 @@ require('./app/routes/route.js')(app);
 const port = process.env.PORT || 2001;
 // listen for requests using callback
 app.listen(port, () => {
-    logger.info(`Server is listening on port:  ${port}`);
+    logger.info(`Server is listening on port: ${port}`);
 });
 
 module.exports = app;

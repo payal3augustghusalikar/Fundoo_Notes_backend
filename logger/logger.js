@@ -1,3 +1,12 @@
+/**
+ * @module       logger
+ * @file         logger.js
+ * @description  log the data to track activity using winstons logger
+ * @author       Payal Ghusalikar <payal.ghusalikar9@gmail.com>
+ * @since        27/01/2021  
+-----------------------------------------------------------------------------------------------*/
+
+
 const winston = require(`winston`);
 const {
     createLogger,

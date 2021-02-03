@@ -30,6 +30,7 @@ const UserSchema = mongoose.Schema({
     timestamps: true
 });
 
+// encrypted the password before saving to database
 UserSchema.pre("save", async function(next) {
     if (this.isModified("password")) {
         this.password = await bcrypt.hash(this.password, 10);
@@ -43,8 +44,9 @@ const User = mongoose.model('User', UserSchema);
 class UserModel {
 
     /**
+     * @description save the user to database 
      * @param {*} userInfo 
-     * @param {*} callback 
+     * @param {*} callback is for service class
      */
     save = (userInfo, callback) => {
         const user = new User({
@@ -60,6 +62,11 @@ class UserModel {
         });
     }
 
+    /**
+     * @description find the user
+     * @param {*} userLoginData 
+     * @param {*} callback 
+     */
     find = (userLoginData, callback) => {
         User.find(userLoginData, (error, data) => {
             if (error)
@@ -69,6 +76,11 @@ class UserModel {
         });
     }
 
+    /**
+     * @description find the one user in database
+     * @param {*} userInfo 
+     * @param {*} callback is for service class
+     */
     findOne = (userInfo, callback) => {
         User.findOne(userInfo, (error, data) => {
             if (error) {
@@ -83,6 +95,11 @@ class UserModel {
         })
     }
 
+    /**
+     * @description takes th userInfo and update the user
+     * @param {*} userInfo 
+     * @param {*} callback 
+     */
     update = (userInfo, callback) => {
         User.findByIdAndUpdate(userInfo.userId, { password: userInfo.newPassword }, { new: true }, (error, data) => {
             if (error)
