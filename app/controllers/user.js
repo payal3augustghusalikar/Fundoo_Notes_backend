@@ -66,39 +66,37 @@ class userController {
      * @param response is used to send the response
      */
     login = (req, res) => {
+
         try {
             let confirmPassword = req.body.confirmPassword;
             let password = req.body.password;
 
-            return (password !== confirmPassword) ?
-                res.status(400).send({
+            if (password !== confirmPassword) {
+                return res.status(400).send({
                     success: false,
                     message: "Password not match",
-                }) :
-                (
-                    userLoginInfo = {
-                        emailId: req.body.emailId,
-                        password: password,
-                    },
-                    userService.login(userLoginInfo, (error, data) => {
-                        (
-                            (data.length < 1) ?
-                            (
-                                logger.info("user not exist with emailid" + req.body.emailId),
-                                res.status(404).send({
-                                    success: false,
-                                    status_code: 404,
-                                    message: "Auth Failed",
-                                })
-                            ) :
-                            res.status(200).send({
-                                success: true,
-                                message: "login successfull",
-                                token: data.token,
-                            })
-                        )
-                    })
-                )
+                });
+            } else {
+                const userLoginInfo = {
+                    emailId: req.body.emailId,
+                    password: password,
+                };
+                userService.login(userLoginInfo, (error, data) => {
+                    if (data.length < 1) {
+                        logger.info("user not exist with emailid" + req.body.emailId);
+                        return res.status(404).send({
+                            success: false,
+                            status_code: 404,
+                            message: "Auth Failed",
+                        });
+                    }
+                    return res.status(200).send({
+                        success: true,
+                        message: "login successfull",
+                        token: data.token,
+                    });
+                });
+            }
         } catch (error) {
             logger.error("could not found user with emailid" + req.body.emailId);
             return res.send({
@@ -108,6 +106,7 @@ class userController {
             });
         }
     };
+
 
     /**
      * @description takes email id and calls service class method
@@ -157,9 +156,9 @@ class userController {
      */
     resetPassword = (req, res) => {
         try {
-            let newPassword = req.body.newPassword;
-            let confirmPassword = req.body.confirmPassword;
-            let token = req.headers.authorization.split(" ")[1];
+            var newPassword = req.body.newPassword;
+            var confirmPassword = req.body.confirmPassword;
+            var token = req.headers.authorization.split(" ")[1];
             if (newPassword !== confirmPassword) {
                 res.status(400).send({
                     success: false,
@@ -188,7 +187,8 @@ class userController {
                         logger.error("Authorization failed")
                         return res.status(500).send({
                             success: false,
-                            message: "Authorization failed  " + error.message,
+                            message: "Authorization failed  "
+                                //+ error.message,
                         });
                     } else {
                         logger.info("Password has been changed !")

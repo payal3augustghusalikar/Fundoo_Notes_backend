@@ -93,12 +93,21 @@ class userService {
      * @param {*} callback 
      */
     resetPassword = (userInfo, callback) => {
-        let decode = jwt.verify(userInfo.token, process.env.SECRET_KEY);
-        let userId = decode.id
-        console.log(userId)
+        var decode = jwt.verify(userInfo.token, process.env.SECRET_KEY);
+        var userId = decode.id
+        console.log("user Id", userId)
         console.log("service token ", userInfo.token);
         userInfo.userId = userId
         console.log("id", userId)
+
+        // const newPassword = async function(next) {
+        //     if (this.isModified("password")) {
+        //         return this.newPassword = await bcrypt.hash(this.newPassword, 10);
+        //         //this.confirmPassword = undefined;
+        //     }
+        //     next();
+        // }
+        console.log(newPassword)
         User.update(userInfo, (error, data) => {
             if (error)
                 return callback(error, null);

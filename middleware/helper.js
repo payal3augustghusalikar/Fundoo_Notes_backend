@@ -6,7 +6,7 @@
 *  @since        27/01/2021  
 -----------------------------------------------------------------------------------------------*/
 
-const jwt = require("jsonwebtoken");
+var jwt = require("jsonwebtoken");
 const logger = require("../../logger/logger");
 const nodemailer = require("nodemailer");
 require("dotenv").config();
@@ -38,8 +38,10 @@ class Helper {
     verifyToken = (req, res, next) => {
         try {
             let token = req.headers.authorization.split(" ")[1];
+            // let token = req.headers.authorization
             console.log(token);
-            let decode = jwt.verify(token, process.env.SECRET_KEY);
+            const decode = jwt.verify(token, process.env.SECRET_KEY);
+
             console.log(decode)
             req.userData = decode;
             console.log(decode)
