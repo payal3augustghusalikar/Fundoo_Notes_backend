@@ -6,10 +6,9 @@
  * @since        27/01/2021  
 -----------------------------------------------------------------------------------------------*/
 
-
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt')
-var helper = require("../../middleware/helper.js");
+const helper = require("../../middleware/helper.js");
 const logger = require("../../logger/logger.js");
 
 const UserSchema = mongoose.Schema({

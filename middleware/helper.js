@@ -6,9 +6,9 @@
 *  @since        27/01/2021  
 -----------------------------------------------------------------------------------------------*/
 
-var jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 const logger = require("../../logger/logger");
-var nodemailer = require("nodemailer");
+const nodemailer = require("nodemailer");
 require("dotenv").config();
 const ejs = require("ejs");
 
@@ -37,9 +37,9 @@ class Helper {
      */
     verifyToken = (req, res, next) => {
         try {
-            var token = req.headers.authorization.split(" ")[1];
+            let token = req.headers.authorization.split(" ")[1];
             console.log(token);
-            var decode = jwt.verify(token, process.env.SECRET_KEY);
+            let decode = jwt.verify(token, process.env.SECRET_KEY);
             console.log(decode)
             req.userData = decode;
             console.log(decode)
@@ -59,7 +59,7 @@ class Helper {
      * @param {*} callback 
      */
     emailSender = (userInfo, callback) => {
-        var transporter = nodemailer.createTransport({
+        let transporter = nodemailer.createTransport({
             service: 'gmail',
             PORT: process.env.PORT,
             secure: true,
@@ -72,13 +72,13 @@ class Helper {
         ejs.renderFile(
             "app/view/forgotPassword.ejs", { link: process.env.URL + "/resetPassword/" + userInfo.token },
             (error, htmldata) => {
-                var mailOptions = {
+                let mailOptions = {
                     from: process.env.EMAIL_USER,
                     to: process.env.EMAIL_RECEIVER,
                     subject: "Reset Password",
                     html: htmldata,
                 };
-                transporter.sendMail(mailOptions, function(error, data) {
+                transporter.sendMail(mailOptions, (error, data) => {
                     if (error) {
                         logger.info(error);
                         console.log("mail not sent: " + error.message);
