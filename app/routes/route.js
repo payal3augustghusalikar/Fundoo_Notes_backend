@@ -11,6 +11,7 @@ var helper = require("../../middleware/helper.js");
 module.exports = (app) => {
 
     const user = require('../controllers/user.js');
+    const notes = require('../controllers/note.js');
 
     // register a new user
     app.post('/register', user.register);
@@ -23,4 +24,20 @@ module.exports = (app) => {
 
     // Reset password
     app.put('/resetpassword', helper.verifyToken, user.resetPassword)
+
+
+    // Create a new note	
+    app.post('/notes', notes.create);
+
+    // Retrieve all notes	
+    app.get('/notes', notes.findAll);
+
+    // Retrieve a single note with noteId	
+    app.get('/notes/:noteId', notes.findOne);
+
+    // Update a note with noteId	
+    app.put('/notes/:noteId', notes.update);
+
+    // Delete a note with noteId	
+    app.delete('/notes/:noteId', notes.delete);
 }

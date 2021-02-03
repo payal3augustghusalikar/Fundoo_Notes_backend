@@ -99,14 +99,6 @@ class userService {
         console.log("service token ", userInfo.token);
         userInfo.userId = userId
         console.log("id", userId)
-
-        // const newPassword = async function(next) {
-        //     if (this.isModified("password")) {
-        //         return this.newPassword = await bcrypt.hash(this.newPassword, 10);
-        //         //this.confirmPassword = undefined;
-        //     }
-        //     next();
-        // }
         console.log(newPassword)
         User.update(userInfo, (error, data) => {
             if (error)
