@@ -5,17 +5,18 @@
  * @author       Payal Ghusalikar <payal.ghusalikar9@gmail.com>
 *  @since         26/01/2021  
 -----------------------------------------------------------------------------------------------*/
+
 const userService = require("../services/user.js");
 const logger = require("../../logger/logger.js");
 nodemailer = require("nodemailer");
 let vallidator = require("../../middleware/vallidation.js");
+
 class userController {
     /**
      * @description register and save a new user
      * @param res is used to send the response
      */
     register = (req, res) => {
-
         try {
             let confirmPassword = req.body.confirmPassword;
             let password = req.body.password;
@@ -58,51 +59,6 @@ class userController {
         }
     };
 
-    //     try {
-    //         let confirmPassword = req.body.confirmPassword;
-    //         let password = req.body.password;
-
-    //         return (password !== confirmPassword) ?
-    //             res.status(400).send({
-    //                 success: false,
-    //                 message: "Password not match",
-    //             }) :
-    //             (
-    //                 userInfo = {
-    //                     name: req.body.name,
-    //                     emailId: req.body.emailId,
-    //                     password: password,
-    //                 },
-    //                 validation = vallidator.validate(userInfo),
-    //                 validation.error ?
-    //                 res.status(400).send({
-    //                     success: false,
-    //                     message: `error ${validation.error.message}`
-    //                 }) :
-    //                 (
-    //                     userService.register(userInfo, (error, data) => {
-    //                         return error ?
-    //                             res.status(500).send({
-    //                                 success: false,
-    //                                 message: `error ${error.message}`,
-    //                             }) :
-    //                             res.status(200).send({
-    //                                 success: true,
-    //                                 message: "user added successfully !",
-    //                                 data: data,
-    //                             });
-    //                     })
-    //                 )
-    //             )
-
-    //     } catch (error) {
-    //         logger.error("Some error occurred while creating user");
-    //         return res.status(500).send({
-    //             success: false,
-    //             message: `error ${error.message}`
-    //         });
-    //     }
-    // };
 
     /**
      * @description Find user by id
@@ -114,32 +70,35 @@ class userController {
             let confirmPassword = req.body.confirmPassword;
             let password = req.body.password;
 
-            if (password !== confirmPassword) {
-                return res.status(400).send({
+            return (password !== confirmPassword) ?
+                res.status(400).send({
                     success: false,
                     message: "Password not match",
-                });
-            } else {
-                const userLoginInfo = {
-                    emailId: req.body.emailId,
-                    password: password,
-                };
-                userService.login(userLoginInfo, (error, data) => {
-                    if (data.length < 1) {
-                        logger.info("user not exist with emailid" + req.body.emailId);
-                        return res.status(404).send({
-                            success: false,
-                            status_code: 404,
-                            message: "Auth Failed",
-                        });
-                    }
-                    return res.status(200).send({
-                        success: true,
-                        message: "login successfull",
-                        token: data.token,
-                    });
-                });
-            }
+                }) :
+                (
+                    userLoginInfo = {
+                        emailId: req.body.emailId,
+                        password: password,
+                    },
+                    userService.login(userLoginInfo, (error, data) => {
+                        (
+                            (data.length < 1) ?
+                            (
+                                logger.info("user not exist with emailid" + req.body.emailId),
+                                res.status(404).send({
+                                    success: false,
+                                    status_code: 404,
+                                    message: "Auth Failed",
+                                })
+                            ) :
+                            res.status(200).send({
+                                success: true,
+                                message: "login successfull",
+                                token: data.token,
+                            })
+                        )
+                    })
+                )
         } catch (error) {
             logger.error("could not found user with emailid" + req.body.emailId);
             return res.send({
@@ -150,6 +109,11 @@ class userController {
         }
     };
 
+    /**
+     * @description takes email id and calls service class method
+     * @param {*} req 
+     * @param {*} res 
+     */
     forgotPassword = (req, res) => {
         try {
             const userInfo = {
@@ -185,11 +149,14 @@ class userController {
         }
     };
 
-
+    /**
+     * @description reset the user password
+     * @description takes token and user data in req and calls serivce class method
+     * @param {*} req 
+     * @param {*} res 
+     */
     resetPassword = (req, res) => {
         try {
-            //  console.log("controller token ", helper.token);
-
             let newPassword = req.body.newPassword;
             let confirmPassword = req.body.confirmPassword;
             let token = req.headers.authorization.split(" ")[1];
