@@ -1,3 +1,11 @@
+/**
+ * @module       services
+ * @file         user.js
+ * @description  holds the methods calling from controller
+ * @author       Payal Ghusalikar <payal.ghusalikar9@gmail.com>
+*  @since        27/01/2021  
+-----------------------------------------------------------------------------------------------*/
+
 const User = require('../models/user.js');
 var helper = require("../../middleware/helper.js");
 const bcrypt = require("bcrypt");

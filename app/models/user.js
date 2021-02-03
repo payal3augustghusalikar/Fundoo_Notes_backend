@@ -1,3 +1,12 @@
+/**
+ * @module       models
+ * @file         user.js
+ * @description  userModel class holds the databse related methods 
+ * @author       Payal Ghusalikar <payal.ghusalikar9@gmail.com>
+ * @since        27/01/2021  
+-----------------------------------------------------------------------------------------------*/
+
+
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt')
 var helper = require("../../middleware/helper.js");
@@ -8,13 +17,11 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: true
     },
-
     emailId: {
         type: String,
         unique: true,
         required: true
     },
-
     password: {
         type: String,
         required: true
@@ -31,7 +38,6 @@ UserSchema.pre("save", async function(next) {
     next();
 })
 
-
 const User = mongoose.model('User', UserSchema);
 
 class UserModel {
@@ -46,7 +52,6 @@ class UserModel {
             emailId: userInfo.emailId,
             password: userInfo.password
         });
-
         user.save((error, data) => {
             if (error)
                 return callback(error, null);

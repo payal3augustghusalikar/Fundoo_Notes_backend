@@ -1,3 +1,11 @@
+/**
+ * @module       app
+ * @file         server.js
+ * @description  connecting to server and rendering all routes
+ * @author       Payal Ghusalikar <payal.ghusalikar9@gmail.com>
+*  @since        27/01/2021  
+-----------------------------------------------------------------------
+
 const express = require('express');
 const bodyParser = require('body-parser');
 require('./config/mongoDB.js')();
