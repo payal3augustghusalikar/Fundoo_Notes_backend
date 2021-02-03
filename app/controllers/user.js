@@ -1,17 +1,21 @@
 /**
  * @module        middlewares
  * @file          user.js
- * @description  controllers takes request and send the response   
- * @author       Payal Ghusalikar <payal.ghusalikar9@gmail.com>
-*  @since         26/01/2021  
+ * @description   controllers takes request and send the response  
+ * @author        Payal Ghusalikar <payal.ghusalikar9@gmail.com>
+*  @since         27/01/2021  
 -----------------------------------------------------------------------------------------------*/
+
 const userService = require("../services/user.js");
 const logger = require("../../logger/logger.js");
 nodemailer = require("nodemailer");
 var vallidator = require("../../middleware/vallidation.js");
+
 class userController {
+
     /**
      * @description register and save a new user
+     * @param req is used to take user data from body
      * @param res is used to send the response
      */
     register = (req, res) => {
@@ -102,6 +106,12 @@ class userController {
         }
     };
 
+    /**
+     * @description takes request and sends responce 
+     * @description calls the service class method
+     * @param {*} req 
+     * @param {*} res 
+     */
     forgotPassword = (req, res) => {
         try {
             const userInfo = {
@@ -137,11 +147,15 @@ class userController {
         }
     };
 
-
+    /**
+     * @description takes request and sends responce 
+     * @description reset the password
+     * @description takes the token from headers
+     * @param {*} req 
+     * @param {*} res 
+     */
     resetPassword = (req, res) => {
         try {
-            //  console.log("controller token ", helper.token);
-
             var newPassword = req.body.newPassword;
             var confirmPassword = req.body.confirmPassword;
             var token = req.headers.authorization.split(" ")[1];

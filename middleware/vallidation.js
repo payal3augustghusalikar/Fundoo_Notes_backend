@@ -1,10 +1,10 @@
 /**
- * @module        middlewares
+ * @module        middleware
  * @file          vallidation.js
  * @description   vallidate the user input request
  * @requires      {@link https://www.npmjs.com/package/joi | joi}
  * @author        Payal Ghusalikar <payal.ghusalikar9@gmail.com>
-*  @since         26/01/2021
+*  @since         27/01/2021
 ----------------------------------------------------------------------------------------------------*/
 const Joi = require("joi");
 

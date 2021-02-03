@@ -1,3 +1,12 @@
+/**
+ * @module       models
+ * @file         user.js
+ * @description  userModel class holds the databse related methods 
+ * @author       Payal Ghusalikar <payal.ghusalikar9@gmail.com>
+ * @since        27/01/2021  
+-----------------------------------------------------------------------------------------------*/
+
+
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt')
 var helper = require("../../middleware/helper.js");
@@ -8,13 +17,11 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: true
     },
-
     emailId: {
         type: String,
         unique: true,
         required: true
     },
-
     password: {
         type: String,
         required: true
@@ -23,6 +30,7 @@ const UserSchema = mongoose.Schema({
     timestamps: true
 });
 
+// encrypted the password before saving to database
 UserSchema.pre("save", async function(next) {
     if (this.isModified("password")) {
         this.password = await bcrypt.hash(this.password, 10);
@@ -31,14 +39,14 @@ UserSchema.pre("save", async function(next) {
     next();
 })
 
-
 const User = mongoose.model('User', UserSchema);
 
 class UserModel {
 
     /**
+     * @description save the user to database 
      * @param {*} userInfo 
-     * @param {*} callback 
+     * @param {*} callback is for service class
      */
     save = (userInfo, callback) => {
         const user = new User({
@@ -46,7 +54,6 @@ class UserModel {
             emailId: userInfo.emailId,
             password: userInfo.password
         });
-
         user.save((error, data) => {
             if (error)
                 return callback(error, null);
@@ -55,6 +62,11 @@ class UserModel {
         });
     }
 
+    /**
+     * @description find the user
+     * @param {*} userLoginData 
+     * @param {*} callback 
+     */
     find = (userLoginData, callback) => {
         User.find(userLoginData, (error, data) => {
             if (error)
@@ -64,6 +76,11 @@ class UserModel {
         });
     }
 
+    /**
+     * @description find the one user in database
+     * @param {*} userInfo 
+     * @param {*} callback is for service class
+     */
     findOne = (userInfo, callback) => {
         User.findOne(userInfo, (error, data) => {
             if (error) {
@@ -78,6 +95,11 @@ class UserModel {
         })
     }
 
+    /**
+     * @description takes th userInfo and update the user
+     * @param {*} userInfo 
+     * @param {*} callback 
+     */
     update = (userInfo, callback) => {
         User.findByIdAndUpdate(userInfo.userId, { password: userInfo.newPassword }, { new: true }, (error, data) => {
             if (error)
