@@ -15,6 +15,7 @@ class userController {
      * @param res is used to send the response
      */
     register = (req, res) => {
+
         try {
             let confirmPassword = req.body.confirmPassword;
             let password = req.body.password;
@@ -56,6 +57,53 @@ class userController {
             });
         }
     };
+
+    //     try {
+    //         let confirmPassword = req.body.confirmPassword;
+    //         let password = req.body.password;
+
+    //         return (password !== confirmPassword) ?
+    //             res.status(400).send({
+    //                 success: false,
+    //                 message: "Password not match",
+    //             }) :
+    //             (
+    //                 userInfo = {
+    //                     name: req.body.name,
+    //                     emailId: req.body.emailId,
+    //                     password: password,
+    //                 },
+    //                 validation = vallidator.validate(userInfo),
+    //                 validation.error ?
+    //                 res.status(400).send({
+    //                     success: false,
+    //                     message: `error ${validation.error.message}`
+    //                 }) :
+    //                 (
+    //                     userService.register(userInfo, (error, data) => {
+    //                         return error ?
+    //                             res.status(500).send({
+    //                                 success: false,
+    //                                 message: `error ${error.message}`,
+    //                             }) :
+    //                             res.status(200).send({
+    //                                 success: true,
+    //                                 message: "user added successfully !",
+    //                                 data: data,
+    //                             });
+    //                     })
+    //                 )
+    //             )
+
+    //     } catch (error) {
+    //         logger.error("Some error occurred while creating user");
+    //         return res.status(500).send({
+    //             success: false,
+    //             message: `error ${error.message}`
+    //         });
+    //     }
+    // };
+
     /**
      * @description Find user by id
      * @method login is service class method
@@ -192,8 +240,5 @@ class userController {
             });
         }
     }
-
-
-
 }
 module.exports = new userController();
