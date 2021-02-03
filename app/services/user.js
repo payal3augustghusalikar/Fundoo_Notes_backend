@@ -7,10 +7,10 @@
 -----------------------------------------------------------------------------------------------*/
 
 const User = require('../models/user.js');
-var helper = require("../../middleware/helper.js");
+const helper = require("../../middleware/helper.js");
 const bcrypt = require("bcrypt");
 const logger = require('../../../logger/logger.js');
-var jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 
 class userService {
 
@@ -93,8 +93,8 @@ class userService {
      * @param {*} callback 
      */
     resetPassword = (userInfo, callback) => {
-        var decode = jwt.verify(userInfo.token, process.env.SECRET_KEY);
-        var userId = decode.id
+        let decode = jwt.verify(userInfo.token, process.env.SECRET_KEY);
+        let userId = decode.id
         console.log(userId)
         console.log("service token ", userInfo.token);
         userInfo.userId = userId
