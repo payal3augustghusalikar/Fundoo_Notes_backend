@@ -22,7 +22,7 @@
         "application/json"
     ],
     "paths": {
-        "/FundooNotes": {
+        "/notes/": {
             "get": {
                 "tags": [
                     "FundooNotes"
@@ -69,7 +69,7 @@
                 }
             }
         },
-        "/FundooNotes/{id}": {
+        "/notes/{id}": {
             "parameters": [{
                 "name": "id",
                 "in": "path",
@@ -133,6 +133,50 @@
                     }
                 }
             }
+        },
+
+
+        "/register/": {
+            "post": {
+                "tags": [
+                    "FundooNotes"
+                ],
+                "description": "create a new user",
+                "summary": "create a user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [{
+                    "name": " User",
+                    "in": "body",
+                    "type": "string",
+                    "required": true
+                }],
+                "responses": {
+                    "200": {
+                        "description": "user created successfully"
+
+                    },
+                    "400": {
+                        "description": "user information cannot be empty"
+                    }
+                }
+            }
+        },
+
+        "definations": {
+            "id": {
+                "properties": {
+                    "void": {
+                        "type": "string"
+                    }
+                }
+            }
+
         }
     }
+
 }
