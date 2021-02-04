@@ -167,16 +167,28 @@
             }
         },
 
-        "definations": {
-            "id": {
-                "properties": {
-                    "void": {
-                        "type": "string"
+        "/login/": {
+            "parameters": [{
+                "name": " User",
+                "in": "body",
+                "type": "string",
+                "required": true
+            }],
+            "post": {
+                "tags": [
+                    "FundooNotes"
+                ],
+                "summary": "Get single user",
+                "responses": {
+                    "200": {
+                        "description": "user login successfully"
                     }
                 }
             }
-
         }
+
     }
+
+
 
 }
