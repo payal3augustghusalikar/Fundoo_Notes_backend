@@ -10,74 +10,96 @@ let chai = require("chai");
 let chaiHttp = require("chai-http");
 let server = require("../server.js");
 chai.use(chaiHttp);
+
+var expect = chai.expect;
+//var expect = require('chai').expect;
+
 //assertion style
 chai.should();
-const should = require('should');
-
 
 const greet = require("./notes.json");
+(chai = require("chai")), (request = require("supertest"));
+var assert = require("assert");
 
-
-chai = require('chai'),
-    request = require('supertest');
-var assert = require('assert');
-
-
-describe('Basic Mocha String Test', function() {
-    it('should return number of characters is 5', function() {
-        assert.equal("Hello".length, 5);
+describe("Basic Mocha String Test", function() {
+    it("should return number of characters is 5", function() {
+        assert("Hello".length, 5);
     });
 });
 
-
-
 //describe('POST /login', function() {
-describe('POST /register', function() {
-
-    it('should add a SINGLE blob on /register POST', function(done) {
-        chai.request(process.env.URL)
-            .post('/register')
-            .send({ 'name': 'Java', 'emailId': 'payal@gmail.com', 'password': 'ppppp', 'confirmPassword': 'ppppp' })
+describe.only("POST /register", function() {
+    it("givenUser_whenGiven_properData_shouldSaveUser", function(done) {
+        chai
+            .request(server)
+            .post("/register")
+            .send({
+                name: "Javascript",
+                emailId: "payal@gmail.com",
+                password: "ppppp",
+                confirmPassword: "ppppp",
+            })
             .end(function(err, res) {
-                // res.should.have.status(400);
+                res.should.have.status(200);
+                //res.should.have.property('status', 200);
                 res.should.be.json;
-                //  res.body.should.be.a('object');
-                //  res.body.should.have.property('SUCCESS');
-                res.body.SUCCESS.should.be.a('object');
-                res.body.SUCCESS.should.have.property('name');
-                res.body.SUCCESS.should.have.property('emailId');
-                res.body.SUCCESS.should.have.property('_id');
-                res.body.SUCCESS.name.should.equal('Java');
-                res.body.SUCCESS.emailId.should.equal('Script');
+                res.body.should.be.a("object");
+                res.body.should.have.property("SUCCESS");
+                res.body.SUCCESS.should.be.a("object");
+                res.body.SUCCESS.should.have.property("name");
+                res.body.SUCCESS.should.have.property("emailId");
+                res.body.SUCCESS.should.have.property("_id");
+                res.body.SUCCESS.name.should.equal("Javascript");
+                res.body.SUCCESS.emailId.should.equal("payal@gmail.com");
                 done();
             });
     });
 
-
-    it('responds with json', function(done) {
+    it("givenUser_whenGiven_duplicateData_shouldNotSaveUser", function(done) {
+        var profile = {
+            name: "Javascript",
+            emailId: "payal@gmail.com",
+            password: "ppppp",
+            confirmPassword: "ppppp",
+        };
         request(server)
-            .post('/login')
-            .send({ email: 'user@email.com', password: 'yourpassword', confirmPassword: 'yourpassword' }
-                .set('Accept', 'application/json')
-                .expect('Content-Type', /json/)
+            .post('/register')
+            .send(profile)
+            .end(function(err, res) {
+                if (err) {
+                    throw err;
+                }
+                res.should.have.property('status', 400);
+                done();
+            });
+    });
+})
+
+describe.only("POST /login", function() {
+    it("givenUser_whenGiven_properData_shouldResponds_withJson", function(done) {
+        request(server)
+            .post("/login")
+            .send({
+                    email: "abc@gmail.com",
+                    password: "hellAll2uuu",
+                    confirmPassword: "hellAll2uuu",
+                }
+                .set("Accept", "application/json")
+                .expect("Content-Type", /json/)
                 .expect(200)
                 .end(function(err, res) {
                     if (err) return done(err);
                     done();
                 })
-            )
+            );
     });
-})
-
-
+});
 
 describe("notes API", () => {
-
     /**
      * @description Test the GET API
      */
     describe("GET /notes", () => {
-
         // test the GET API when points are proper
         it("givennotes_WhenGivenProperEndPoints_ShouldReturn_object", (done) => {
             console.log("getting all data .");
@@ -107,10 +129,9 @@ describe("notes API", () => {
      * @description Test the GET API using Id
      */
     describe("/GET /notes/noteId", () => {
-
         // test the GET API when provided proper note Id
         it("givennotes_WhenGivenProperNoteId_ShouldGive_object", (done) => {
-            const noteId = greet.notes.GetNoteById.noteId
+            const noteId = greet.notes.GetNoteById.noteId;
             chai
                 .request(server)
                 .get("/notes/" + noteId)
@@ -138,12 +159,10 @@ describe("notes API", () => {
         });
     });
 
-
     /**
-     * @description Test the POST API 
+     * @description Test the POST API
      */
     describe("POST /notes", () => {
-
         // test the POST API when provided proper data
         it("givennotes_WhenGivenPropertitleAnddescription_ShouldPost_note", (done) => {
             const note = greet.notes.noteToPost;
@@ -176,7 +195,6 @@ describe("notes API", () => {
                 });
         });
     });
-
 
     /**
      * @description Test the PUT API using Id
@@ -217,26 +235,23 @@ describe("notes API", () => {
     });
 });
 
-
-
-
-// describe('Local signup', function() {
-//     it('should return error trying to save duplicate username', function(done) {
-//       var profile = {
-//         email: 'abcd@abcd.com',
-//         password: 'Testing1234',
-//         confirmPassword: 'Testing1234',
-//         firstName: 'Abc',
-//         lastName: 'Defg'
-//       };
-//       request(url)
-//           .post('/user/signup')
-//           .send(profile)
-//           .end(function(err, res) {
-//             if (err) {
-//               throw err;
-//             }
-//             res.should.have.status(400);
-//             done();
-//           });
-//     });
+describe("Local login", function() {
+    it("should save user", function(done) {
+        var profile = {
+            name: "Abc",
+            email: "abcd@abcd.com",
+            password: "Testing1234",
+            confirmPassword: "Testing1234",
+        };
+        request(process.env.URL)
+            .post("/register")
+            .send(profile)
+            .end(function(err, res) {
+                if (err) {
+                    throw err;
+                }
+                res.status.should.be.equal(200);
+                done();
+            });
+    });
+});

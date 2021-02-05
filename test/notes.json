@@ -20,16 +20,6 @@
             "title": "Ccompany",
             "description": "CHello"
         },
-        "note5": {
-            "noteId": 5,
-            "title": "Dcompany",
-            "description": "DHello"
-        },
-        "note7": {
-            "noteId": 7,
-            "title": "Ecompany",
-            "description": "EHello"
-        },
         "noteWithouttitle": {
             "noteId": 6,
             "description": "DHello"
