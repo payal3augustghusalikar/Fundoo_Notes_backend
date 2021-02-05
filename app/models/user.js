@@ -39,7 +39,6 @@ UserSchema.pre("save", async function(next) {
 })
 
 
-
 const User = mongoose.model('User', UserSchema);
 
 class UserModel {
@@ -56,10 +55,9 @@ class UserModel {
             password: userInfo.password
         });
         user.save((error, data) => {
-            if (error)
-                return callback(error, null);
-            else
-                return callback(null, data);
+            return (error) ?
+                callback(error, null) :
+                callback(null, data);
         });
     }
 
@@ -70,10 +68,9 @@ class UserModel {
      */
     find = (userLoginData, callback) => {
         User.find(userLoginData, (error, data) => {
-            if (error)
-                return callback(error, null);
-            else
-                return callback(null, data);
+            return (error) ?
+                callback(error, null) :
+                callback(null, data);
         });
     }
 
@@ -103,10 +100,9 @@ class UserModel {
      */
     update = (userInfo, callback) => {
         User.findByIdAndUpdate(userInfo.userId, { password: userInfo.newPassword }, { new: true }, (error, data) => {
-            if (error)
-                return callback(error, null);
-            else
-                return callback(null, data);
+            return (error) ?
+                callback(error, null) :
+                callback(null, data);
         });
     }
 }

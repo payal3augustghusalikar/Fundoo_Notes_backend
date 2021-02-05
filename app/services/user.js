@@ -21,9 +21,9 @@ class userService {
      */
     register = (userInfo, callback) => {
         User.save(userInfo, (error, data) => {
-            if (error)
-                return callback(error, null);
-            return callback(null, data);
+            return (error) ?
+                callback(error, null) :
+                callback(null, data);
         })
     }
 
@@ -93,18 +93,17 @@ class userService {
      * @param {*} callback 
      */
     resetPassword = (userInfo, callback) => {
-        var decode = jwt.verify(userInfo.token, process.env.SECRET_KEY);
-        var userId = decode.id
+        let decode = jwt.verify(userInfo.token, process.env.SECRET_KEY);
+        let userId = decode.id
         console.log("user Id", userId)
         console.log("service token ", userInfo.token);
         userInfo.userId = userId
         console.log("id", userId)
         console.log(newPassword)
         User.update(userInfo, (error, data) => {
-            if (error)
-                return callback(error, null);
-            else
-                return callback(null, data);
+            return (error) ?
+                callback(error, null) :
+                callback(null, data);
         });
     }
 }

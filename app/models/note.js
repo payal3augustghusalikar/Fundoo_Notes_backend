@@ -21,29 +21,26 @@ class NoteModel {
             description: noteInfo.description || "Empty description"
         });
 
-        note.save({}, (error, data) => {
-            if (error)
-                return callback(error, null);
-            else
-                return callback(null, data);
+        note.save((error, data) => {
+            return (error) ?
+                callback(error, null) :
+                callback(null, data);
         });
     }
 
     findAll = (callback) => {
         Note.find((error, data) => {
-            if (error)
-                return callback(error, null);
-            else
-                return callback(null, data);
+            return (error) ?
+                callback(error, null) :
+                callback(null, data);
         });
     }
 
     findOne = (noteID, callback) => {
         Note.findById(noteID, (error, data) => {
-            if (error)
-                return callback(error, null);
-            else
-                return callback(null, data);
+            return (error) ?
+                callback(error, null) :
+                callback(null, data);
         });
     }
 
@@ -52,19 +49,17 @@ class NoteModel {
             title: noteInfo.title,
             description: noteInfo.description || "Empty description"
         }, { new: true }, (error, data) => {
-            if (error)
-                return callback(error, null);
-            else
-                return callback(null, data);
+            return (error) ?
+                callback(error, null) :
+                callback(null, data);
         });
     }
 
     deleteById = (noteID, callback) => {
         Note.findByIdAndRemove(noteID, (error, data) => {
-            if (error)
-                return callback(error, null);
-            else
-                return callback(null, data);
+            return (error) ?
+                callback(error, null) :
+                callback(null, data);
         });
     }
 }

@@ -20,7 +20,7 @@ module.exports = (app) => {
     app.post('/login', user.login);
 
     //forget password
-    app.post('/forgotpassword', helper.verifyToken, user.forgotPassword);
+    app.post('/forgotpassword', user.forgotPassword);
 
     // Reset password
     app.put('/resetpassword', helper.verifyToken, user.resetPassword)

@@ -1,0 +1,48 @@
+{
+    "notes": {
+        "getNoteById": {
+            "noteId": 1,
+            "title": "Acompany",
+            "description": "AHello"
+        },
+        "noteToUpdate": {
+            "noteId": 2,
+            "title": "payalllchanged",
+            "description": "Worlddd"
+        },
+        "noteToDelete": {
+            "noteId": 3,
+            "title": "Ccompany",
+            "description": "CHello"
+        },
+        "noteToPost": {
+            "noteId": 9,
+            "title": "Ccompany",
+            "description": "CHello"
+        },
+        "note5": {
+            "noteId": 5,
+            "title": "Dcompany",
+            "description": "DHello"
+        },
+        "note7": {
+            "noteId": 7,
+            "title": "Ecompany",
+            "description": "EHello"
+        },
+        "noteWithouttitle": {
+            "noteId": 6,
+            "description": "DHello"
+        },
+
+        "noteWithImpropertitle": {
+            "noteId": 7,
+            "title": "co",
+            "description": "EHello"
+        },
+        "noteWithoutdescription": {
+            "noteId": 8,
+            "description": "DHello"
+        }
+    }
+}

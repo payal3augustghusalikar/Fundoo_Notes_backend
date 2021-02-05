@@ -6,17 +6,14 @@ class NoteService {
      * @method create is used to save the Note
      * @param callback is the callback for controller
      */
-
-
     create = (noteInfo, callback) => {
         // create a Note
         Note.create(noteInfo, (error, data) => {
-            if (error)
-                return callback(error, null);
-            return callback(null, data);
+            return (error) ?
+                callback(error, null) :
+                callback(null, data);
         })
     }
-
 
     /**
      * @description Find all the Notes and return response to controller
@@ -25,10 +22,9 @@ class NoteService {
      */
     findAll = (callback) => {
         Note.findAll((error, data) => {
-            if (error)
-                return callback(error, null);
-            else
-                return callback(null, data);
+            return (error) ?
+                callback(error, null) :
+                callback(null, data);
         });
     }
 
@@ -39,10 +35,9 @@ class NoteService {
      */
     findOne = (noteID, callback) => {
         Note.findOne(noteID, (error, data) => {
-            if (error)
-                return callback(error, null);
-            else
-                return callback(null, data);
+            return (error) ?
+                callback(error, null) :
+                callback(null, data);
         });
     }
 
@@ -53,13 +48,11 @@ class NoteService {
      */
     update = (noteInfo, callback) => {
         Note.update(noteInfo, (error, data) => {
-            if (error)
-                return callback(error, null);
-            else
-                return callback(null, data);
+            return (error) ?
+                callback(error, null) :
+                callback(null, data);
         });
     }
-
 
     /**
      * @description Delete Note by id and return response to controller
@@ -68,10 +61,9 @@ class NoteService {
      */
     delete = (noteID, callback) => {
         Note.deleteById(noteID, (error, data) => {
-            if (error)
-                return callback(error, null);
-            else
-                return callback(null, data);
+            return (error) ?
+                callback(error, null) :
+                callback(null, data);
         });
     }
 }

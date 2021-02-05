@@ -1,8 +1,8 @@
 /**
  * @module        middlewares
  * @file          user.js
- * @description  controllers takes request and send the response   
- * @author       Payal Ghusalikar <payal.ghusalikar9@gmail.com>
+ * @description   controllers takes request and send the response   
+ * @author        Payal Ghusalikar <payal.ghusalikar9@gmail.com>
 *  @since         26/01/2021  
 -----------------------------------------------------------------------------------------------*/
 
@@ -166,16 +166,10 @@ class userController {
                 })
             } else {
                 const resetPasswordData = {
-                        newPassword: newPassword,
-                        confirmPassword: confirmPassword,
-                        token: token
-                    }
-                    //     validationResult = vallidator.validate(resetPasswordData.newPassword)
-                    // return validationResult.error ?
-                    //     res.status(400).send({
-                    //         success: false,
-                    //         message: validation.error.message,
-                    //     }) :
+                    newPassword: newPassword,
+                    confirmPassword: confirmPassword,
+                    token: token
+                }
                 userService.resetPassword(resetPasswordData, (error, data) => {
                     if (error) {
                         logger.error(error.message)
@@ -188,7 +182,6 @@ class userController {
                         return res.status(500).send({
                             success: false,
                             message: "Authorization failed  "
-                                //+ error.message,
                         });
                     } else {
                         logger.info("Password has been changed !")

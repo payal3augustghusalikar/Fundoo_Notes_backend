@@ -135,7 +135,6 @@
             }
         },
 
-
         "/register/": {
             "post": {
                 "tags": [
@@ -185,10 +184,62 @@
                     }
                 }
             }
+        },
+        "/forgotpassword/": {
+            "parameters": [{
+                "name": " User",
+                "in": "body",
+                "type": "string",
+                "required": true
+            }],
+            "post": {
+                "tags": [
+                    "FundooNotes"
+                ],
+                "summary": "Get reset password mail",
+                "responses": {
+                    "200": {
+                        "description": "user login successfully"
+                    }
+                }
+            }
+        },
+        "/resetpassword/{id}": {
+            "parameters": [{
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "description": "find Note by ID",
+                "type": "string"
+            }],
+            "put": {
+                "tags": [
+                    "FundooNotes"
+                ],
+                "summary": "Update an existing Note",
+                "description": "find by ID and update",
+                "operationId": "updateNote",
+                "parameters": [{
+                    "name": " Note ",
+                    "in": "body",
+                    "type": "string",
+                    "required": true
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Note updated successfully"
+                    },
+                    "404": {
+                        "description": "Note not found "
+                    },
+                    "500": {
+                        "description": "could not find Notes"
+                    }
+                }
+            }
+
         }
-
     }
-
 
 
 }
