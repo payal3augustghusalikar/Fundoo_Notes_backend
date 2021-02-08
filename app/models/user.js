@@ -38,7 +38,6 @@ UserSchema.pre("save", async function(next) {
     next();
 })
 
-
 const User = mongoose.model('User', UserSchema);
 
 class UserModel {
@@ -54,11 +53,12 @@ class UserModel {
             emailId: userInfo.emailId,
             password: userInfo.password
         });
-        user.save((error, data) => {
-            return (error) ?
-                callback(error, null) :
-                callback(null, data);
-        });
+        // user.save((error, data) => {
+        user.save(callback)
+            //     return (error) ?
+            //         callback(error, null) :
+            //         callback(null, data);
+            // });
     }
 
     /**
@@ -95,11 +95,12 @@ class UserModel {
      * @param {*} callback 
      */
     update = (userInfo, callback) => {
-        User.findByIdAndUpdate(userInfo.userId, { password: userInfo.newPassword }, { new: true }, (error, data) => {
-            return (error) ?
-                callback(error, null) :
-                callback(null, data);
-        });
+        User.findByIdAndUpdate(userInfo.userId, { password: userInfo.newPassword }, { new: true }, callback)
+            // => {
+            //     return (error) ?
+            //         callback(error, null) :
+            //         callback(null, data);
+            // });
     }
 }
 

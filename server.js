@@ -18,7 +18,7 @@ const swaggerDocument = require('./lib/swagger.json')
 
 // create express app
 const app = express();
-app.use(cors())
+//app.use(cors())
 
 // parse requests of content-type - application/x-www-form-urlencoded - extended is a key
 app.use(bodyParser.urlencoded({ extended: true }))
