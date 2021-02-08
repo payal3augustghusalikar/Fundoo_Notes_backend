@@ -67,11 +67,7 @@ class UserModel {
      * @param {*} callback 
      */
     find = (userLoginData, callback) => {
-        User.find(userLoginData, (error, data) => {
-            return (error) ?
-                callback(error, null) :
-                callback(null, data);
-        });
+        User.find(userLoginData, callback);
     }
 
     /**

@@ -3,97 +3,180 @@
  * @file         test.js
  * @description  test the all routes for crud operation
  * @author       Payal Ghusalikar <payal.ghusalikar9@gmail.com>
-*  @since        2/01/2021  
+*  @date       2/01/2021  
 -----------------------------------------------------------------------------------------------*/
 
-let chai = require("chai");
-let chaiHttp = require("chai-http");
-let server = require("../server.js");
+
+let chai = require('chai');
+let chaiHttp = require('chai-http');
+let server = require('../server');
 chai.use(chaiHttp);
-
-var expect = chai.expect;
-//var expect = require('chai').expect;
-
-//assertion style
-chai.should();
-
+request = require('supertest');
 const greet = require("./notes.json");
-(chai = require("chai")), (request = require("supertest"));
-var assert = require("assert");
 
-describe("Basic Mocha String Test", function() {
-    it("should return number of characters is 5", function() {
-        assert("Hello".length, 5);
-    });
-});
 
-//describe('POST /login', function() {
-describe.only("POST /register", function() {
-    it("givenUser_whenGiven_properData_shouldSaveUser", function(done) {
-        chai
-            .request(server)
-            .post("/register")
-            .send({
-                name: "Javascript",
-                emailId: "payal@gmail.com",
-                password: "ppppp",
-                confirmPassword: "ppppp",
-            })
-            .end(function(err, res) {
-                res.should.have.status(200);
-                //res.should.have.property('status', 200);
-                res.should.be.json;
-                res.body.should.be.a("object");
-                res.body.should.have.property("SUCCESS");
-                res.body.SUCCESS.should.be.a("object");
-                res.body.SUCCESS.should.have.property("name");
-                res.body.SUCCESS.should.have.property("emailId");
-                res.body.SUCCESS.should.have.property("_id");
-                res.body.SUCCESS.name.should.equal("Javascript");
-                res.body.SUCCESS.emailId.should.equal("payal@gmail.com");
-                done();
-            });
-    });
-
-    it("givenUser_whenGiven_duplicateData_shouldNotSaveUser", function(done) {
-        var profile = {
-            name: "Javascript",
-            emailId: "payal@gmail.com",
-            password: "ppppp",
-            confirmPassword: "ppppp",
-        };
-        request(server)
+describe('register', () => {
+    it('givenUser_whenGiven_properData_shouldSaveUser', (done) => {
+        let userInfo = {
+            name: 'Payal',
+            emailId: 'ghusalikarapayal1@gmail.com',
+            password: 'Ghjjjjj'
+        }
+        chai.request(server)
             .post('/register')
-            .send(profile)
-            .end(function(err, res) {
-                if (err) {
-                    throw err;
-                }
-                res.should.have.property('status', 400);
-                done();
-            });
-    });
+            .send(userInfo)
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.a('object');
+                done()
+            })
+    })
+
+    it('givenUser_whenGiven_duplicateData_shouldNotSaveUser', (done) => {
+        let userInfo = {
+            name: 'Payal',
+            emailId: 'ghusalikarapayal1@gmail.com',
+            password: 'Ghjjjjj'
+        }
+        chai.request(server)
+            .post('/register')
+            .send(userInfo)
+
+        .end((err, res) => {
+            res.should.have.status(400);
+            res.body.should.be.a('object');
+            done()
+        })
+    })
+    it('givenUser_whenGiven_improperData_shouldNotSaveUser', (done) => {
+        let userInfo = {
+            name: '',
+            emailId: 'ghusalikarapayal1@gmail.com',
+            password: 'Ghjjjjj'
+        }
+        chai.request(server)
+            .post('/register')
+            .send(userInfo)
+            .end((err, res) => {
+                res.should.have.status(400);
+                res.body.should.be.a('object');
+                done()
+            })
+    })
 })
 
-describe.only("POST /login", function() {
-    it("givenUser_whenGiven_properData_shouldResponds_withJson", function(done) {
-        request(server)
-            .post("/login")
-            .send({
-                    email: "abc@gmail.com",
-                    password: "hellAll2uuu",
-                    confirmPassword: "hellAll2uuu",
-                }
-                .set("Accept", "application/json")
-                .expect("Content-Type", /json/)
-                .expect(200)
-                .end(function(err, res) {
-                    if (err) return done(err);
-                    done();
-                })
-            );
-    });
-});
+
+describe('Login', () => {
+    it('givenUser_whenGiven_properData_shouldResponds_withJson', (done) => {
+        let userInfo = {
+            emailId: 'ghusalikarapayal1@gmail.com',
+            password: 'Ghjjjjj'
+        }
+        chai.request(server)
+            .post('/login')
+            .send(userInfo)
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.a('object');
+                done()
+            })
+    })
+
+    it('givenUser_whenGiven_improperData_shouldResponds_withJson', (done) => {
+        let userInfo = {
+            emailId: 'ghusalikarapayal1@gmail.com',
+            password: ''
+        }
+        chai.request(server)
+            .post('/login')
+            .send(userInfo)
+            .end((err, res) => {
+                res.should.have.status(401);
+                res.body.should.be.a('object');
+                done()
+            })
+    })
+})
+
+describe('ForgotPassword', () => {
+    it('givenUser_whenGiven_improperData_shouldResponds_withLink', (done) => {
+        let userInfo = {
+            emailId: 'ghusalikarapayal1@gmail.com'
+        }
+        chai.request(server)
+            .post('/forgotpassword')
+            .send(userInfo)
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.a('object');
+                done()
+            })
+    })
+
+    it('givenUser_whenGiven_improperData_shouldNotResponds_withLink', (done) => {
+        let userInfo = {
+            emailId: 'ghusalikar@gmail.com'
+        }
+        chai.request(server)
+            .post('/forgotpassword')
+            .send(userInfo)
+            .end((err, res) => {
+                res.should.have.status(401);
+                res.body.should.be.a('object');
+                done()
+            })
+    })
+})
+
+describe('Resetpassword', () => {
+    it('givenUser_whenGiven_improperData_shouldResetPassword', (done) => {
+        let userInfo = {
+            newPassword: 'Thanakfhfgfjg',
+        }
+        let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbElkIjoiZ2h1c2FsaWthcnBheWFsQGdtYWlsLmNvbSIsImlkIjoiNjAxOGRiOWM3MzU1YTkyM2I4OGFmM2UwIiwiaWF0IjoxNjEyMzgyMzg3LCJleHAiOjE2MTI0Njg3ODd9.6I8fMEnAS0_PpSMl5ixe0zPWhh0Vpx9QaNFQYShJLjA'
+        chai.request(server)
+            .put('/reset-password')
+            .send(userInfo)
+            .set('token', token)
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.a('object');
+                done()
+            })
+    })
+    it('givenUser_whenGiven_improperData_shouldResetPassword', (done) => {
+        let userInfo = {
+            newPassword: 'as',
+        }
+        let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbElkIjoiZ2h1c2FsaWthcnBheWFsQGdtYWlsLmNvbSIsImlkIjoiNjAxOGRiOWM3MzU1YTkyM2I4OGFmM2UwIiwiaWF0IjoxNjEyMzgyMzg3LCJleHAiOjE2MTI0Njg3ODd9.6I8fMEnAS0_PpSMl5ixe0zPWhh0Vpx9QaNFQYShJLjA'
+        chai.request(server)
+            .put('/resetpassword')
+            .send(userInfo)
+            .set('token', token)
+            .end((err, res) => {
+                res.should.have.status(400);
+                res.body.should.be.a('object');
+                done()
+            })
+    })
+
+    it('givenUser_whenGiven_improperToken_shouldResetPassword', (done) => {
+        let userInfo = {
+            newPassword: 'aGHGHGYThgh',
+        }
+        let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbElkIjoiZ2h1c2FsaWthcnBheWFsQGdtYWlsLmNvbSIsImlkIjoiNjAxOGRiOWM3MzU1YTkyM2I4OGFmM2UwIiwiaWF0IjoxNjEyMzgyMzg3LCJleHAiOjE2MTI0Njg3ODd9.6I8fMEnAS0_PpSMl5ixe0zPWhh0Vpx9QaNFQYShJLjA'
+        chai.request(server)
+            .put('/resetpassword')
+            .send(userInfo)
+            .set('token', token)
+            .end((err, res) => {
+                res.should.have.status(400);
+                res.body.should.be.a('object');
+                done()
+            })
+    })
+})
+
 
 describe("notes API", () => {
     /**
@@ -138,9 +221,6 @@ describe("notes API", () => {
                 .end((err, response) => {
                     response.should.have.status(200);
                     response.body.should.be.a("object");
-                    response.body.should.have.property("noteId");
-                    response.body.should.have.property("title");
-                    response.body.should.have.property("description");
                     done();
                 });
         });
@@ -173,9 +253,6 @@ describe("notes API", () => {
                 .end((err, response) => {
                     response.should.have.status(201);
                     response.body.should.be.a("object");
-                    response.body.should.have.property("noteId").eq(9);
-                    response.body.should.have.property("title").eq("Ccompany");
-                    response.body.should.have.property("description").eq("CHello");
                     done();
                 });
         });
@@ -212,9 +289,6 @@ describe("notes API", () => {
                     res.should.have.status(200);
                     console.log("Response Body:", res.body);
                     res.body.should.be.a("Object");
-                    res.body.should.have.property(" noteId").eq(2);
-                    res.body.should.have.property("title").eq("payalllchanged");
-                    res.body.should.have.property("note").eq("Worlddd");
                     done();
                 });
         });
@@ -232,26 +306,5 @@ describe("notes API", () => {
                     done();
                 });
         });
-    });
-});
-
-describe("Local login", function() {
-    it("should save user", function(done) {
-        var profile = {
-            name: "Abc",
-            email: "abcd@abcd.com",
-            password: "Testing1234",
-            confirmPassword: "Testing1234",
-        };
-        request(process.env.URL)
-            .post("/register")
-            .send(profile)
-            .end(function(err, res) {
-                if (err) {
-                    throw err;
-                }
-                res.status.should.be.equal(200);
-                done();
-            });
     });
 });

@@ -9,7 +9,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 require('./config/mongoDB.js')();
-const cors = require('cors');
+
+/**
+ * @description require swagger-ui and swagger.json
+ */
+const swaggerUi = require('swagger-ui-express')
+const swaggerDocument = require('./lib/swagger.json')
 
 // create express app
 const app = express();
@@ -27,12 +32,6 @@ const logger = require('./logger/logger.js');
 app.get('/', (req, res) => {
     res.json({ "message": "Welcome to FundooNotes Application. " });
 });
-
-/**
- * @description require swagger-ui and swagger.json
- */
-const swaggerUi = require('swagger-ui-express')
-const swaggerDocument = require('./lib/swagger.json')
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
