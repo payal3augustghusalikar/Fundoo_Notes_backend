@@ -20,14 +20,8 @@ class userService {
      * @param callback is the callback for controller
      */
     register = (userInfo, callback) => {
-            User.save(userInfo, callback)
-        }
-        //     => {
-        //     return (error) ?
-        //         callback(error, null) :
-        //         callback(null, data);
-        // })
-        //}
+        User.save(userInfo, callback)
+    }
 
     /**
      * @description takes userInfo and calls model class method
@@ -103,10 +97,6 @@ class userService {
         console.log("id", userId)
         console.log(newPassword)
         User.update(userInfo, callback)
-            //     return (error) ?
-            //         callback(error, null) :
-            //         callback(null, data);
-            // });
     }
 }
 

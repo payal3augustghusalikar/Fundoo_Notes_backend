@@ -10,20 +10,32 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt')
 const helper = require("../../middleware/helper.js");
 const logger = require("../../logger/logger.js");
+let vallidator = require("../../middleware/vallidation.js");
 
 const UserSchema = mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        length: {
+            min: 3,
+            max: 36
+        },
+        test: /^[a-z0-9]+$/gi,
     },
     emailId: {
         type: String,
         unique: true,
-        required: true
+        required: true,
+        test: vallidator.emailIdPattern
     },
     password: {
         type: String,
-        required: true
+        required: true,
+        length: {
+            min: 6,
+            max: 15
+        },
+        test: vallidator.passwordPattern
     },
 }, {
     timestamps: true
@@ -53,12 +65,7 @@ class UserModel {
             emailId: userInfo.emailId,
             password: userInfo.password
         });
-        // user.save((error, data) => {
         user.save(callback)
-            //     return (error) ?
-            //         callback(error, null) :
-            //         callback(null, data);
-            // });
     }
 
     /**
@@ -96,11 +103,6 @@ class UserModel {
      */
     update = (userInfo, callback) => {
         User.findByIdAndUpdate(userInfo.userId, { password: userInfo.newPassword }, { new: true }, callback)
-            // => {
-            //     return (error) ?
-            //         callback(error, null) :
-            //         callback(null, data);
-            // });
     }
 }
 
