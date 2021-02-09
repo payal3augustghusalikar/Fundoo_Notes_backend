@@ -6,22 +6,17 @@
 *  @date       2/01/2021  
 -----------------------------------------------------------------------------------------------*/
 
-
 let chai = require('chai');
 let chaiHttp = require('chai-http');
 let server = require('../server');
 chai.use(chaiHttp);
 request = require('supertest');
 const greet = require("./notes.json");
-
+const userData = require("./notes.json");
 
 describe('register', () => {
     it('givenUser_whenGiven_properData_shouldSaveUser', (done) => {
-        let userInfo = {
-            name: 'Payal',
-            emailId: 'ghusalikarapayal1@gmail.com',
-            password: 'Ghjjjjj'
-        }
+        let userInfo = user.registerUserProperData;
         chai.request(server)
             .post('/register')
             .send(userInfo)
@@ -33,11 +28,7 @@ describe('register', () => {
     })
 
     it('givenUser_whenGiven_duplicateData_shouldNotSaveUser', (done) => {
-        let userInfo = {
-            name: 'Payal',
-            emailId: 'ghusalikarapayal1@gmail.com',
-            password: 'Ghjjjjj'
-        }
+        let userInfo = user.registerUserProperData;
         chai.request(server)
             .post('/register')
             .send(userInfo)
@@ -49,11 +40,7 @@ describe('register', () => {
         })
     })
     it('givenUser_whenGiven_improperData_shouldNotSaveUser', (done) => {
-        let userInfo = {
-            name: '',
-            emailId: 'ghusalikarapayal1@gmail.com',
-            password: 'Ghjjjjj'
-        }
+        let userInfo = user.userWithEmptyName;
         chai.request(server)
             .post('/register')
             .send(userInfo)
@@ -68,10 +55,7 @@ describe('register', () => {
 
 describe('Login', () => {
     it('givenUser_whenGiven_properData_shouldResponds_withJson', (done) => {
-        let userInfo = {
-            emailId: 'ghusalikarapayal1@gmail.com',
-            password: 'Ghjjjjj'
-        }
+        let userInfo = user.loginUserProperData;
         chai.request(server)
             .post('/login')
             .send(userInfo)
@@ -83,10 +67,7 @@ describe('Login', () => {
     })
 
     it('givenUser_whenGiven_improperData_shouldResponds_withJson', (done) => {
-        let userInfo = {
-            emailId: 'ghusalikarapayal1@gmail.com',
-            password: ''
-        }
+        let userInfo = user.loginUserImroperData;
         chai.request(server)
             .post('/login')
             .send(userInfo)
@@ -100,9 +81,7 @@ describe('Login', () => {
 
 describe('ForgotPassword', () => {
     it('givenUser_whenGiven_improperData_shouldResponds_withLink', (done) => {
-        let userInfo = {
-            emailId: 'ghusalikarapayal1@gmail.com'
-        }
+        let userInfo = user.forgotPasswordProperData;
         chai.request(server)
             .post('/forgotpassword')
             .send(userInfo)
@@ -114,9 +93,7 @@ describe('ForgotPassword', () => {
     })
 
     it('givenUser_whenGiven_improperData_shouldNotResponds_withLink', (done) => {
-        let userInfo = {
-            emailId: 'ghusalikar@gmail.com'
-        }
+        let userInfo = user.forgotPasswordImproperData;
         chai.request(server)
             .post('/forgotpassword')
             .send(userInfo)
@@ -129,11 +106,9 @@ describe('ForgotPassword', () => {
 })
 
 describe('Resetpassword', () => {
-    it('givenUser_whenGiven_improperData_shouldResetPassword', (done) => {
-        let userInfo = {
-            newPassword: 'Thanakfhfgfjg',
-        }
-        let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbElkIjoiZ2h1c2FsaWthcnBheWFsQGdtYWlsLmNvbSIsImlkIjoiNjAxOGRiOWM3MzU1YTkyM2I4OGFmM2UwIiwiaWF0IjoxNjEyMzgyMzg3LCJleHAiOjE2MTI0Njg3ODd9.6I8fMEnAS0_PpSMl5ixe0zPWhh0Vpx9QaNFQYShJLjA'
+    it('givenUser_whenGiven_properData_shouldResetPassword', (done) => {
+        let userInfo = user.resetPasswordProperData;
+        let token = user.properToken;
         chai.request(server)
             .put('/reset-password')
             .send(userInfo)
@@ -144,11 +119,9 @@ describe('Resetpassword', () => {
                 done()
             })
     })
-    it('givenUser_whenGiven_improperData_shouldResetPassword', (done) => {
-        let userInfo = {
-            newPassword: 'as',
-        }
-        let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbElkIjoiZ2h1c2FsaWthcnBheWFsQGdtYWlsLmNvbSIsImlkIjoiNjAxOGRiOWM3MzU1YTkyM2I4OGFmM2UwIiwiaWF0IjoxNjEyMzgyMzg3LCJleHAiOjE2MTI0Njg3ODd9.6I8fMEnAS0_PpSMl5ixe0zPWhh0Vpx9QaNFQYShJLjA'
+    it('givenUser_whenGiven_improperData_shouldNotResetPassword', (done) => {
+        let userInfo = user.resetPasswordImproperData;
+        let token = user.properToken;
         chai.request(server)
             .put('/resetpassword')
             .send(userInfo)
@@ -160,11 +133,9 @@ describe('Resetpassword', () => {
             })
     })
 
-    it('givenUser_whenGiven_improperToken_shouldResetPassword', (done) => {
-        let userInfo = {
-            newPassword: 'aGHGHGYThgh',
-        }
-        let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbElkIjoiZ2h1c2FsaWthcnBheWFsQGdtYWlsLmNvbSIsImlkIjoiNjAxOGRiOWM3MzU1YTkyM2I4OGFmM2UwIiwiaWF0IjoxNjEyMzgyMzg3LCJleHAiOjE2MTI0Njg3ODd9.6I8fMEnAS0_PpSMl5ixe0zPWhh0Vpx9QaNFQYShJLjA'
+    it('givenUser_whenGiven_improperToken_shouldNotResetPassword', (done) => {
+        let userInfo = user.resetPasswordProperData;
+        let token = user.ImproperToken
         chai.request(server)
             .put('/resetpassword')
             .send(userInfo)

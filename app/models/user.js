@@ -20,7 +20,7 @@ const UserSchema = mongoose.Schema({
             min: 3,
             max: 36
         },
-        test: /^[a-z0-9]+$/gi,
+        test: vallidator.namePattern
     },
     emailId: {
         type: String,

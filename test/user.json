@@ -1,0 +1,38 @@
+{
+    "user": {
+        "registerUserProperData": {
+            "name": "Payal",
+            "emailId": "ghusalikarapayal1@gmail.com",
+            "password": "Ghjjjjj"
+        },
+        "userWithEmptyName": {
+            "name": "",
+            "emailId": "ghusalikarapayal2@gmail.com",
+            "password": "Ghjjjjj"
+        },
+
+        "loginUserProperData": {
+            "emailId": "ghusalikarapayal2@gmail.com",
+            "password": "Ghjjjjj"
+        },
+        "loginUserImproperData": {
+            "emailId": "ghusalikarapayal2@gmail.com",
+            "password": ""
+        },
+        "forgotPasswordProperData": {
+            "emailId": "ghusalikarapayal2@gmail.com"
+        },
+        "resetPasswordProperData": {
+            "newPassword": "Thanakfhfgfjg"
+        },
+        "resetPasswordImproperData": {
+            "newPassword": "bg"
+        },
+        "properToken": {
+            "token": "'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbElkIjoiZ2h1c2FsaWthcnBheWFsQGdtYWlsLmNvbSIsImlkIjoiNjAxOGRiOWM3MzU1YTkyM2I4OGFmM2UwIiwiaWF0IjoxNjEyMzgyMzg3LCJleHAiOjE2MTI0Njg3ODd9.6I8fMEnAS0_PpSMl5ixe0zPWhh0Vpx9QaNFQYShJLjA'"
+        },
+        "ImproperToken": {
+            "token": "'JhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbElkIjoiZ2h1c2FsaWthcnBheWFsQGdtYWlsLmNvbSIsImlkIjoiNjAxOGRiOWM3MzU1YTkyM2I4OGFmM2UwIiwiaWF0IjoxNjEyMzgyMzg3LCJleHAiOjE2MTI0Njg3ODd9.6I8fMEnAS0_PpSMl5ixe0zPWhh0Vpx9QaNFQYShJLjA'"
+        }
+    }
+}
