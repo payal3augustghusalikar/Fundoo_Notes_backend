@@ -1,9 +1,10 @@
 /**
- * @file development.js
+ * @file production.js
  *
- * @description Development file is the default setup expected to have on a localmachine to work with the Production config
+ * @description Production file is the default setup expected to have on a localmachine to work with the Production config
  *
  * @author  Payal <payal.ghusalikar9@gmail.com>
+ * @version : 1.0
  -----------------------------------------------------------------------------------------------*/
 
 const winston = require(`winston`);
