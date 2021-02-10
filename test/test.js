@@ -3,20 +3,22 @@
  * @file         test.js
  * @description  test the all routes for crud operation
  * @author       Payal Ghusalikar <payal.ghusalikar9@gmail.com>
-*  @date       2/01/2021  
+*  @date         2/01/2021  
 -----------------------------------------------------------------------------------------------*/
 
 let chai = require('chai');
 let chaiHttp = require('chai-http');
 let server = require('../server');
 chai.use(chaiHttp);
-request = require('supertest');
 const greet = require("./notes.json");
-const userData = require("./notes.json");
+const userData = require("./user.json");
+
 
 describe('register', () => {
+
     it('givenUser_whenGiven_properData_shouldSaveUser', (done) => {
-        let userInfo = user.registerUserProperData;
+        let userInfo = userData.user.registerUserProperData;
+        console.log(userInfo)
         chai.request(server)
             .post('/register')
             .send(userInfo)
@@ -28,7 +30,7 @@ describe('register', () => {
     })
 
     it('givenUser_whenGiven_duplicateData_shouldNotSaveUser', (done) => {
-        let userInfo = user.registerUserProperData;
+        let userInfo = userData.user.registerUserProperData;
         chai.request(server)
             .post('/register')
             .send(userInfo)
@@ -40,7 +42,7 @@ describe('register', () => {
         })
     })
     it('givenUser_whenGiven_improperData_shouldNotSaveUser', (done) => {
-        let userInfo = user.userWithEmptyName;
+        let userInfo = userData.user.userWithEmptyName;
         chai.request(server)
             .post('/register')
             .send(userInfo)
@@ -52,10 +54,9 @@ describe('register', () => {
     })
 })
 
-
 describe('Login', () => {
     it('givenUser_whenGiven_properData_shouldResponds_withJson', (done) => {
-        let userInfo = user.loginUserProperData;
+        let userInfo = userData.user.loginUserProperData;
         chai.request(server)
             .post('/login')
             .send(userInfo)
@@ -67,7 +68,7 @@ describe('Login', () => {
     })
 
     it('givenUser_whenGiven_improperData_shouldResponds_withJson', (done) => {
-        let userInfo = user.loginUserImroperData;
+        let userInfo = userData.user.loginUserImproperData;
         chai.request(server)
             .post('/login')
             .send(userInfo)
@@ -81,7 +82,7 @@ describe('Login', () => {
 
 describe('ForgotPassword', () => {
     it('givenUser_whenGiven_improperData_shouldResponds_withLink', (done) => {
-        let userInfo = user.forgotPasswordProperData;
+        let userInfo = userData.user.forgotPasswordProperData;
         chai.request(server)
             .post('/forgotpassword')
             .send(userInfo)
@@ -93,7 +94,7 @@ describe('ForgotPassword', () => {
     })
 
     it('givenUser_whenGiven_improperData_shouldNotResponds_withLink', (done) => {
-        let userInfo = user.forgotPasswordImproperData;
+        let userInfo = userData.user.forgotPasswordImproperData;
         chai.request(server)
             .post('/forgotpassword')
             .send(userInfo)
@@ -107,7 +108,7 @@ describe('ForgotPassword', () => {
 
 describe('Resetpassword', () => {
     it('givenUser_whenGiven_properData_shouldResetPassword', (done) => {
-        let userInfo = user.resetPasswordProperData;
+        let userInfo = userData.user.resetPasswordProperData;
         let token = user.properToken;
         chai.request(server)
             .put('/reset-password')
@@ -120,7 +121,7 @@ describe('Resetpassword', () => {
             })
     })
     it('givenUser_whenGiven_improperData_shouldNotResetPassword', (done) => {
-        let userInfo = user.resetPasswordImproperData;
+        let userInfo = userData.user.resetPasswordImproperData;
         let token = user.properToken;
         chai.request(server)
             .put('/resetpassword')
@@ -134,7 +135,7 @@ describe('Resetpassword', () => {
     })
 
     it('givenUser_whenGiven_improperToken_shouldNotResetPassword', (done) => {
-        let userInfo = user.resetPasswordProperData;
+        let userInfo = userData.user.resetPasswordProperData;
         let token = user.ImproperToken
         chai.request(server)
             .put('/resetpassword')

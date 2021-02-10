@@ -22,6 +22,10 @@
         "forgotPasswordProperData": {
             "emailId": "ghusalikarapayal2@gmail.com"
         },
+
+        "forgotPasswordImproperData": {
+            "emailId": "ghusalikarapgmail.com"
+        },
         "resetPasswordProperData": {
             "newPassword": "Thanakfhfgfjg"
         },

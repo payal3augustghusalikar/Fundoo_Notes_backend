@@ -29,7 +29,6 @@ class userService {
      * @param {*} callback is the callback for controller
      */
     login = (userLoginInfo, callback) => {
-
         User.find(userLoginInfo, (error, data) => {
             if (error)
                 return callback(error, null);
