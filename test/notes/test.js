@@ -19,7 +19,7 @@ describe("notes API", () => {
      */
     describe("GET /notes", () => {
         // test the GET API when points are proper
-        it("givennotes_WhenGivenProperEndPoints_ShouldReturn_object", (done) => {
+        it("givennotes_WhenGivenProperEndPoints_ShouldReturnObject", (done) => {
             console.log("getting all data .");
             chai
                 .request(server)
@@ -32,7 +32,7 @@ describe("notes API", () => {
         });
 
         // test the GET API when points are not proper
-        it("givennotes_WhenNotGivenProperEndPoints_ShouldNotReturn_object", (done) => {
+        it("givennotes_WhenNotGivenProperEndPoints_ShouldNotReturnObject", (done) => {
             chai
                 .request(server)
                 .get("/note")
@@ -48,7 +48,7 @@ describe("notes API", () => {
      */
     describe("/GET /notes/noteId", () => {
         // test the GET API when provided proper note Id
-        it("givennotes_WhenGivenProperNoteId_ShouldGive_object", (done) => {
+        it("givennotes_WhenGivenProperNoteId_ShouldGiveObject", (done) => {
             const noteId = greet.notes.GetNoteById.noteId;
             chai
                 .request(server)
@@ -61,7 +61,7 @@ describe("notes API", () => {
         });
 
         // test the GET API when provided improper note Id
-        it("givennotes_WhenNotGivenProperGreetoingId_ShouldNotGive_object", (done) => {
+        it("givennotes_WhenNotGivenProperGreetoingId_ShouldNotGiveObject", (done) => {
             const noteId = 144;
             chai
                 .request(server)
@@ -79,7 +79,7 @@ describe("notes API", () => {
      */
     describe("POST /notes", () => {
         // test the POST API when provided proper data
-        it("givennotes_WhenGivenPropertitleAnddescription_ShouldPost_note", (done) => {
+        it("givennotes_WhenGivenPropertitleAnddescription_ShouldPostNote", (done) => {
             const note = greet.notes.noteToPost;
             chai
                 .request(server)
@@ -93,7 +93,7 @@ describe("notes API", () => {
         });
 
         // test the POST API when provided improper data
-        it("givennotes_WhenNotGivenPropertitleAnddescription_ShouldNotPost_note", (done) => {
+        it("givennotes_WhenNotGivenPropertitleAndDescription_ShouldNotPostNote", (done) => {
             const note = greet.notes.noteWithouttitle;
             console.log("not post", note);
             chai
@@ -113,7 +113,7 @@ describe("notes API", () => {
      */
     describe("/PUT  /notes/:noteId", function() {
         // test the PUT API when provided proper Id
-        it("givennotes_WhenGivenProperId_ShouldUpdate_note", (done) => {
+        it("givennotes_WhenGivenProperId_ShouldUpdateNote", (done) => {
             const noteId = greet.notes.noteToUpdate.noteId;
             const note = greet.notes.note7;
             chai
@@ -128,7 +128,7 @@ describe("notes API", () => {
                 });
         });
         // test the PUT API when provided improper Id
-        it("givennotes_WhenNotGivenPropertitle_ShouldNotUpdate_note", (done) => {
+        it("givennotes_WhenNotGivenPropertitle_ShouldNotUpdateNote", (done) => {
             const noteId = greet.notes.noteWithouttitle.noteId;
             const note = greet.notes.note8;
             chai

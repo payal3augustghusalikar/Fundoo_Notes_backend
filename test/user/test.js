@@ -26,7 +26,7 @@ describe('register', () => {
             })
     })
 
-    it('givenUser_whenGiven_duplicateData_shouldNotSaveUser', (done) => {
+    it('givenUser_whenGivenDuplicateData_shouldNotSaveUser', (done) => {
         let userInfo = userData.user.registerUserProperData;
         chai.request(server)
             .post('/register')
@@ -38,7 +38,7 @@ describe('register', () => {
             done()
         })
     })
-    it('givenUser_whenGiven_improperData_shouldNotSaveUser', (done) => {
+    it('givenUser_whenGivenImproperData_shouldNotSaveUser', (done) => {
         let userInfo = userData.user.userWithEmptyName;
         chai.request(server)
             .post('/register')
@@ -52,7 +52,7 @@ describe('register', () => {
 })
 
 describe('Login', () => {
-    it('givenUser_whenGiven_properData_shouldResponds_withJson', (done) => {
+    it('givenUser_whenGivenProperData_shouldRespondsWithJson', (done) => {
         let userInfo = userData.user.loginUserProperData;
         chai.request(server)
             .post('/login')
@@ -64,7 +64,7 @@ describe('Login', () => {
             })
     })
 
-    it('givenUser_whenGiven_improperData_shouldResponds_withJson', (done) => {
+    it('givenUser_whenGivenImproperData_shouldRespondsWithJson', (done) => {
         let userInfo = userData.user.loginUserImproperData;
         chai.request(server)
             .post('/login')
@@ -78,7 +78,7 @@ describe('Login', () => {
 })
 
 describe('ForgotPassword', () => {
-    it('givenUser_whenGiven_improperData_shouldResponds_withLink', (done) => {
+    it('givenUser_whenGivenImproperData_shouldRespondsWithLink', (done) => {
         let userInfo = userData.user.forgotPasswordProperData;
         chai.request(server)
             .post('/forgotpassword')
@@ -90,7 +90,7 @@ describe('ForgotPassword', () => {
             })
     })
 
-    it('givenUser_whenGiven_improperData_shouldNotResponds_withLink', (done) => {
+    it('givenUser_whenGivenImproperData_shouldNotRespondsWithLink', (done) => {
         let userInfo = userData.user.forgotPasswordImproperData;
         chai.request(server)
             .post('/forgotpassword')
@@ -104,7 +104,7 @@ describe('ForgotPassword', () => {
 })
 
 describe('Resetpassword', () => {
-    it('givenUser_whenGiven_properData_shouldResetPassword', (done) => {
+    it('givenUser_whenGivenProperData_shouldResetPassword', (done) => {
         let userInfo = userData.user.resetPasswordProperData;
         let token = userData.user.properToken;
         chai.request(server)
@@ -117,7 +117,7 @@ describe('Resetpassword', () => {
                 done()
             })
     })
-    it('givenUser_whenGiven_improperData_shouldNotResetPassword', (done) => {
+    it('givenUser_whenGivenImproperData_shouldNotResetPassword', (done) => {
         let userInfo = userData.user.resetPasswordImproperData;
         let token = userData.user.properToken;
         chai.request(server)
@@ -131,7 +131,7 @@ describe('Resetpassword', () => {
             })
     })
 
-    it('givenUser_whenGiven_improperToken_shouldNotResetPassword', (done) => {
+    it('givenUser_whenGivenImproperToken_shouldNotResetPassword', (done) => {
         let userInfo = userData.user.resetPasswordProperData;
         let token = userData.user.ImproperToken
         chai.request(server)
