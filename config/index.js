@@ -1,4 +1,13 @@
 /**
+ * @file index.js
+ *
+ * @description Index Configuration setup is required to run your server.
+ *
+ * @author  Payal <payal.ghusalikar9@gmail.com>
+ -----------------------------------------------------------------------------------------------*/
+
+
+/**
  * @description Combine all the require config files.
  */
 const envConfig = {
@@ -25,15 +34,6 @@ const isProduction = config => {
     return config.name == 'production';
 };
 
-// /**
-//  * @description It return true if the current system is production
-//  * @param {*} config
-//  */
-// const isStage = config => {
-// 	return config.name == 'staging';
-// };
-
-
 /**
  * @description It return true if the current system is production
  * @param {*} config
@@ -42,8 +42,6 @@ const isProduction = config => {
 const isDevelopement = config => {
     return config.name == 'development';
 };
-
-
 
 
 /**
