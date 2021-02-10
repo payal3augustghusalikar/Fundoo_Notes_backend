@@ -11,6 +11,8 @@ const logger = require("../../logger/logger");
 const nodemailer = require("nodemailer");
 require("dotenv").config();
 const ejs = require("ejs");
+const path = require("path");
+
 
 class Helper {
 

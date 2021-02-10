@@ -17,12 +17,12 @@ const envConfig = {
     development() {
         return require('./development')(winstonConfig);
     },
-    staging() {
-        return require('./staging')(winstonConfig);
-    },
-    local() {
-        return require('./local')(winstonConfig);
-    },
+    // staging() {
+    //     return require('./staging')(winstonConfig);
+    // },
+    // local() {
+    //     return require('./local')(winstonConfig);
+    // },
 };
 
 

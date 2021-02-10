@@ -14,7 +14,10 @@ const greet = require("./notes.json");
 const userData = require("./user.json");
 
 
-describe('register', () => {
+describe.only('register', () => {
+
+
+
 
     it('givenUser_whenGiven_properData_shouldSaveUser', (done) => {
         let userInfo = userData.user.registerUserProperData;
