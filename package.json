@@ -37,7 +37,8 @@
         "swagger-ui-express": "^4.1.6"
     },
     "scripts": {
-        "test": "nyc mocha",
+
+        "test": "mocha 'test/**/*.js' --recursive --timeout 60000 --exit",
         "start": "nodemon server.js"
     },
     "author": "",

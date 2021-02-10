@@ -10,7 +10,6 @@
             "emailId": "ghusalikarapayal2@gmail.com",
             "password": "Ghjjjjj"
         },
-
         "loginUserProperData": {
             "emailId": "ghusalikarapayal2@gmail.com",
             "password": "Ghjjjjj"
@@ -22,7 +21,6 @@
         "forgotPasswordProperData": {
             "emailId": "ghusalikarapayal2@gmail.com"
         },
-
         "forgotPasswordImproperData": {
             "emailId": "ghusalikarapgmail.com"
         },
