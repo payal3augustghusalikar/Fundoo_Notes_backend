@@ -5,24 +5,25 @@
  *
  * @author  Payal <payal.ghusalikar9@gmail.com>
  -----------------------------------------------------------------------------------------------*/
+require('dotenv').config();
+const cors = require('cors');
+const express = require('express');
 
+
+let config;
 
 /**
  * @description Combine all the require config files.
  */
 const envConfig = {
     production() {
-        return require('./production')(winstonConfig);
+        return require('./production')
+            // (winstonConfig);
     },
     development() {
-        return require('./development')(winstonConfig);
+        return require('./development')
+            //(winstonConfig);
     },
-    // staging() {
-    //     return require('./staging')(winstonConfig);
-    // },
-    // local() {
-    //     return require('./local')(winstonConfig);
-    // },
 };
 
 
@@ -56,6 +57,36 @@ const getDomainURL = that => {
     }
     return `${this.host}:${this.port}`;
 };
+
+
+
+// /**
+//  * @description Configuration getting for the site
+//  * @params {Object} config
+//  */
+// getConfig: () => this._config,
+
+//     /**
+//      * @description Configuration setting for the site
+//      * @params {Object} config
+//      */
+//     setConfig: config => {
+//         this._config = config;
+//     },
+
+
+/**
+ * @description Set the config.
+ * @param {Object} obj
+ */
+const setConfig = obj => {
+    config = obj;
+};
+
+/**
+ * @description Return the config.
+ */
+const getConfig = () => config;
 
 
 

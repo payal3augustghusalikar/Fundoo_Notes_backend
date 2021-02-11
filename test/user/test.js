@@ -1,7 +1,7 @@
 /**
  * @module       test
  * @file         test.js
- * @description  test the all routes for crud operation
+ * @description  test the all routes for user api
  * @author       Payal Ghusalikar <payal.ghusalikar9@gmail.com>
 *  @date         2/01/2021  
 -----------------------------------------------------------------------------------------------*/

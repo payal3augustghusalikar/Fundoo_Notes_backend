@@ -52,9 +52,13 @@ module.exports = config => {
                 dbURI: process.env.MONGODB_URL,
             },
         },
-        logger = createLogger({
+        loggers: new winston.Logger({
+            // exceptionHandlers: [
+            // 	new winston.transports.Console({
+            // 		json: true,
+            // 	}),
             transports: [
-                new transports.File({
+                new winston.transports.File({
                     filename: (`./log/error.log`),
                     level: `error`,
                     format: winston.format.combine(format.timestamp(), format.json())
