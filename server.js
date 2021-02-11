@@ -9,19 +9,41 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 require("./config/mongoDB.js")();
+const config = require("./config").get();
+//const logger = require("../../logger/logger.js");
+
 require("dotenv").config();
-const path = require("path");
+
+// create express app
+const app = express();
+require("./config").set(process.env.NODE_ENV, app);
+console.log("server : " + process.env.NODE_ENV);
+console.log(app);
+
+//const router = require('./server/routes');
+//const config = require("./config").get();
+
+/**
+ * @description Winston logger derived from the config
+ */
+const { logger } = config;
+
+console.log(config);
+
+//const config = require("./config").get();
+
+//require("./config").set(process.env.NODE_ENV, app);
+
+console.log("server1 : " + config);
+
+//const config = require("../config").get();
+//const { logger } = config;
+
 /**
  * @description require swagger-ui and swagger.json
  */
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./lib/swagger.json");
-
-// create express app
-const app = express();
-
-const config = require("./config").get();
-require("./config").set(process.env.NODE_ENV, app);
 
 /**
  * @description Winston logger derived from the config
@@ -37,7 +59,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
 
-const logger = require("./logger/logger.js");
+//const logger = require("./logger/logger.js");
 
 // define a simple route and data in json format
 app.get("/", (req, res) => {
@@ -49,18 +71,11 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // Require Notes routes
 require("./app/routes/route.js")(app);
 
-// /**
-//  * @description Cross site enabler
-//  */
-// if (!config.isProduction) {
-//     app.use(cors({ credentials: true, origin: true }));
-// }
-
-const port = process.env.PORT || 2001;
+//const port = process.env.PORT || 2001;
 //const port = config.port || 2001;
 // listen for requests using callback
-app.listen(port, () => {
-  logger.info(`Server is listening on port: ${port}`);
+app.listen(config.port, () => {
+  logger.info(`Server is listening on port: ${config.port}`);
 });
 
 module.exports = app;

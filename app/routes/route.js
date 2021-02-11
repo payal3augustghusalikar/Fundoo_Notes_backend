@@ -9,35 +9,33 @@
 var helper = require("../../middleware/helper.js");
 
 module.exports = (app) => {
+  const user = require("../controllers/user.js");
+  const notes = require("../controllers/note.js");
 
-    const user = require('../controllers/user.js');
-    const notes = require('../controllers/note.js');
+  // register a new user
+  app.post("/register", user.register);
 
-    // register a new user
-    app.post('/register', user.register);
+  // Login existing user
+  app.post("/login", user.login);
 
-    // Login existing user
-    app.post('/login', user.login);
+  //forget password
+  app.post("/forgotpassword", user.forgotPassword);
 
-    //forget password
-    app.post('/forgotpassword', user.forgotPassword);
+  // Reset password
+  app.put("/resetpassword", helper.verifyToken, user.resetPassword);
 
-    // Reset password
-    app.put('/resetpassword', helper.verifyToken, user.resetPassword)
+  // Create a new note
+  app.post("/notes", helper.verifyToken, notes.create);
 
+  // Retrieve all notes
+  app.get("/notes", helper.verifyToken, notes.findAll);
 
-    // Create a new note	
-    app.post('/notes', notes.create);
+  // Retrieve a single note with noteId
+  app.get("/notes/:noteId", helper.verifyToken, notes.findOne);
 
-    // Retrieve all notes	
-    app.get('/notes', notes.findAll);
+  // Update a note with noteId
+  app.put("/notes/:noteId", helper.verifyToken, notes.update);
 
-    // Retrieve a single note with noteId	
-    app.get('/notes/:noteId', notes.findOne);
-
-    // Update a note with noteId	
-    app.put('/notes/:noteId', notes.update);
-
-    // Delete a note with noteId	
-    app.delete('/notes/:noteId', notes.delete);
-}
+  // Delete a note with noteId
+  app.delete("/notes/:noteId", helper.verifyToken, notes.delete);
+};
