@@ -1,4 +1,4 @@
-const Note = require('../models/note.js');
+const Note = require("../models/note.js");
 
 class NoteService {
     /**
@@ -8,12 +8,8 @@ class NoteService {
      */
     create = (noteInfo, callback) => {
         // create a Note
-        Note.create(noteInfo, (error, data) => {
-            return (error) ?
-                callback(error, null) :
-                callback(null, data);
-        })
-    }
+        Note.create(noteInfo, callback);
+    };
 
     /**
      * @description Find all the Notes and return response to controller
@@ -21,12 +17,8 @@ class NoteService {
      * @param callback is the callback for controller
      */
     findAll = (callback) => {
-        Note.findAll((error, data) => {
-            return (error) ?
-                callback(error, null) :
-                callback(null, data);
-        });
-    }
+        Note.findAll(callback);
+    };
 
     /**
      * @description Find Note by id and return response to controller
@@ -34,12 +26,8 @@ class NoteService {
      * @param callback is the callback for controller
      */
     findOne = (noteID, callback) => {
-        Note.findOne(noteID, (error, data) => {
-            return (error) ?
-                callback(error, null) :
-                callback(null, data);
-        });
-    }
+        Note.findOne(noteID, callback);
+    };
 
     /**
      * @description Update Note by id and return response to controller
@@ -47,12 +35,8 @@ class NoteService {
      * @param callback is the callback for controller
      */
     update = (noteInfo, callback) => {
-        Note.update(noteInfo, (error, data) => {
-            return (error) ?
-                callback(error, null) :
-                callback(null, data);
-        });
-    }
+        Note.update(noteInfo, callback);
+    };
 
     /**
      * @description Delete Note by id and return response to controller
@@ -60,12 +44,8 @@ class NoteService {
      * @param callback is the callback for controller
      */
     delete = (noteID, callback) => {
-        Note.deleteById(noteID, (error, data) => {
-            return (error) ?
-                callback(error, null) :
-                callback(null, data);
-        });
-    }
+        Note.deleteById(noteID, callback);
+    };
 }
 
 module.exports = new NoteService();

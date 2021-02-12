@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const NoteSchema = mongoose.Schema({
         title: String,
-        description: String
+        description: String,
     },
     // userId: {
     //     type: mongoose.Schema.Types.ObjectId,
@@ -10,64 +10,45 @@ const NoteSchema = mongoose.Schema({
     // },
 
     {
-        timestamps: true
-    });
-const Note = mongoose.model('Note', NoteSchema);
+        timestamps: true,
+    }
+);
+const Note = mongoose.model("Note", NoteSchema);
 
 class NoteModel {
-
     /**
-     * 
-     * @param {*} noteInfo 
-     * @param {*} callback 
+     * @param {*} noteInfo
+     * @param {*} callback
      */
     create = (noteInfo, callback) => {
         const note = new Note({
             title: noteInfo.title,
-            description: noteInfo.description || "Empty description"
+            description: noteInfo.description || "Empty description",
         });
-
-        note.save((error, data) => {
-            return (error) ?
-                callback(error, null) :
-                callback(null, data);
-        });
-    }
+        note.save(callback);
+    };
 
     findAll = (callback) => {
-        Note.find((error, data) => {
-            return (error) ?
-                callback(error, null) :
-                callback(null, data);
-        });
-    }
+        Note.find(callback);
+    };
 
     findOne = (noteID, callback) => {
-        Note.findById(noteID, (error, data) => {
-            return (error) ?
-                callback(error, null) :
-                callback(null, data);
-        });
-    }
+        Note.findById(noteID, callback);
+    };
 
     update = (noteInfo, callback) => {
-        Note.findByIdAndUpdate(noteInfo.noteID, {
-            title: noteInfo.title,
-            description: noteInfo.description || "Empty description"
-        }, { new: true }, (error, data) => {
-            return (error) ?
-                callback(error, null) :
-                callback(null, data);
-        });
-    }
+        Note.findByIdAndUpdate(
+            noteInfo.noteID, {
+                title: noteInfo.title,
+                description: noteInfo.description || "Empty description",
+            }, { new: true },
+            callback
+        );
+    };
 
     deleteById = (noteID, callback) => {
-        Note.findByIdAndRemove(noteID, (error, data) => {
-            return (error) ?
-                callback(error, null) :
-                callback(null, data);
-        });
-    }
+        Note.findByIdAndRemove(noteID, callback);
+    };
 }
 
 module.exports = new NoteModel();
