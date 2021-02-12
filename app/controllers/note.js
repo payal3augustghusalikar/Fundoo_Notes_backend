@@ -89,27 +89,27 @@ class NoteController {
         try {
             const noteID = req.params.noteId;
             noteService.findOne(noteID, (error, data) => {
-                if (error) {
-                    logger.error("Error retrieving note with id " + noteID);
-                    return res.status(500).send({
-                        success: false,
-                        description: "Error retrieving note with id " + noteID,
-                    });
-                }
-                if (!data) {
-                    logger.warn("Note not found with id : " + noteID);
-                    return res.status(404).send({
-                        success: false,
-                        description: "Note not found with id : " + noteID,
-                    });
-                }
-                logger.info("note found with id " + noteID);
-                return res.send({
-                    success: true,
-                    status_code: 200,
-                    description: "Note found with id " + noteID,
-                    data: data,
-                });
+                return (
+                    error ?
+                    (logger.error("Error retrieving note with id " + noteID),
+                        res.status(500).send({
+                            success: false,
+                            description: "Error retrieving note with id " + noteID,
+                        })) :
+                    !data ?
+                    (logger.warn("Note not found with id : " + noteID),
+                        res.status(404).send({
+                            success: false,
+                            description: "Note not found with id : " + noteID,
+                        })) :
+                    logger.info("note found with id " + noteID),
+                    res.send({
+                        success: true,
+                        status_code: 200,
+                        description: "Note found with id " + noteID,
+                        data: data,
+                    })
+                );
             });
         } catch (error) {
             logger.error("could not found note with id" + req.params.noteID);
