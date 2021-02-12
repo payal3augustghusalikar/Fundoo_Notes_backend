@@ -54,21 +54,20 @@ class NoteController {
     findAll = (req, res) => {
         noteService.findAll((error, data) => {
             try {
-                if (error) {
-                    logger.error("Some error occurred while retrieving notes");
-                    res.send({
-                        success: false,
-                        status_code: 404,
-                        description: `note not found`,
-                    });
-                }
-                logger.info("Successfully retrieved notes !");
-                res.send({
-                    success: true,
-                    status_code: 200,
-                    description: `note found`,
-                    data: data,
-                });
+                return error ?
+                    (logger.error("Some error occurred while retrieving notes"),
+                        res.send({
+                            success: false,
+                            status_code: 404,
+                            description: `note not found`,
+                        })) :
+                    (logger.info("Successfully retrieved notes !"),
+                        res.send({
+                            success: true,
+                            status_code: 200,
+                            description: `note found`,
+                            data: data,
+                        }));
             } catch (error) {
                 logger.error("note not found");
                 res.send({
@@ -184,36 +183,38 @@ class NoteController {
         try {
             const noteID = req.params.noteId;
             noteService.delete(noteID, (error, data) => {
-                if (error) {
-                    logger.warn("note not found with id " + noteID);
-                    return res.send({
+                return (
+                    error ?
+                    (logger.warn("note not found with id " + noteID),
+                        res.send({
+                            success: false,
+                            status_code: 404,
+                            description: "note not found with id " + noteID,
+                        })) :
+                    logger.info("note deleted successfully!"),
+                    res.send({
+                        success: true,
+                        status_code: 200,
+                        description: "note deleted successfully!",
+                    })
+                );
+            });
+        } catch (error) {
+            return (
+                error.kind === "ObjectId" || error.title === "NotFound" ?
+                (logger.error("could not found note with id" + noteID),
+                    res.send({
                         success: false,
                         status_code: 404,
                         description: "note not found with id " + noteID,
-                    });
-                }
-                logger.info("note deleted successfully!");
+                    })) :
+                logger.error("Could not delete note with id " + noteID),
                 res.send({
-                    success: true,
-                    status_code: 200,
-                    description: "note deleted successfully!",
-                });
-            });
-        } catch (error) {
-            if (error.kind === "ObjectId" || error.title === "NotFound") {
-                logger.error("could not found note with id" + noteID);
-                return res.send({
                     success: false,
-                    status_code: 404,
-                    description: "note not found with id " + noteID,
-                });
-            }
-            logger.error("Could not delete note with id " + noteID);
-            return res.send({
-                success: false,
-                status_code: 500,
-                description: "Could not delete note with id " + noteID,
-            });
+                    status_code: 500,
+                    description: "Could not delete note with id " + noteID,
+                })
+            );
         }
     }
 }
