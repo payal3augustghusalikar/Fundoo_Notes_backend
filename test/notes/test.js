@@ -47,8 +47,9 @@ describe("notes API", () => {
    */
   describe("/GET /notes/noteId", () => {
     // test the GET API when provided proper note Id
-    it("givennotes_WhenGivenProperNoteId_ShouldGiveObject", (done) => {
-      const noteId = greet.notes.GetNoteById.noteId;
+    it("givennotes_WhenGivenProperNoteId_ShouldGiveObject", () => {
+      //const noteId = greet.notes.GetNoteById.noteId;
+      const noteId = 9;
       chai
         .request(server)
         .get("/notes/" + noteId)
@@ -56,20 +57,20 @@ describe("notes API", () => {
           response.should.have.status(200);
           response.body.should.be.a("object");
         });
-      done();
+      //done();
     });
 
     // test the GET API when provided improper note Id
-    it("givennotes_WhenNotGivenProperGreetoingId_ShouldNotGiveObject", (done) => {
+    it("givennotes_WhenNotGivenProperNoteId_ShouldNotGiveObject", () => {
       const noteId = 144;
       chai
         .request(server)
         .get("/notes/" + noteId)
         .end((err, res) => {
-          res.should.have.status(404);
+          res.should.have.status(400);
           res.text.should.be.eq("task with provided id does not exist");
         });
-      done();
+      // done();
     });
   });
 
@@ -78,7 +79,7 @@ describe("notes API", () => {
    */
   describe("POST /notes", () => {
     // test the POST API when provided proper data
-    it("givennotes_WhenGivenPropertitleAnddescription_ShouldPostNote", (done) => {
+    it("givennotes_WhenGivenPropertitleAnddescription_ShouldPostNote", () => {
       const note = greet.notes.noteToPost;
       chai
         .request(server)
@@ -88,7 +89,7 @@ describe("notes API", () => {
           response.should.have.status(201);
           response.body.should.be.a("object");
         });
-      done();
+      //done();
     });
 
     // test the POST API when provided improper data
@@ -110,11 +111,11 @@ describe("notes API", () => {
   /**
    * @description Test the PUT API using Id
    */
-  describe("/PUT  /notes/:noteId", function () {
+  describe("/PUT  /notes/:noteId", (done) => {
     // test the PUT API when provided proper Id
-    it("givennotes_WhenGivenProperId_ShouldUpdateNote", (done) => {
+    it("givennotes_WhenGivenProperId_ShouldUpdateNote", () => {
       const noteId = greet.notes.noteToUpdate.noteId;
-      const note = greet.notes.note7;
+      const note = greet.notes.noteToUpdate;
       chai
         .request(server)
         .put("/notes/" + noteId)
@@ -127,9 +128,9 @@ describe("notes API", () => {
       done();
     });
     // test the PUT API when provided improper Id
-    it("givennotes_WhenNotGivenPropertitle_ShouldNotUpdateNote", (done) => {
+    it("givennotes_WhenNotGivenPropertitle_ShouldNotUpdateNote", () => {
       const noteId = greet.notes.noteWithouttitle.noteId;
-      const note = greet.notes.note8;
+      const note = greet.notes.noteWithouttitle;
       chai
         .request(server)
         .put("/notes/" + noteId)
@@ -138,7 +139,8 @@ describe("notes API", () => {
           res.should.have.status(400);
           res.text.should.be.eq("it is not accepting without title property");
         });
-      done();
+      //done();
     });
   });
+  //done();
 });

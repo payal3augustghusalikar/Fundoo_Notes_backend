@@ -7,6 +7,7 @@
  -----------------------------------------------------------------------------------------------*/
 
 require("dotenv").config();
+const path = require("path");
 
 let config;
 
@@ -130,7 +131,7 @@ module.exports = {
     }
     setConfig(this.config);
     console.log(this.config);
-    return config;
+    return this.config;
   },
   get: () => getConfig(),
   config,

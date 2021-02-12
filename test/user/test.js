@@ -3,7 +3,7 @@
  * @file         test.js
  * @description  test the all routes for user api
  * @author       Payal Ghusalikar <payal.ghusalikar9@gmail.com>
-*  @date         2/01/2021  
+*  @date         2/01/2021
 -----------------------------------------------------------------------------------------------*/
 
 let chai = require("chai");
@@ -11,6 +11,8 @@ let chaiHttp = require("chai-http");
 let server = require("../../server");
 chai.use(chaiHttp);
 const userData = require("./user.json");
+let should = chai.should();
+//"test": "mocha test/user/test.js",
 
 describe("register", () => {
   it("givenUser_whenGivenProperData_shouldSaveUser", (done) => {
@@ -21,13 +23,13 @@ describe("register", () => {
       .post("/register")
       .send(userInfo)
       .end((err, res) => {
-        res.should.have.status(200);
+        res.body.status.should.have.equal(400);
         res.body.should.be.a("object");
       });
     done();
   });
 
-  it("givenUser_whenGivenDuplicateData_shouldNotSaveUser", (done) => {
+  it("givenUser_whenGivenDuplicateData_shouldNotSaveUser", () => {
     let userInfo = userData.user.registerUserProperData;
     chai
       .request(server)
@@ -35,12 +37,12 @@ describe("register", () => {
       .send(userInfo)
 
       .end((err, res) => {
-        res.should.have.status(400);
+        res.body.status.should.have.equal(400);
         res.body.should.be.a("object");
       });
-    done();
+    //done();
   });
-  it("givenUser_whenGivenImproperData_shouldNotSaveUser", (done) => {
+  it("givenUser_whenGivenImproperData_shouldNotSaveUser", () => {
     let userInfo = userData.user.userWithEmptyName;
     chai
       .request(server)
@@ -64,8 +66,8 @@ describe("Login", () => {
       .end((err, res) => {
         res.should.have.status(200);
         res.body.should.be.a("object");
+        done();
       });
-    done();
   });
 
   it("givenUser_whenGivenImproperData_shouldRespondsWithJson", (done) => {
@@ -77,8 +79,8 @@ describe("Login", () => {
       .end((err, res) => {
         res.should.have.status(401);
         res.body.should.be.a("object");
+        done();
       });
-    done();
   });
 });
 

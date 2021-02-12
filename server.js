@@ -9,16 +9,18 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 require("./config/mongoDB.js")();
+// create express app
+const app = express();
+
+require("./config").set(process.env.NODE_ENV, app);
 const config = require("./config").get();
 const logger = require("../../logger/logger.js");
 
 require("dotenv").config();
 console.log("config : " + config);
-// create express app
-const app = express();
-require("./config").set(process.env.NODE_ENV, app);
+
 console.log("server : " + process.env.NODE_ENV);
-console.log(app);
+console.log("app : " + app);
 
 /**
  * @description Winston logger derived from the config
@@ -59,8 +61,8 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // Require Notes routes
 require("./app/routes/route.js")(app);
 
-const port = process.env.PORT || 2001;
-//const port = config.port || 2001;
+//const port = process.env.PORT;
+const port = config.port || 2001;
 // listen for requests using callback
 app.listen(port, () => {
   logger.info(`Server is listening on port: ${port}`);
