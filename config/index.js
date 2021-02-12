@@ -7,7 +7,6 @@
  -----------------------------------------------------------------------------------------------*/
 
 require("dotenv").config();
-const path = require("path");
 
 let config;
 
@@ -18,7 +17,7 @@ let config;
 const isProduction = (config) => {
   return config.name == "production";
 };
-console.log("pp :" + config);
+
 /**
  * @description It return true if the current system is production
  * @param {*} config
@@ -26,21 +25,6 @@ console.log("pp :" + config);
 const isDevelopement = (config) => {
   return config.name == "development";
 };
-
-console.log("pp :" + isDevelopement);
-
-// /**
-//  * @description Return the domain URI
-//  * @param {*} that is configuration
-//  */
-// const getDomainURL = (that) => {
-//   this.host = that.config.host;
-//   this.port = that.config.port;
-//   if (that.config.isProduction || that.config.isDevelopement) {
-//     return this.host;
-//   }
-//   return `${this.host}:${this.port}`;
-// };
 
 // Combine all the require config files.
 const envConfig = {
@@ -88,7 +72,6 @@ module.exports = {
     _app
   ) => {
     if (config == null) {
-      // console.log("condfsdf")
       /**
        * @description loading the Environment configuration if env varialble is set
        * otherwise load the local configuration.
@@ -123,14 +106,12 @@ module.exports = {
        */
       this.ename = this.config.name ? this.config.name : "";
 
-      console.log("env : " + env);
       /**
        * @description Static content through-out the site.
        * @const{Object} staticContent
        */
     }
     setConfig(this.config);
-    console.log(this.config);
     return this.config;
   },
   get: () => getConfig(),

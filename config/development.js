@@ -7,7 +7,6 @@
  -----------------------------------------------------------------------------------------------*/
 
 const winston = require("winston");
-//const { createLogger, transports, format } = require(`winston`);
 
 /**
  * @exports : Exports developement Config Environment based Configuration
@@ -29,11 +28,6 @@ module.exports = () => {
         }),
       ],
     }),
-    // redisClientConfig: {
-    //   redisEndPoint: process.env.REDIS_HOST,
-    //   port: process.env.REDIS_PORT,
-    //   flushRedisOnServerRestart: true,
-    // },
     database: {
       dbURL: process.env.MONGODB_URL,
     },
