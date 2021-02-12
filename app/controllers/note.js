@@ -24,27 +24,27 @@ class NoteController {
             description: req.body.description,
         };
         const validation = ControllerDataValidation.validate(noteInfo);
-        if (validation.error) {
-            return res.status(400).send({
+        return validation.error ?
+            res.status(400).send({
                 success: false,
                 description: "please enter valid details",
+            }) :
+            noteService.create(noteInfo, (error, data) => {
+                return (
+                    error ?
+                    (logger.error("Some error occurred while creating note"),
+                        res.status(500).send({
+                            success: false,
+                            description: "Some error occurred while creating note",
+                        })) :
+                    logger.info("note added successfully !"),
+                    res.status(200).send({
+                        success: true,
+                        description: "note added successfully !",
+                        data: data,
+                    })
+                );
             });
-        }
-        noteService.create(noteInfo, (error, data) => {
-            if (error) {
-                logger.error("Some error occurred while creating note");
-                return res.status(500).send({
-                    success: false,
-                    description: "Some error occurred while creating note",
-                });
-            }
-            logger.info("note added successfully !");
-            res.status(200).send({
-                success: true,
-                description: "note added successfully !",
-                data: data,
-            });
-        });
     };
 
     /**
@@ -133,44 +133,47 @@ class NoteController {
                 noteID: req.params.noteId,
             };
             noteService.update(noteInfo, (error, data) => {
-                if (error) {
-                    logger.error("Error updating note with id : " + req.params.noteId);
-                    return res.send({
-                        success: false,
-                        status_code: 500,
-                        description: "Error updating note with id : " + req.params.noteId,
-                    });
-                }
-                if (!data) {
-                    logger.warn("note not found with id : " + req.params.noteId);
-                    return res.send({
-                        success: false,
-                        status_code: 404,
-                        description: "note not found with id : " + req.params.noteId,
-                    });
-                }
-                logger.info("note updated successfully !");
-                res.send({
-                    success: true,
-                    description: "note updated successfully !",
-                    data: data,
-                });
+                return (
+                    error ?
+                    (logger.error(
+                            "Error updating note with id : " + req.params.noteId
+                        ),
+                        res.send({
+                            success: false,
+                            status_code: 500,
+                            description: "Error updating note with id : " + req.params.noteId,
+                        })) :
+                    !data ?
+                    (logger.warn("note not found with id : " + req.params.noteId),
+                        res.send({
+                            success: false,
+                            status_code: 404,
+                            description: "note not found with id : " + req.params.noteId,
+                        })) :
+                    logger.info("note updated successfully !"),
+                    res.send({
+                        success: true,
+                        description: "note updated successfully !",
+                        data: data,
+                    })
+                );
             });
         } catch (error) {
-            if (err.kind === "ObjectId") {
-                logger.error("note not found with id " + req.params.noteId);
-                return res.send({
+            return (
+                err.kind === "ObjectId" ?
+                (logger.error("note not found with id " + req.params.noteId),
+                    res.send({
+                        success: false,
+                        status_code: 404,
+                        description: "note not found with id " + req.params.noteId,
+                    })) :
+                logger.error("Error updating note with id " + req.params.noteId),
+                res.send({
                     success: false,
-                    status_code: 404,
-                    description: "note not found with id " + req.params.noteId,
-                });
-            }
-            logger.error("Error updating note with id " + req.params.noteId);
-            return res.send({
-                success: false,
-                status_code: 500,
-                description: "Error updating note with id " + req.params.noteId,
-            });
+                    status_code: 500,
+                    description: "Error updating note with id " + req.params.noteId,
+                })
+            );
         }
     };
 
