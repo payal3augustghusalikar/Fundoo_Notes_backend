@@ -12,7 +12,6 @@ let server = require("../../server");
 chai.use(chaiHttp);
 const greet = require("./notes.json");
 chai.should();
-//var should = require("chai").should();
 
 describe("notes API", () => {
     /**
@@ -42,7 +41,6 @@ describe("notes API", () => {
                     done();
                 });
         });
-        // done();
     });
 
     /**
@@ -69,10 +67,9 @@ describe("notes API", () => {
                 .get("/notes/" + noteId)
                 .end((err, res) => {
                     res.should.have.status(401);
-                    // res.text.should.be.eq("task with provided id does not exist");
+
                     done();
                 });
-            //
         });
     });
 
@@ -97,14 +94,36 @@ describe("notes API", () => {
         // test the POST API when provided improper data
         it("givennotes_WhenNotGivenPropertitleAndDescription_ShouldNotPostNote", (done) => {
             const note = greet.notes.noteWithouttitle;
-            console.log("not post", note);
             chai
                 .request(server)
                 .post("/notes/")
                 .send(note)
                 .end((err, res) => {
                     res.should.have.status(401);
-                    // res.text.should.be.eq("it is not accepting without title property");
+                    done();
+                });
+        });
+
+        it("givennotes_WhenNotGivenDescription_ShouldNotPostNote", (done) => {
+            const note = greet.notes.noteWithoutDescription;
+            chai
+                .request(server)
+                .post("/notes/")
+                .send(note)
+                .end((err, res) => {
+                    res.should.have.status(401);
+                    done();
+                });
+        });
+
+        it("givennotes_WhenGivenEmptyTitle_ShouldNotPostNote", (done) => {
+            const note = greet.notes.noteWithEmptyTitle;
+            chai
+                .request(server)
+                .post("/notes/")
+                .send(note)
+                .end((err, res) => {
+                    res.should.have.status(401);
                     done();
                 });
         });
@@ -130,7 +149,7 @@ describe("notes API", () => {
                 });
         });
         // test the PUT API when provided improper Id
-        it("givennotes_WhenNotGivenImropertitle_ShouldNotUpdateNote", (done) => {
+        it("givennotes_WhenGivenImropertitle_ShouldNotUpdateNote", (done) => {
             const noteId = greet.notes.noteWithouttitle.noteId;
             const note = greet.notes.noteWithouttitle;
             chai
@@ -139,7 +158,32 @@ describe("notes API", () => {
                 .send(note)
                 .end((err, res) => {
                     res.should.have.status(401);
-                    // res.text.should.be.eq("it is not accepting without title property");
+
+                    done();
+                });
+        });
+        it("givennotes_WhenGivenImropertitle_ShouldNotUpdateNote", (done) => {
+            const noteId = greet.notes.noteWithEmptytitle.noteId;
+            const note = greet.notes.noteWithEmptytitle;
+            chai
+                .request(server)
+                .put("/notes/" + noteId)
+                .send(note)
+                .end((err, res) => {
+                    res.should.have.status(401);
+
+                    done();
+                });
+        });
+        it("givennotes_WhenGivenImroperdescription_ShouldNotUpdateNote", (done) => {
+            const noteId = greet.notes.noteWithImproperdescription.noteId;
+            const note = greet.notes.noteWithImproperdescription;
+            chai
+                .request(server)
+                .put("/notes/" + noteId)
+                .send(note)
+                .end((err, res) => {
+                    res.should.have.status(401);
                     done();
                 });
         });

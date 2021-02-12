@@ -1,9 +1,8 @@
 {
     "notes": {
         "getNoteById": {
-            "noteId": 1,
-            "title": "Acompany",
-            "description": "AHello"
+            "title": "pcompany",
+            "description": "pHello"
         },
         "noteToUpdate": {
             "noteId": 2,
@@ -24,15 +23,24 @@
             "noteId": 6,
             "description": "DHello"
         },
-
+        "noteWithoutDescription": {
+            "noteId": 10,
+            "title": "Ccompany"
+        },
+        "noteWithEmptytitle": {
+            "noteId": 11,
+            "title": "",
+            "description": "EHello"
+        },
         "noteWithImpropertitle": {
-            "noteId": 7,
+            "noteId": 12,
             "title": "co",
             "description": "EHello"
         },
-        "noteWithoutdescription": {
-            "noteId": 8,
-            "description": "DHello"
+        "noteWithImproperdescription": {
+            "noteId": 13,
+            "title": "cohhh",
+            "description": "E"
         }
     }
 }
