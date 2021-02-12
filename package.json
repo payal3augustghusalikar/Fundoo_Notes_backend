@@ -13,6 +13,7 @@
         "dotenv": "^8.2.0",
         "ejs": "^3.1.6",
         "eslint-gitignore": "^0.1.0",
+        "esm": "^3.2.25",
         "expect": "^26.6.2",
         "express": "^4.17.1",
         "joi": "^17.3.0",
@@ -41,8 +42,9 @@
         "swagger-ui-express": "^4.1.6"
     },
     "scripts": {
-        "test": "mocha 'test/**/*.js' --recursive --timeout 60000 --exit",
-        "start": "nodemon server.js"
+        "test": "mocha test/notes/test.js",
+        "start": "nodemon server.js",
+        "coverage": "nyc npm run test"
     },
     "author": "",
     "license": "ISC",

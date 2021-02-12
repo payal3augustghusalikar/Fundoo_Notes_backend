@@ -10,34 +10,22 @@ const express = require("express");
 const bodyParser = require("body-parser");
 require("./config/mongoDB.js")();
 const config = require("./config").get();
-//const logger = require("../../logger/logger.js");
+const logger = require("../../logger/logger.js");
 
 require("dotenv").config();
-
+console.log("config : " + config);
 // create express app
 const app = express();
 require("./config").set(process.env.NODE_ENV, app);
 console.log("server : " + process.env.NODE_ENV);
 console.log(app);
 
-//const router = require('./server/routes');
-//const config = require("./config").get();
-
 /**
  * @description Winston logger derived from the config
  */
-const { logger } = config;
-
-console.log(config);
-
-//const config = require("./config").get();
-
-//require("./config").set(process.env.NODE_ENV, app);
+//const { logger } = config;
 
 console.log("server1 : " + config);
-
-//const config = require("../config").get();
-//const { logger } = config;
 
 /**
  * @description require swagger-ui and swagger.json
@@ -71,11 +59,11 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // Require Notes routes
 require("./app/routes/route.js")(app);
 
-//const port = process.env.PORT || 2001;
+const port = process.env.PORT || 2001;
 //const port = config.port || 2001;
 // listen for requests using callback
-app.listen(config.port, () => {
-  logger.info(`Server is listening on port: ${config.port}`);
+app.listen(port, () => {
+  logger.info(`Server is listening on port: ${port}`);
 });
 
 module.exports = app;

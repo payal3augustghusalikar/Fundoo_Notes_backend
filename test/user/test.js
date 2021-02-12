@@ -116,7 +116,7 @@ describe("Resetpassword", () => {
     let token = userData.user.properToken;
     chai
       .request(server)
-      .put("/reset-password")
+      .put("/resetpassword")
       .send(userInfo)
       .set("token", token)
       .end((err, res) => {
