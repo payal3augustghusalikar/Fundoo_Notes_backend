@@ -1,0 +1,15 @@
+{
+    "SUCCESS": "200 ",
+    "Accepted": "202",
+    "No Content": "204",
+    "Reset Content": "205",
+    "Not Found": "404",
+    "Bad Request": "400",
+    "Unauthorized ": "401",
+    "Request Timeout ": "408 ",
+    "Internal Server Error": "500",
+    "Bad Gateway": "502",
+    "Service Unavailable": "503",
+    "Invalid Token": "498",
+    "Token Required": "499"
+}

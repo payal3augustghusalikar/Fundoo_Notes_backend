@@ -100,9 +100,14 @@ class userService {
         console.log("user Id", userId);
         console.log("service token ", userInfo.token);
         userInfo.userId = userId;
-        console.log("id", userId);
-        console.log(newPassword);
-        User.update(userInfo, callback);
+        console.log("id: ", userId);
+        // let newPassword = bcrypt.hash(userInfo.newPassword, 10);
+        // userInfo.newPassword = newPassword;
+        // console.log(userInfo.newPassword);
+        User.update(userInfo, (error, data) => {
+            if (error) return callback(error, null);
+            return callback(null, data);
+        });
     };
 }
 
