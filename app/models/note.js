@@ -27,6 +27,7 @@ class NoteModel {
         const note = new Note({
             title: noteInfo.title,
             description: noteInfo.description || "Empty description",
+            userId: noteInfo.userId,
         });
         note.save(callback);
     };

@@ -1,13 +1,18 @@
 const Note = require("../models/note.js");
 
+const helper = require("../../middleware/helper.js");
+
+//const logger = require("../../../logger/logger.js");
+
 class NoteService {
     /**
      * @description Create and save Note then send response to controller
      * @method create is used to save the Note
      * @param callback is the callback for controller
      */
-    create = (noteInfo, callback) => {
+    create = (noteInfo, token, callback) => {
         // create a Note
+        noteInfo = helper.decodeToken(noteInfo, token);
         Note.create(noteInfo, callback);
     };
 

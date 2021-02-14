@@ -40,9 +40,8 @@ class Helper {
             console.log(token);
             const decode = jwt.verify(token, process.env.SECRET_KEY);
 
-            console.log(decode);
             req.userData = decode;
-            console.log(decode);
+            console.log("decode: " + decode);
             console.log("");
             console.log("token verified");
             next();
@@ -51,6 +50,16 @@ class Helper {
                 error: "unauthorized",
             });
         }
+    };
+
+    decodeToken = (noteInfo, token) => {
+        let decode = jwt.verify(token, process.env.SECRET_KEY);
+        let userId = decode.id;
+        console.log("user Id", userId);
+        //console.log("service token ", userInfo.token);
+        noteInfo.userId = userId;
+        console.log("user id for note: ", userId);
+        return noteInfo;
     };
 
     /**
