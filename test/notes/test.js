@@ -188,4 +188,29 @@ describe("notes API", () => {
                 });
         });
     });
+
+    describe("DELETE /notes/noteID", function() {
+        it("givennotes_WhenGivenProperId_ShouldDelete_note", (done) => {
+            const noteID = greet.notes.noteToDelete.noteId;
+            chai
+                .request(server)
+                .delete("/notes/" + noteID)
+                .end((err, response) => {
+                    response.should.have.status(401);
+                    done();
+                });
+        });
+
+        it("givennotes_WhenNotGivenProperId_ShouldNotDelete_note", (done) => {
+            const noteID = 144;
+            chai
+                .request(server)
+                .delete("/notes/" + noteID)
+                .end((err, response) => {
+                    response.should.have.status(401);
+                    //response.text.should.be.eq("it cannot delete with wrong note id");
+                    done();
+                });
+        });
+    });
 });

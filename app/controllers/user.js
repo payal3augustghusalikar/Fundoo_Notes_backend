@@ -167,25 +167,25 @@ class userController {
                     token: token,
                 };
                 userService.resetPassword(resetPasswordData, (error, data) => {
-                    if (error) {
-                        logger.error(error.message);
-                        return res.status(500).send({
-                            success: false,
-                            message: error.message,
-                        });
-                    } else if (!data) {
-                        logger.error("Authorization failed");
-                        return res.status(500).send({
-                            success: false,
-                            message: "Authorization failed  ",
-                        });
-                    } else {
-                        logger.info("Password has been changed !");
-                        return res.status(200).send({
+                    return (
+                        error ?
+                        (logger.error(error.message),
+                            res.status(500).send({
+                                success: false,
+                                message: error.message,
+                            })) :
+                        !data ?
+                        (logger.error("Authorization failed"),
+                            res.status(500).send({
+                                success: false,
+                                message: "Authorization failed  ",
+                            })) :
+                        logger.info("Password has been changed !"),
+                        res.status(200).send({
                             success: true,
                             message: "Password has been changed ",
-                        });
-                    }
+                        })
+                    );
                 });
             }
         } catch (error) {

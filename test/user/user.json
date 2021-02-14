@@ -21,9 +21,9 @@
             "password": "Ghjjjjj"
         },
         "loginUserProperData": {
-            "emailId": "ghusalikarapayal2@gmail.com",
-            "password": "Ghjjjjj",
-            "confirmPassword": "Ghjjjjj"
+            "emailId": "ghusalikarapayal@gmail.com",
+            "password": "ppppppppyt",
+            "confirmPassword": "ppppppppyt"
         },
         "loginUserImproperData": {
             "emailId": "ghusalikarapayal2@gmail.com",
@@ -43,8 +43,12 @@
         "forgotPasswordImproperData": {
             "emailId": "ghusalikarapgmail.com"
         },
+        "forgotPasswordEmptyEmail": {
+            "emailId": ""
+        },
         "resetPasswordProperData": {
-            "newPassword": "Thanakfhfgfjg"
+            "newPassword": "AAAAAAAAAA",
+            "confirmPassword": "AAAAAAAAAA"
         },
         "resetPasswordImproperData": {
             "newPassword": "bg"

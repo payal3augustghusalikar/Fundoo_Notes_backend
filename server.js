@@ -35,7 +35,7 @@ app.use(bodyParser.json());
 
 // define a simple route and data in json format
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to FundooNotes Application. " });
+    res.json({ message: "Welcome to FundooNotes Application. " });
 });
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
@@ -43,9 +43,12 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // Require Notes routes
 require("./app/routes/route.js")(app);
 
+// Require Notes routes
+require("./app/routes/userroute.js")(app);
+
 const port = config.port || 2001;
 app.listen(port, () => {
-  logger.info(`Server is listening on port: ${port}`);
+    logger.info(`Server is listening on port: ${port}`);
 });
 
 module.exports = app;
