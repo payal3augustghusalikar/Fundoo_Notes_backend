@@ -41,10 +41,10 @@ app.get("/", (req, res) => {
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Require Notes routes
-require("./app/routes/route.js")(app);
+require("./app/routes/noteRoute.js")(app);
 
 // Require Notes routes
-require("./app/routes/userroute.js")(app);
+require("./app/routes/userRoute.js")(app);
 
 const port = config.port || 2001;
 app.listen(port, () => {

@@ -6,19 +6,20 @@
  * @since        27/01/2021  
 -----------------------------------------------------------------------------------------------*/
 
-require(`dotenv`).config()
+require(`dotenv`).config();
 
-'use strict';
+("use strict");
 
-let DEBUG_CONNECTING = 'Connecting to db server %s...';
-let DEBUG_ALREADY_CONNECTED = 'Already connected to db server %s.';
-let DEBUG_ALREADY_CONNECTING = 'Already connecting to db server %s.';
-let DEBUG_CONNECTED = 'Successfully connected to db server %s.';
-let DEBUG_CONNECTION_ERROR = 'An error has occured while connecting to db server %s.';
-let blueBird = require('bluebird');
-let mongoose = require('mongoose');
-let debug = require('debug');
-let d = debug('mongo-db-instance');
+let DEBUG_CONNECTING = "Connecting to db server %s...";
+let DEBUG_ALREADY_CONNECTED = "Already connected to db server %s.";
+let DEBUG_ALREADY_CONNECTING = "Already connecting to db server %s.";
+let DEBUG_CONNECTED = "Successfully connected to db server %s.";
+let DEBUG_CONNECTION_ERROR =
+    "An error has occured while connecting to db server %s.";
+let blueBird = require("bluebird");
+let mongoose = require("mongoose");
+let debug = require("debug");
+let d = debug("mongo-db-instance");
 let isState = (state) => {
     return mongoose.connection.readyState === mongoose.Connection.STATES[state];
 };
@@ -53,26 +54,28 @@ MongoDBAdapter.prototype.addConnectionListener = (event, cb) => {
  * @returns {Promise} Returns promise
  */
 MongoDBAdapter.prototype.connect = function() {
-    return new blueBird(function(resolve, reject) {
-        if (isState('connected')) {
-            d(DEBUG_ALREADY_CONNECTED, this.uri);
-            return resolve(this.uri);
-        }
-        this.addConnectionListener('error', (err) => {
-            d(DEBUG_CONNECTION_ERROR, this.uri);
-            return reject(err);
-        });
-        this.addConnectionListener('open', () => {
-            d(DEBUG_CONNECTED, this.uri);
-            return resolve(this.uri);
-        });
-        if (isState('connecting')) {
-            d(DEBUG_ALREADY_CONNECTING, this.uri);
-        } else {
-            d(DEBUG_CONNECTING, this.uri);
-            mongoose.connect(this.uri, this.options);
-        }
-    }.bind(this));
+    return new blueBird(
+        function(resolve, reject) {
+            if (isState("connected")) {
+                d(DEBUG_ALREADY_CONNECTED, this.uri);
+                return resolve(this.uri);
+            }
+            this.addConnectionListener("error", (err) => {
+                d(DEBUG_CONNECTION_ERROR, this.uri);
+                return reject(err);
+            });
+            this.addConnectionListener("open", () => {
+                d(DEBUG_CONNECTED, this.uri);
+                return resolve(this.uri);
+            });
+            if (isState("connecting")) {
+                d(DEBUG_ALREADY_CONNECTING, this.uri);
+            } else {
+                d(DEBUG_CONNECTING, this.uri);
+                mongoose.connect(this.uri, this.options);
+            }
+        }.bind(this)
+    );
 };
 
 const uri = process.env.MONGODB_URL;
@@ -81,14 +84,12 @@ let mongoDBAdapter = new MongoDBAdapter(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useCreateIndex: true,
 });
-mongoDBAdapter.connect()
-    .then(uri =>
-        console.log("Connected to " + uri))
-    .catch(err =>
-        console.log("Could not connect database", err));
-
-
+mongoDBAdapter
+    .connect()
+    .then((uri) => console.log("Connected to " + uri))
+    .catch((err) => console.log("Could not connect database", err));
 
 module.exports = MongoDBAdapter;

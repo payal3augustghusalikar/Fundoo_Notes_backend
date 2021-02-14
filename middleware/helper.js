@@ -53,44 +53,47 @@ class Helper {
         }
     };
 
-    // /**
-    //  * @description sends the email with reset link with token using nodemailer
-    //  * @param {*} userInfo
-    //  * @param {*} callback
-    //  */
-    // emailSender = (userInfo, callback) => {
-    //     let transporter = nodemailer.createTransport({
-    //         service: "gmail",
-    //         PORT: process.env.PORT,
-    //         secure: true,
-    //         auth: {
-    //             user: process.env.EMAIL_USER,
-    //             pass: process.env.EMAIL_PASS,
-    //         },
-    //     });
-    //     console.log(userInfo.token);
-    //     ejs.renderFile(
-    //         "app/view/resetPassword.ejs", { link: process.env.URL + "/resetPassword/" + userInfo.token },
-    //         (error, data) => {
-    //             let mailOptions = {
-    //                 from: process.env.EMAIL_USER,
-    //                 to: process.env.EMAIL_RECEIVER,
-    //                 subject: "Reset Password",
-    //                 html: data,
-    //             };
-    //             transporter.sendMail(mailOptions, (error, data) => {
-    //                 if (error) {
-    //                     logger.info(error);
-    //                     console.log("mail not sent: " + error.message);
-    //                     return callback(error, null);
-    //                 } else logger.info("mail Sent");
-    //                 console.log("mail sent: " + data);
+    /**
+     * @description sends the email with reset link with token using nodemailer
+     * @param {*} userInfo
+     * @param {*} callback
+     */
+    emailSender = (userInfo, callback) => {
+        let transporter = nodemailer.createTransport({
+            service: "gmail",
+            PORT: process.env.PORT,
+            // secure: true,
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS,
+            },
+        });
+        console.log("token in email : " + userInfo.token);
+        ejs.renderFile(
+            "app/view/resetPassword.ejs", { link: process.env.URL + "/resetPassword/" + userInfo.token },
+            (error, data) => {
+                if (error) {
+                    return console.log(error);
+                }
+                let mailOptions = {
+                    from: process.env.EMAIL_USER,
+                    to: process.env.EMAIL_RECEIVER,
+                    subject: "Reset Password",
+                    html: ejs.render(data),
+                };
+                transporter.sendMail(mailOptions, (error, data) => {
+                    if (error) {
+                        logger.info(error);
+                        console.log("mail not sent: " + error.message);
+                        return callback(error, null);
+                    } else logger.info("mail Sent");
+                    console.log("mail sent: " + data);
 
-    //                 return callback(null, data);
-    //             });
-    //         }
-    //     );
-    // };
+                    return callback(null, data);
+                });
+            }
+        );
+    };
 
     //     /**
     //      * @description sends the email with reset link with token using nodemailer
@@ -134,42 +137,42 @@ class Helper {
     //     //     );
     //     // };
 
-    emailSender = (userInfo, callback) => {
-        var transporter = nodemailer.createTransport({
-            service: "gmail",
-            PORT: process.env.PORT,
-            secure: true,
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS,
-            },
-        });
-        //localhost:2001/resetPassword/ " + currentDateTime + "+++ " + userInfo.email + "
-        // var currentDateTime = new Date();
-        http: ejs.renderFile(
-            // "app/view/forgotPassword.ejs", { link: userInfo.token },
-            "app/view/forgotPassword.ejs", { link: "http://localhost:2001/ " + userInfo.email + userInfo.token },
+    // emailSender = (userInfo, callback) => {
+    //     const transporter = nodemailer.createTransport({
+    //         service: "gmail",
+    //         PORT: process.env.PORT,
+    //         secure: true,
+    //         auth: {
+    //             user: process.env.EMAIL_USER,
+    //             pass: process.env.EMAIL_PASS,
+    //         },
+    //     });
+    //     //localhost:2001/resetPassword/ " + currentDateTime + "+++ " + userInfo.email + "
+    //     // var currentDateTime = new Date();
+    //     ejs.renderFile(
+    //         // "app/view/forgotPassword.ejs", { link: userInfo.token },
+    //         ".*/*/resetPassword.ejs", { link: "http://localhost:2001/ " + "/resetPassword/" + userInfo.token },
 
-            (error, htmldata) => {
-                var mailOptions = {
-                    from: process.env.EMAIL_USER,
-                    to: process.env.EMAIL_RECEIVER,
-                    subject: "Reset Password",
-                    html: htmldata,
-                };
-                transporter.sendMail(mailOptions, function(error, data) {
-                    if (error) {
-                        logger.info(error);
-                        console.log("mail not sent: " + error.message);
-                        return callback(error, null);
-                        // return callback(null, data);
-                    } else logger.info("mail Sent");
-                    console.log("mail sent: " + data);
-                    return callback(null, data);
-                });
-            }
-        );
-    };
+    //         (error, data) => {
+    //             var mailOptions = {
+    //                 from: process.env.EMAIL_USER,
+    //                 to: process.env.EMAIL_RECEIVER,
+    //                 subject: "Reset Your Password",
+    //                 html: data,
+    //             };
+    //             transporter.sendMail(mailOptions, function(error, data) {
+    //                 if (error) {
+    //                     logger.info(error);
+    //                     console.log("mail not sent: " + error.message);
+    //                     return callback(error, null);
+    //                     // return callback(null, data);
+    //                 } else logger.info("mail Sent");
+    //                 console.log("mail sent: " + data);
+    //                 return callback(null, data);
+    //             });
+    //         }
+    //     );
+    // };
 }
 
 module.exports = new Helper();
