@@ -130,38 +130,47 @@ class LabelController {
         try {
             const labelInfo = {
                 name: req.body.name,
-                description: req.body.description,
                 labelID: req.params.labelId,
             };
-            labelServices.update(labelInfo, (error, data) => {
-                return (
-                    error ?
-                    (logger.error(
-                            "Error updating label with id : " + req.params.labelId
-                        ),
+            const token = req.headers.authorization.split(" ")[1];
+            const validation = ControllerDataValidation.validate(labelInfo);
+            return validation.error ?
+                res.send({
+                    success: false,
+                    status: Status.Bad_Request,
+                    description: "please enter valid details",
+                }) :
+                labelServices.update(labelInfo, token, (error, data) => {
+                    return (
+                        error ?
+                        (logger.error(
+                                "Error updating label with id : " + req.params.labelId
+                            ),
+                            res.send({
+                                success: false,
+                                status_code: 500,
+                                description: "Error updating label with id : " + req.params.labelId,
+                            })) :
+                        !data ?
+                        (logger.warn(
+                                "label not found with id : " + req.params.labelId
+                            ),
+                            res.send({
+                                success: false,
+                                status_code: 404,
+                                description: "label not found with id : " + req.params.labelId,
+                            })) :
+                        logger.info("label updated successfully !"),
                         res.send({
-                            success: false,
-                            status_code: 500,
-                            description: "Error updating label with id : " + req.params.labelId,
-                        })) :
-                    !data ?
-                    (logger.warn("label not found with id : " + req.params.labelId),
-                        res.send({
-                            success: false,
-                            status_code: 404,
-                            description: "label not found with id : " + req.params.labelId,
-                        })) :
-                    logger.info("label updated successfully !"),
-                    res.send({
-                        success: true,
-                        description: "label updated successfully !",
-                        data: data,
-                    })
-                );
-            });
+                            success: true,
+                            description: "label updated successfully !",
+                            data: data,
+                        })
+                    );
+                });
         } catch (error) {
             return (
-                err.kind === "ObjectId" ?
+                error.kind === "ObjectId" ?
                 (logger.error("label not found with id " + req.params.labelId),
                     res.send({
                         success: false,
@@ -221,6 +230,47 @@ class LabelController {
             );
         }
     }
+
+    /**
+     * @description Find label by user
+     * @method findOne is service class method
+     * @param response is used to send the response
+     */
+    findOne = (req, res) => {
+        try {
+            const userID = req.body.userId;
+            labelServices.findOne(labelID, (error, data) => {
+                return (
+                    error ?
+                    (logger.error("Error retrieving label with id " + userID),
+                        res.status(500).send({
+                            success: false,
+                            description: "Error retrieving label with id " + userID,
+                        })) :
+                    !data ?
+                    (logger.warn("label not found with id : " + userID),
+                        res.status(404).send({
+                            success: false,
+                            description: "label not found with id : " + userID,
+                        })) :
+                    logger.info("label found with id " + userID),
+                    res.send({
+                        success: true,
+                        status_code: 200,
+                        description: "label found with id " + userID,
+                        data: data,
+                    })
+                );
+            });
+        } catch (error) {
+            logger.error("could not found label with id" + req.params.userID);
+            return res.send({
+                success: false,
+                status_code: 500,
+                description: "error retrieving label with id " + req.params.userID,
+            });
+        }
+    };
 }
 
 module.exports = new LabelController();

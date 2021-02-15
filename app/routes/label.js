@@ -20,6 +20,9 @@ module.exports = (app) => {
     // Retrieve a single label with labelId
     app.get("/labels/:labelId", helper.verifyToken, labels.findOne);
 
+    // Retrieve a single label with labelId
+    app.get("/labels/:userId", helper.verifyToken, labels.findOne);
+
     // Update a label with labelId
     app.put("/labels/:labelId", helper.verifyToken, labels.update);
 

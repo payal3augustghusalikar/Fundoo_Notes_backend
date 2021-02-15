@@ -44,11 +44,6 @@ class LabelModel {
         Label.findById(labelId, callback);
     };
 
-    // Retrieve all labels by user
-    findLabelByUser = (labelInfo) => {
-        return Label.find({ userId: labelInfo.userId });
-    };
-
     update = (labelInfo, callback) => {
         Label.findByIdAndUpdate(
             labelInfo.labelId, {
@@ -60,6 +55,10 @@ class LabelModel {
 
     deleteById = (labelId, callback) => {
         Label.findByIdAndRemove(labelId, callback);
+    };
+
+    findLabelByUserId = (labelInfo) => {
+        return Label.find({ userId: labelInfo.userId });
     };
 }
 
