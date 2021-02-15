@@ -21,10 +21,10 @@ const NoteSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
     },
-    labelId: {
+    labelId: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-    },
+        ref: "Label",
+    }, ],
 }, {
     timestamps: true,
 });
