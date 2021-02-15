@@ -16,39 +16,42 @@ class LabelService {
     /**
      * @description Find all the Labels and return response to controller
      * @method findAll is used to retrieve Labels
-     * @param callback is the callback for controller
      */
-    findAll = (callback) => {
-        Label.findAll(callback);
+    findAll = () => {
+        return Label.findAll();
     };
 
     /**
      * @description Find Label by id and return response to controller
      * @method findOne is used to retrieve Label by ID
-     * @param callback is the callback for controller
      */
-    findOne = (LabelID, callback) => {
-        Label.findOne(LabelID, callback);
+    findOne = (LabelId) => {
+        return Label.findOne(LabelId);
     };
 
     /**
      * @description Update Label by id and return response to controller
      * @method update is used to update Label by ID
-     * @param callback is the callback for controller
      */
-    update = (labelInfo, callback) => {
+    update = (labelInfo) => {
         labelInfo = helper.decodeToken(labelInfo, token);
-
-        Label.update(labelInfo, callback);
+        return Label.update(labelInfo);
     };
 
     /**
      * @description Delete Label by id and return response to controller
      * @method deleteById is used to remove Label by ID
-     * @param callback is the callback for controller
      */
-    delete = (LabelID, callback) => {
-        Label.deleteById(LabelID, callback);
+    delete = (labelID) => {
+        return Label.deleteById(labelID);
+    };
+
+    /**
+     * @description Find Label by id and return response to controller
+     * @method findOne is used to retrieve Label by ID
+     */
+    findLabelByUserId = (userID) => {
+        return Label.findLabelByUserId(userID);
     };
 }
 

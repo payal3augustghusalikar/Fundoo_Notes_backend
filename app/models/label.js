@@ -35,29 +35,28 @@ class LabelModel {
         return label.save({});
     };
 
-    findAll = (callback) => {
-        Label.find(callback);
+    findAll = () => {
+        return Label.find();
     };
 
-    findOne = (labelId, callback) => {
-        Label.findById(labelId, callback);
+    findOne = (labelId) => {
+        return Label.findById(labelId);
     };
 
-    update = (labelInfo, callback) => {
-        Label.findByIdAndUpdate(
+    update = (labelInfo) => {
+        return Label.findByIdAndUpdate(
             labelInfo.labelId, {
                 name: labelInfo.name,
-            }, { new: true },
-            callback
+            }, { new: true }
         );
     };
 
-    deleteById = (labelId, callback) => {
-        Label.findByIdAndRemove(labelId, callback);
+    deleteById = (labelId) => {
+        return Label.findByIdAndRemove(labelId);
     };
 
-    findLabelByUserId = (labelInfo) => {
-        return Label.find({ userId: labelInfo.userId });
+    findLabelByUserId = (userId) => {
+        return Label.find({ userId });
     };
 }
 
