@@ -1,3 +1,11 @@
+/**
+ * @module       models
+ * @file         note.js
+ * @description  noteModel class holds the databse related methods 
+ * @author       Payal Ghusalikar <payal.ghusalikar9@gmail.com>
+ * @since        27/01/2021  
+-----------------------------------------------------------------------------------------------*/
+
 const mongoose = require("mongoose");
 
 const NoteSchema = mongoose.Schema({

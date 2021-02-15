@@ -43,8 +43,10 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // Require Notes routes
 require("./app/routes/note.js")(app);
 
-// Require Notes routes
+// Require User routes
 require("./app/routes/user.js")(app);
+// Require label routes
+require("./app/routes/label.js")(app);
 
 const port = config.port || 2001;
 app.listen(port, () => {

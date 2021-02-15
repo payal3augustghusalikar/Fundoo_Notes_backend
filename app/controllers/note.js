@@ -19,35 +19,42 @@ class NoteController {
      * @param res is used to send the response
      */
     create = (req, res) => {
-        const noteInfo = {
-            title: req.body.title,
-            description: req.body.description,
-        };
+        try {
+            const noteInfo = {
+                title: req.body.title,
+                description: req.body.description,
+            };
 
-        const token = req.headers.authorization.split(" ")[1];
+            const token = req.headers.authorization.split(" ")[1];
 
-        const validation = ControllerDataValidation.validate(noteInfo);
-        return validation.error ?
-            res.status(400).send({
+            const validation = ControllerDataValidation.validate(noteInfo);
+            return validation.error ?
+                res.status(400).send({
+                    success: false,
+                    description: "please enter valid details",
+                }) :
+                noteService.create(noteInfo, token, (error, data) => {
+                    return (
+                        error ?
+                        (logger.error("Some error occurred while creating note"),
+                            res.status(500).send({
+                                success: false,
+                                description: "Some error occurred while creating note",
+                            })) :
+                        logger.info("note added successfully !"),
+                        res.status(200).send({
+                            success: true,
+                            description: "note added successfully !",
+                            data: data,
+                        })
+                    );
+                });
+        } catch (error) {
+            res.status(500).send({
                 success: false,
-                description: "please enter valid details",
-            }) :
-            noteService.create(noteInfo, token, (error, data) => {
-                return (
-                    error ?
-                    (logger.error("Some error occurred while creating note"),
-                        res.status(500).send({
-                            success: false,
-                            description: "Some error occurred while creating note",
-                        })) :
-                    logger.info("note added successfully !"),
-                    res.status(200).send({
-                        success: true,
-                        description: "note added successfully !",
-                        data: data,
-                    })
-                );
+                description: "Some error occurred while creating note",
             });
+        }
     };
 
     /**

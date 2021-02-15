@@ -52,14 +52,14 @@ class Helper {
         }
     };
 
-    decodeToken = (noteInfo, token) => {
+    decodeToken = (data, token) => {
         let decode = jwt.verify(token, process.env.SECRET_KEY);
         let userId = decode.id;
         console.log("user Id", userId);
         //console.log("service token ", userInfo.token);
-        noteInfo.userId = userId;
+        data.userId = userId;
         console.log("user id for note: ", userId);
-        return noteInfo;
+        return data;
     };
 
     /**
