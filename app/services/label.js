@@ -2,25 +2,16 @@ const Label = require("../models/label.js");
 
 const helper = require("../../middleware/helper.js");
 
-//const logger = require("../../../logger/logger.js");
-
 class LabelService {
     /**
      * @description Create and save Label then send response to controller
      * @method create is used to save the Label
-     * @param callback is the callback for controller
      */
-    create = (labelInfo, token, callback) => {
+    create = (labelInfo, token) => {
         // create a Label
         labelInfo = helper.decodeToken(labelInfo, token);
-        Label.create(labelInfo, callback);
+        return Label.create(labelInfo);
     };
-
-    // create = (labelInfo, token) => {
-    //     // create a Label
-    //     labelInfo = helper.decodeToken(labelInfo, token);
-    //     Label.create(labelInfo);
-    // };
 
     /**
      * @description Find all the Labels and return response to controller

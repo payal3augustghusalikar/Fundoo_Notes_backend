@@ -14,80 +14,51 @@ class LabelController {
     /**
      * @description Create and save a new label
      * @param res is used to send the response
+     * @param req is used to take user request
      */
+
     create = (req, res) => {
-        const labelInfo = {
-            name: req.body.name,
-        };
-        const token = req.headers.authorization.split(" ")[1];
-        const validation = ControllerDataValidation.validate(labelInfo);
-        return validation.error ?
-            res.send({
-                success: false,
-                status: Status.Bad_Request,
-                description: "please enter valid details",
-            }) :
-            labelServices.create(labelInfo, token, (error, data) => {
-                return (
-                    error ?
-                    (logger.error("Some error occurred while creating label"),
+        try {
+            const labelInfo = {
+                name: req.body.name,
+            };
+            const token = req.headers.authorization.split(" ")[1];
+            const validation = ControllerDataValidation.validate(labelInfo);
+            return validation.error ?
+                res.send({
+                    success: false,
+                    status: Status.Bad_Request,
+                    description: "please enter valid details",
+                }) :
+                labelServices
+                .create(labelInfo, token)
+                .then((data) => {
+                    console.log("data : " + data);
+                    logger.info("label added successfully !"),
+                        res.send({
+                            success: true,
+                            status: Status.Success,
+                            description: "label added successfully !",
+                            data: data,
+                        });
+                })
+                .catch((error) => {
+                    logger.error("Some error occurred while creating label", +error),
                         res.send({
                             success: false,
                             status: Status.Internal_Server_Error,
                             description: "Some error occurred while creating label",
-                        })) :
-                    logger.info("label added successfully !"),
-                    res.send({
-                        success: true,
-                        status: Status.Success,
-                        description: "label added successfully !",
-                        data: data,
-                    })
-                );
-            });
+                        });
+                });
+        } catch (error) {
+            logger.error("Some error occurred while creating label"),
+                res.send({
+                    success: false,
+                    status: Status.Internal_Server_Error,
+                    description: "Some error occurred while creating label" + error,
+                });
+        }
     };
-
-    // create = (req, res) => {
-    //     try {
-    //         const labelInfo = {
-    //             name: req.body.name,
-    //         };
-    //         const token = req.headers.authorization.split(" ")[1];
-    //         const validation = ControllerDataValidation.validate(labelInfo);
-    //         return validation.error ?
-    //             res.send({
-    //                 success: false,
-    //                 status: Status.Bad_Request,
-    //                 description: "please enter valid details",
-    //             }) :
-    //             labelServices
-    //             .create(labelInfo, token)
-    //             .then((data) => {
-    //                 logger.info("label added successfully !"),
-    //                     res.send({
-    //                         success: true,
-    //                         status: Status.Success,
-    //                         description: "label added successfully !",
-    //                         data: data,
-    //                     });
-    //             })
-    //             .catch((error) => {
-    //                 logger.error("Some error occurred while creating label"),
-    //                     res.send({
-    //                         success: false,
-    //                         status: Status.Internal_Server_Error,
-    //                         description: "Some error occurred while creating label",
-    //                     });
-    //             });
-    //     } catch (error) {
-    //         logger.error("Some error occurred while creating label"),
-    //             res.send({
-    //                 success: false,
-    //                 status: Status.Internal_Server_Error,
-    //                 description: "Some error occurred while creating label",
-    //             });
-    //     }
-    // };
 
     /**
      * @description Find all the label

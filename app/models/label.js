@@ -26,23 +26,14 @@ const Label = mongoose.model("Label", LabelSchema);
 class LabelModel {
     /**
      * @param {*} labelInfo
-     * @param {*} callback
      */
-    create = (labelInfo, callback) => {
+    create = (labelInfo) => {
         const label = new Label({
             name: labelInfo.name,
             userId: labelInfo.userId,
         });
-        label.save(callback);
+        return label.save({});
     };
-
-    // create = (labelInfo) => {
-    //     const label = new Label({
-    //         name: labelInfo.name,
-    //         userId: labelInfo.userId,
-    //     });
-    //     label.save();
-    // };
 
     findAll = (callback) => {
         Label.find(callback);
