@@ -1,9 +1,8 @@
 const labelServices = require("../services/label.js");
 const Joi = require("joi");
 const logger = require("../../logger/logger.js");
-//const Status = require("./middleware/statusCode.json")
 const Status = require("../../middleware/statusCode.json");
-//const Status = require("../../../middleware/statusCode.json");
+
 const ControllerDataValidation = Joi.object({
     name: Joi.string()
         .regex(/^[a-zA-Z0-1]+$/)
@@ -48,6 +47,48 @@ class LabelController {
             });
     };
 
+    // create = (req, res) => {
+    //     try {
+    //         const labelInfo = {
+    //             name: req.body.name,
+    //         };
+    //         const token = req.headers.authorization.split(" ")[1];
+    //         const validation = ControllerDataValidation.validate(labelInfo);
+    //         return validation.error ?
+    //             res.send({
+    //                 success: false,
+    //                 status: Status.Bad_Request,
+    //                 description: "please enter valid details",
+    //             }) :
+    //             labelServices
+    //             .create(labelInfo, token)
+    //             .then((data) => {
+    //                 logger.info("label added successfully !"),
+    //                     res.send({
+    //                         success: true,
+    //                         status: Status.Success,
+    //                         description: "label added successfully !",
+    //                         data: data,
+    //                     });
+    //             })
+    //             .catch((error) => {
+    //                 logger.error("Some error occurred while creating label"),
+    //                     res.send({
+    //                         success: false,
+    //                         status: Status.Internal_Server_Error,
+    //                         description: "Some error occurred while creating label",
+    //                     });
+    //             });
+    //     } catch (error) {
+    //         logger.error("Some error occurred while creating label"),
+    //             res.send({
+    //                 success: false,
+    //                 status: Status.Internal_Server_Error,
+    //                 description: "Some error occurred while creating label",
+    //             });
+    //     }
+    // };
+
     /**
      * @description Find all the label
      * @method findAll is service class method
@@ -65,7 +106,7 @@ class LabelController {
                     (logger.info("Successfully retrieved labels !"),
                         res.send({
                             success: true,
-                            status_code: 200,
+                            status_code: Status.Success,
                             description: `label found`,
                             data: data,
                         }));
@@ -105,7 +146,7 @@ class LabelController {
                     logger.info("label found with id " + labelID),
                     res.send({
                         success: true,
-                        status_code: 200,
+                        status_code: Status.Success,
                         description: "label found with id " + labelID,
                         data: data,
                     })
@@ -163,6 +204,7 @@ class LabelController {
                         logger.info("label updated successfully !"),
                         res.send({
                             success: true,
+                            status_code: Status.Success,
                             description: "label updated successfully !",
                             data: data,
                         })
@@ -207,7 +249,7 @@ class LabelController {
                     logger.info("label deleted successfully!"),
                     res.send({
                         success: true,
-                        status_code: 200,
+                        status_code: Status.Success,
                         description: "label deleted successfully!",
                     })
                 );
@@ -243,20 +285,22 @@ class LabelController {
                 return (
                     error ?
                     (logger.error("Error retrieving label with id " + userID),
-                        res.status(500).send({
+                        res.send({
                             success: false,
+                            status_code: 500,
                             description: "Error retrieving label with id " + userID,
                         })) :
                     !data ?
                     (logger.warn("label not found with id : " + userID),
-                        res.status(404).send({
+                        res.send({
                             success: false,
+                            status_code: 404,
                             description: "label not found with id : " + userID,
                         })) :
                     logger.info("label found with id " + userID),
                     res.send({
                         success: true,
-                        status_code: 200,
+                        status_code: Status.Success,
                         description: "label found with id " + userID,
                         data: data,
                     })

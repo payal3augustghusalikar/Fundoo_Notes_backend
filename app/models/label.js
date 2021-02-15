@@ -36,6 +36,14 @@ class LabelModel {
         label.save(callback);
     };
 
+    // create = (labelInfo) => {
+    //     const label = new Label({
+    //         name: labelInfo.name,
+    //         userId: labelInfo.userId,
+    //     });
+    //     label.save();
+    // };
+
     findAll = (callback) => {
         Label.find(callback);
     };

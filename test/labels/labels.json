@@ -1,0 +1,30 @@
+{
+    "labels": {
+        "createLabel": {
+            "name": "Newwww"
+        },
+        "labelToUpdate": {
+            "labelId": 2,
+            "name": "payalllchanged"
+        },
+        "labelToDelete": {
+            "labelId": 3,
+            "name": "Ccompany"
+        },
+        "labelToPost": {
+            "labelId": 9,
+            "name": "Ccompany"
+        },
+        "labelWithoutname": {
+            "labelId": 6
+        },
+        "labelWithEmptyname": {
+            "labelId": 11,
+            "name": ""
+        },
+        "labelWithImpropername": {
+            "labelId": 12,
+            "name": "co"
+        }
+    }
+}

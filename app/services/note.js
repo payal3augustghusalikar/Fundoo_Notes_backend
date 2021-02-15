@@ -38,8 +38,8 @@ class LabelService {
      * @method findOne is used to retrieve Label by ID
      * @param callback is the callback for controller
      */
-    findOne = (LabelID, callback) => {
-        Label.findOne(LabelID, callback);
+    findNotesByLabel = (LabelID, callback) => {
+        Label.findNotesByLabel(LabelID, callback);
     };
 
     /**

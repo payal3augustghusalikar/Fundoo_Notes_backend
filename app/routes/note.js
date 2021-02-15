@@ -20,6 +20,9 @@ module.exports = (app) => {
     // Retrieve a single note with noteId
     app.get("/notes/:noteId", helper.verifyToken, notes.findOne);
 
+    // Retrieve a single note with labelId
+    //  app.get("/notes/:labelId", helper.verifyToken, notes.findNotesByLabelId);
+
     // Update a note with noteId
     app.put("/notes/:noteId", helper.verifyToken, notes.update);
 

@@ -16,6 +16,12 @@ class LabelService {
         Label.create(labelInfo, callback);
     };
 
+    // create = (labelInfo, token) => {
+    //     // create a Label
+    //     labelInfo = helper.decodeToken(labelInfo, token);
+    //     Label.create(labelInfo);
+    // };
+
     /**
      * @description Find all the Labels and return response to controller
      * @method findAll is used to retrieve Labels
