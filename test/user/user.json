@@ -11,19 +11,35 @@
             "password": "Ghjjjjj"
         },
         "userWithEmptyEmail": {
-            "name": "",
+            "name": "YYYYYYY",
+            "emailId": "",
+            "password": "Ghjjjjj"
+        },
+        "userWithThan3CharInName": {
+            "name": "df",
             "emailId": "ghusalikarapayal2@gmail.com",
             "password": "Ghjjjjj"
         },
+        "PasswordAndConfirmPasswordNotSame": {
+            "name": "dfttttt",
+            "emailId": "ghusalikarapayal5555@gmail.com",
+            "password": "Ghjjjjj",
+            "confirmPassword": "Ghj"
+        },
+        "loginPasswordAndConfirmPasswordNotSame": {
+            "emailId": "abc@gmail.com",
+            "password": "newPassword2",
+            "confirmPassword": "Ghj"
+        },
         "userWithImproperEmail": {
-            "name": "",
+            "name": "FFFFF",
             "emailId": "ghusalikarapayal2gmail.com",
             "password": "Ghjjjjj"
         },
         "loginUserProperData": {
-            "emailId": "ghusalikarapayal@gmail.com",
-            "password": "ppppppppyt",
-            "confirmPassword": "ppppppppyt"
+            "emailId": "abc@gmail.com",
+            "password": "newPassword2",
+            "confirmPassword": "newPassword2"
         },
         "loginUserImproperData": {
             "emailId": "ghusalikarapayal2@gmail.com",
@@ -54,7 +70,7 @@
             "newPassword": "bg"
         },
         "properToken": {
-            "token": "'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbElkIjoiZ2h1c2FsaWthcnBheWFsQGdtYWlsLmNvbSIsImlkIjoiNjAxOGRiOWM3MzU1YTkyM2I4OGFmM2UwIiwiaWF0IjoxNjEyMzgyMzg3LCJleHAiOjE2MTI0Njg3ODd9.6I8fMEnAS0_PpSMl5ixe0zPWhh0Vpx9QaNFQYShJLjA'"
+            "token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbElkIjoiYWJjZEBnbWFpbC5jb20iLCJpZCI6IjYwMTNjYWE4N2E3NGIwMjlhOGM5NDliYyIsImlhdCI6MTYxMzQ0NDgxNiwiZXhwIjoxNjEzNTMxMjE2fQ.H9e3lT0Dx5aKXWv1Z1YEJdAWYXXU2i7FE0EfckAlVic"
         },
         "ImproperToken": {
             "token": "'JhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbElkIjoiZ2h1c2FsaWthcnBheWFsQGdtYWlsLmNvbSIsImlkIjoiNjAxOGRiOWM3MzU1YTkyM2I4OGFmM2UwIiwiaWF0IjoxNjEyMzgyMzg3LCJleHAiOjE2MTI0Njg3ODd9.6I8fMEnAS0_PpSMl5ixe0zPWhh0Vpx9QaNFQYShJLjA'"

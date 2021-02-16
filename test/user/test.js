@@ -82,6 +82,34 @@ describe("register", () => {
                 done();
             });
     });
+
+    it("givenUser_whenGivenLessThan3CharInName_shouldNotSaveUser", (done) => {
+        let userInfo = userData.user.userWithThan3CharInName;
+        chai
+            .request(server)
+            .post("/register")
+            .send(userInfo)
+            .end((err, res) => {
+                res.should.have.status(400);
+                res.body.should.be.a("object");
+
+                done();
+            });
+    });
+
+    it("givenUser_whenNotGivenPasswordAndConfirmPasswordSame_shouldNotSaveUser", (done) => {
+        let userInfo = userData.user.PasswordAndConfirmPasswordNotSame;
+        chai
+            .request(server)
+            .post("/register")
+            .send(userInfo)
+            .end((err, res) => {
+                res.should.have.status(400);
+                res.body.should.be.a("object");
+
+                done();
+            });
+    });
 });
 
 describe("Login", () => {
@@ -122,6 +150,19 @@ describe("Login", () => {
                 done();
             });
     });
+
+    it("givenUser_whenGivenImproperData_shouldNotRespondsWithJson", (done) => {
+        let userInfo = userData.user.loginUserImproperData;
+        chai
+            .request(server)
+            .post("/login")
+            .send(userInfo)
+            .end((err, res) => {
+                res.should.have.status(400);
+                res.body.should.be.a("object");
+                done();
+            });
+    });
 });
 
 describe("ForgotPassword", () => {
@@ -139,36 +180,36 @@ describe("ForgotPassword", () => {
             .catch(done);
     });
 
-    // it("givenUser_whenGivenImproperData_shouldNotRespondsWithLink", (done) => {
-    //     let userInfo = userData.user.forgotPasswordImproperData;
-    //     chai
-    //         .request(server)
-    //         .post("/forgotpassword")
-    //         .send(userInfo)
-    //         .end((err, res) => {
-    //             res.should.have.status(500);
-    //             res.body.should.be.a("object");
-    //             done();
-    //         });
-    // });
-    // it("givenUser_whenGivenEmptyEmail_shouldNotRespondsWithLink", (done) => {
-    //     let userInfo = userData.user.forgotPasswordEmptyEmail;
-    //     chai
-    //         .request(server)
-    //         .post("/forgotpassword")
-    //         .send(userInfo)
-    //         .end((err, res) => {
-    //             res.should.have.status(500);
-    //             // res.body.should.be.a("object");
-    //             done();
-    //         });
-    // });
+    it("givenUser_whenGivenImproperData_shouldNotRespondsWithLink", (done) => {
+        let userInfo = userData.user.forgotPasswordImproperData;
+        chai
+            .request(server)
+            .post("/forgotpassword")
+            .send(userInfo)
+            .end((err, res) => {
+                res.should.have.status(500);
+                res.body.should.be.a("object");
+                done();
+            });
+    });
+    it("givenUser_whenGivenEmptyEmail_shouldNotRespondsWithLink", (done) => {
+        let userInfo = userData.user.forgotPasswordEmptyEmail;
+        chai
+            .request(server)
+            .post("/forgotpassword")
+            .send(userInfo)
+            .end((err, res) => {
+                res.should.have.status(500);
+                // res.body.should.be.a("object");
+                done();
+            });
+    });
 });
 
 describe("Resetpassword", () => {
     it.skip("givenUser_whenGivenProperData_shouldResetPassword", (done) => {
         let userInfo = userData.user.resetPasswordProperData;
-        let token = userData.user.properToken;
+        let token = userData.user.properToken.token;
         chai
             .request(server)
             .put("/resetpassword")
@@ -183,6 +224,20 @@ describe("Resetpassword", () => {
     it("givenUser_whenGivenImproperData_shouldNotResetPassword", (done) => {
         let userInfo = userData.user.resetPasswordImproperData;
         let token = userData.user.properToken;
+        chai
+            .request(server)
+            .put("/resetpassword")
+            .send(userInfo)
+            .set("token", token)
+            .end((err, res) => {
+                res.should.have.status(401);
+                res.body.should.be.a("object");
+                done();
+            });
+    });
+    it("givenUser_whenGivenPasswordConfirmPasswordNotSame_shouldNotResetPassword", (done) => {
+        let userInfo = userData.user.resetPasswordProperData;
+        let token = userData.user.properToken.token;
         chai
             .request(server)
             .put("/resetpassword")

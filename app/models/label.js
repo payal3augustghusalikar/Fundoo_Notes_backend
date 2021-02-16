@@ -13,6 +13,7 @@ const LabelSchema = mongoose.Schema({
         type: String,
         required: true,
     },
+
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
@@ -25,37 +26,40 @@ const Label = mongoose.model("Label", LabelSchema);
 class LabelModel {
     /**
      * @param {*} labelInfo
+     * @param {*} callback
      */
-    create = (labelInfo) => {
+    create = (labelInfo, callback) => {
         const label = new Label({
             name: labelInfo.name,
             userId: labelInfo.userId,
         });
-        return label.save({});
+        return label.save(callback);
     };
 
-    findAll = () => {
-        return Label.find();
+    findAll = (callback) => {
+        return Label.find(callback);
     };
 
-    findOne = (labelId) => {
-        return Label.findById(labelId);
+    findOne = (labelId, callback) => {
+        return Label.findById(labelId, callback);
     };
 
-    update = (labelInfo) => {
+    // Retrieve all labels by user
+    findLabelByUser = (labelInfo) => {
+        return Label.find({ userId: labelInfo.userId });
+    };
+
+    update = (labelInfo, callback) => {
         return Label.findByIdAndUpdate(
             labelInfo.labelId, {
                 name: labelInfo.name,
-            }, { new: true }
+            }, { new: true },
+            callback
         );
     };
 
-    deleteById = (labelId) => {
-        return Label.findByIdAndRemove(labelId);
-    };
-
-    findLabelByUserId = (userId) => {
-        return Label.find({ userId });
+    deleteById = (labelId, callback) => {
+        return Label.findByIdAndRemove(labelId, callback);
     };
 }
 

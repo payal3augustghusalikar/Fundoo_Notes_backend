@@ -101,7 +101,8 @@ describe("labels API", () => {
                 .end((err, res) => {
                     res.should.have.status(401);
                     done();
-                });
+                })
+                .catch(done());
         });
 
         it("givenlabels_WhenGivenEmptyName_ShouldNotPostlabel", (done) => {

@@ -24,9 +24,7 @@ class NoteController {
                 title: req.body.title,
                 description: req.body.description,
             };
-
             const token = req.headers.authorization.split(" ")[1];
-
             const validation = ControllerDataValidation.validate(noteInfo);
             return validation.error ?
                 res.status(400).send({
@@ -39,7 +37,7 @@ class NoteController {
                         (logger.error("Some error occurred while creating note"),
                             res.status(500).send({
                                 success: false,
-                                description: "Some error occurred while creating note",
+                                description: "Some error occurred while creating note " + error,
                             })) :
                         logger.info("note added successfully !"),
                         res.status(200).send({

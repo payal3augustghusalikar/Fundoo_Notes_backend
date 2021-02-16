@@ -152,18 +152,20 @@ class LabelController {
             };
             const token = req.headers.authorization.split(" ")[1];
             const validation = ControllerDataValidation.validate(labelInfo);
-            // validation.error ?
-            //     res.send({
-            //         success: false,
-            //         status: Status.Bad_Request,
-            //         description: "please enter valid details",
-            //     }) :
-            labelServices
+            validation.error ?
+                res.send({
+                    success: false,
+                    status: Status.Bad_Request,
+                    description: "please enter valid details",
+                }) :
+                labelServices
                 .update(labelInfo, token)
                 .then((data) => {
                     !data
                         ?
-                        (logger.warn("label not found with id : " + req.params.labelId),
+                        (logger.warn(
+                                "label not found with id : " + req.params.labelId
+                            ),
                             res.send({
                                 success: false,
                                 status_code: 404,
@@ -178,7 +180,9 @@ class LabelController {
                         });
                 })
                 .catch((error) => {
-                    logger.error("Error updating label with id : " + req.params.labelId),
+                    logger.error(
+                            "Error updating label with id : " + req.params.labelId
+                        ),
                         res.send({
                             success: false,
                             status_code: 500,

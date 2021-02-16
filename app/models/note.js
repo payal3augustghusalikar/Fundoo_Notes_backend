@@ -39,7 +39,7 @@ class NoteModel {
         const note = new Note({
             title: noteInfo.title,
             description: noteInfo.description || "Empty description",
-            labelId: noteInfo.labelId,
+            userId: noteInfo.userId,
         });
         note.save(callback);
     };

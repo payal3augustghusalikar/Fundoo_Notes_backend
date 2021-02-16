@@ -85,7 +85,7 @@ class userController {
                             res.status(404).send({
                                 success: false,
                                 status_code: 404,
-                                message: "Auth Failed",
+                                message: "Auth Failed " + error,
                             })) :
                         res.status(200).send({
                             success: true,
