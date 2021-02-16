@@ -36,19 +36,35 @@ class LabelModel {
         return label.save(callback);
     };
 
+    /**
+     *
+     * @param {*} callback
+     */
     findAll = (callback) => {
         return Label.find(callback);
     };
-
+    /**
+     *
+     * @param {*} labelId
+     * @param {*} callback
+     */
     findOne = (labelId, callback) => {
         return Label.findById(labelId, callback);
     };
 
-    // Retrieve all labels by user
+    /**
+     *
+     * @param {*} labelInfo
+     */
     findLabelByUser = (labelInfo) => {
         return Label.find({ userId: labelInfo.userId });
     };
 
+    /**
+     *
+     * @param {*} labelInfo
+     * @param {*} callback
+     */
     update = (labelInfo, callback) => {
         return Label.findByIdAndUpdate(
             labelInfo.labelID, {
@@ -58,6 +74,11 @@ class LabelModel {
         );
     };
 
+    /**
+     *
+     * @param {*} labelId
+     * @param {*} callback
+     */
     deleteById = (labelId, callback) => {
         return Label.findByIdAndRemove(labelId, callback);
     };

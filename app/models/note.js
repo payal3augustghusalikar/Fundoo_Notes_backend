@@ -43,19 +43,34 @@ class NoteModel {
         });
         note.save(callback);
     };
-
+    /**
+     *
+     * @param {*} callback
+     */
     findAll = (callback) => {
         Note.find(callback);
     };
-
+    /**
+     *
+     * @param {*} noteID
+     * @param {*} callback
+     */
     findOne = (noteID, callback) => {
         Note.findById(noteID, callback);
     };
-
+    /**
+     *
+     * @param {*} labelId
+     * @param {*} callback
+     */
     findNotesByLabel = (labelId, callback) => {
         Note.findById(labelId, callback);
     };
-
+    /**
+     *
+     * @param {*} noteInfo
+     * @param {*} callback
+     */
     update = (noteInfo, callback) => {
         Note.findByIdAndUpdate(
             noteInfo.noteID, {
@@ -65,7 +80,11 @@ class NoteModel {
             callback
         );
     };
-
+    /**
+     *
+     * @param {*} noteID
+     * @param {*} callback
+     */
     deleteById = (noteID, callback) => {
         Note.findByIdAndRemove(noteID, callback);
     };

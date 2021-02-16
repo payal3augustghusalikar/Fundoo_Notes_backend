@@ -39,10 +39,7 @@ class Helper {
             let token = req.headers.authorization.split(" ")[1];
             console.log(token);
             const decode = jwt.verify(token, process.env.SECRET_KEY);
-            // let userId = decode.name;
             console.log("decode for verify: " + decode);
-            // // let userId = decode.id;
-            // console.log("user Id in verify token: ", userId);
             req.userData = decode;
             let userId = decode.name;
             console.log("user Id in verify token: ", userId);
@@ -61,7 +58,6 @@ class Helper {
         let decode = jwt.verify(token, process.env.SECRET_KEY);
         let userId = decode.id;
         console.log("user Id", userId);
-        //console.log("service token ", userInfo.token);
         noteInfo.userId = userId;
         console.log("user id for note: ", userId);
         return noteInfo;
