@@ -51,7 +51,7 @@ class LabelModel {
 
     update = (labelInfo, callback) => {
         return Label.findByIdAndUpdate(
-            labelInfo.labelId, {
+            labelInfo.labelID, {
                 name: labelInfo.name,
             }, { new: true },
             callback

@@ -39,6 +39,7 @@ class LabelService {
      * @param callback is the callback for controller
      */
     update = (labelInfo, callback) => {
+        //labelInfo = helper.decodeToken(labelInfo, token);
         return Label.update(labelInfo, callback);
     };
 

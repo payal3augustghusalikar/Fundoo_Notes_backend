@@ -151,21 +151,19 @@ class LabelController {
                 labelID: req.params.labelId,
             };
             const token = req.headers.authorization.split(" ")[1];
-            const validation = ControllerDataValidation.validate(labelInfo);
-            validation.error ?
-                res.send({
-                    success: false,
-                    status: Status.Bad_Request,
-                    description: "please enter valid details",
-                }) :
-                labelServices
-                .update(labelInfo, token)
+            // const validation = ControllerDataValidation.validate(labelInfo);
+            // validation.error ?
+            // res.send({
+            //     success: false,
+            //     status: Status.Bad_Request,
+            //     description: "please enter valid details",
+            // }) :
+            labelServices
+                .update(labelInfo)
                 .then((data) => {
                     !data
                         ?
-                        (logger.warn(
-                                "label not found with id : " + req.params.labelId
-                            ),
+                        (logger.warn("label not found with id : " + req.params.labelId),
                             res.send({
                                 success: false,
                                 status_code: 404,
@@ -180,13 +178,11 @@ class LabelController {
                         });
                 })
                 .catch((error) => {
-                    logger.error(
-                            "Error updating label with id : " + req.params.labelId
-                        ),
+                    logger.error("Error updating label with id : " + req.params.labelId),
                         res.send({
                             success: false,
                             status_code: 500,
-                            description: "Error updating label with id : " + req.params.labelId,
+                            description: "Error updating label with id : " + req.params.labelId + error,
                         });
                 });
         } catch (error) {
@@ -196,13 +192,13 @@ class LabelController {
                     res.send({
                         success: false,
                         status_code: 404,
-                        description: "label not found with id " + req.params.labelId,
+                        description: "label not found with id " + req.params.labelId + error,
                     })) :
                 logger.error("Error updating label with id " + req.params.labelId),
                 res.send({
                     success: false,
                     status_code: 500,
-                    description: "Error updating label with id " + req.params.labelId,
+                    description: "Error updating label with id " + req.params.labelId + error,
                 })
             );
         }
