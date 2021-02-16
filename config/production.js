@@ -13,23 +13,23 @@ const winston = require("winston");
  * @exports : Exports production Config Environment based Configuration
  */
 module.exports = () => {
-  return {
-    port: process.env.PROD_APP_PORT || 4000,
-    logger: winston.createLogger({
-      format: winston.format.json(),
-      transports: [
-        new winston.transports.File({
-          filename: "./log/error.log",
-          level: "error",
+    return {
+        port: process.env.PROD_APP_PORT || 4000,
+        logger: winston.createLogger({
+            format: winston.format.json(),
+            transports: [
+                new winston.transports.File({
+                    filename: "./log/error.log",
+                    level: "error",
+                }),
+                new winston.transports.File({
+                    filename: "./log/info.log",
+                    level: "info",
+                }),
+            ],
         }),
-        new winston.transports.File({
-          filename: "./log/info.log",
-          level: "info",
-        }),
-      ],
-    }),
-    database: {
-      dbURL: process.env.MONGODB_URL,
-    },
-  };
+        database: {
+            dbURI: `mongodb+srv://${process.env.HOST}/${process.env.fundooNotes}`,
+        },
+    };
 };
