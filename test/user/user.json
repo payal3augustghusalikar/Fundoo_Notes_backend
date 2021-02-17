@@ -2,8 +2,9 @@
     "user": {
         "registerUserProperData": {
             "name": "Payal",
-            "emailId": "ghusalikarapayal12@gmail.com",
-            "password": "Ghjjjjj"
+            "emailId": "ghusalikarapayal10@gmail.com",
+            "password": "Ghjjjjj",
+            "confirmPassword": "Ghjjjjj"
         },
         "userWithEmptyName": {
             "name": "",
@@ -70,7 +71,7 @@
             "newPassword": "bg"
         },
         "properToken": {
-            "token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbElkIjoiYWJjZEBnbWFpbC5jb20iLCJpZCI6IjYwMTNjYWE4N2E3NGIwMjlhOGM5NDliYyIsImlhdCI6MTYxMzQ0NDgxNiwiZXhwIjoxNjEzNTMxMjE2fQ.H9e3lT0Dx5aKXWv1Z1YEJdAWYXXU2i7FE0EfckAlVic"
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbElkIjoiYWJjZEBnbWFpbC5jb20iLCJpZCI6IjYwMTNjYWE4N2E3NGIwMjlhOGM5NDliYyIsImlhdCI6MTYxMzQ0NDgxNiwiZXhwIjoxNjEzNTMxMjE2fQ.H9e3lT0Dx5aKXWv1Z1YEJdAWYXXU2i7FE0EfckAlVic"
         },
         "ImproperToken": {
             "token": "'JhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbElkIjoiZ2h1c2FsaWthcnBheWFsQGdtYWlsLmNvbSIsImlkIjoiNjAxOGRiOWM3MzU1YTkyM2I4OGFmM2UwIiwiaWF0IjoxNjEyMzgyMzg3LCJleHAiOjE2MTI0Njg3ODd9.6I8fMEnAS0_PpSMl5ixe0zPWhh0Vpx9QaNFQYShJLjA'"

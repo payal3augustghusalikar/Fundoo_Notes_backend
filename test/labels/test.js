@@ -12,6 +12,7 @@ let server = require("../../server");
 chai.use(chaiHttp);
 const greet = require("./labels.json");
 chai.should();
+const token = greet.labels.properToken.token;
 
 describe("labels API", () => {
     /**
@@ -24,9 +25,11 @@ describe("labels API", () => {
             chai
                 .request(server)
                 .get("/labels")
+                // .set("Accept", "application/json")
+                .set("x-auth-token", token)
                 .end((err, res) => {
                     res.should.have.status(200);
-                    res.body.should.be.a("array");
+                    res.body.should.be.a("object");
                     done();
                 });
         });
@@ -36,6 +39,7 @@ describe("labels API", () => {
             chai
                 .request(server)
                 .get("/not")
+                .set("x-auth-token", token)
                 .end((err, res) => {
                     res.should.have.status(404);
                     done();
@@ -48,10 +52,12 @@ describe("labels API", () => {
      */
     describe("/GET /labels/labelId", () => {
         it("givenlabels_WhenGivenProperlabelId_ShouldGiveObject", (done) => {
-            const labelId = 2;
+            const labelId = "602c0f468fdd242d10470c23";
             chai
                 .request(server)
                 .get("/labels/" + labelId)
+                // .set("Accept", "application/json")
+                .set("x-auth-token", token)
                 .end((err, response) => {
                     response.should.have.status(200);
                     response.body.should.be.a("object");
@@ -82,11 +88,18 @@ describe("labels API", () => {
             const label = greet.labels.labelToPost;
             chai
                 .request(server)
-                .post("/labels/")
+                .post("/labels")
                 .send(label)
+                //  .set("Accept", "application/json")
+                .set("Authorization", `Bearer ${token}`)
                 .end((err, response) => {
                     response.should.have.status(200);
                     response.body.should.be.a("object");
+                    response.body.should.have.property("name").eq("Newwww");
+
+                    // response.body.should.have.property("greetingId").eq(9);
+                    // response.body.should.have.property("name").eq("Newwww");
+                    // response.body.should.have.property("message").eq("CHello");
                     done();
                 });
         });
@@ -98,7 +111,8 @@ describe("labels API", () => {
                 .request(server)
                 .post("/labels/")
                 .send(label)
-                .end((err, res) => {
+
+            .end((err, res) => {
                     res.should.have.status(401);
                     done();
                 })
@@ -113,6 +127,19 @@ describe("labels API", () => {
                 .send(label)
                 .end((err, res) => {
                     res.should.have.status(401);
+                    done();
+                });
+        });
+
+        it("givenlabels_WhenGiven2charInName_ShouldNotPostlabel", (done) => {
+            const label = greet.labels.postlabelWithImpropername;
+            chai
+                .request(server)
+                .post("/labels")
+                .send(label)
+                .end((err, res) => {
+                    res.should.have.status(401);
+                    //res.should.have.message.eq("please enter valid details");
                     done();
                 });
         });

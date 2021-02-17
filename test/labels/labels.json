@@ -4,7 +4,7 @@
             "name": "Newwww"
         },
         "labelToUpdate": {
-            "labelId": 2,
+            "labelId": "602bf9c1996cc9108467ac7a",
             "name": "payalllchanged"
         },
         "labelToDelete": {
@@ -12,19 +12,24 @@
             "name": "Ccompany"
         },
         "labelToPost": {
-            "labelId": 9,
             "name": "Ccompany"
         },
-        "labelWithoutname": {
-            "labelId": 6
-        },
+        "labelWithoutname": {},
         "labelWithEmptyname": {
-            "labelId": 11,
             "name": ""
+        },
+        "postlabelWithImpropername": {
+            "name": "co"
         },
         "labelWithImpropername": {
             "labelId": 12,
             "name": "co"
+        },
+        "properToken": {
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbElkIjoiYWJjZEBnbWFpbC5jb20iLCJpZCI6IjYwMTNjYWE4N2E3NGIwMjlhOGM5NDliYyIsImlhdCI6MTYxMzQ0NDgxNiwiZXhwIjoxNjEzNTMxMjE2fQ.H9e3lT0Dx5aKXWv1Z1YEJdAWYXXU2i7FE0EfckAlVic"
+        },
+        "ImproperToken": {
+            "token": "'JhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbElkIjoiZ2h1c2FsaWthcnBheWFsQGdtYWlsLmNvbSIsImlkIjoiNjAxOGRiOWM3MzU1YTkyM2I4OGFmM2UwIiwiaWF0IjoxNjEyMzgyMzg3LCJleHAiOjE2MTI0Njg3ODd9.6I8fMEnAS0_PpSMl5ixe0zPWhh0Vpx9QaNFQYShJLjA'"
         }
     }
 }

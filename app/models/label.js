@@ -29,12 +29,13 @@ class LabelModel {
      * @param {*} labelInfo
      * @param {*} callback
      */
-    create = (labelInfo, callback) => {
+    create = async(labelInfo, callback) => {
         const label = new Label({
             name: labelInfo.name,
             userId: labelInfo.userId,
         });
-        return label.save(callback);
+        const data = await label.save(callback);
+        return data;
     };
 
     /**

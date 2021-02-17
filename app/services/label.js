@@ -8,10 +8,10 @@ class LabelService {
      * @method create is used to save the Label
      * @param callback is the callback for controller
      */
-    create = (labelInfo, token, callback) => {
+    create = async(labelInfo, token, callback) => {
         console.log("token in service : " + token);
         // create a Label
-        labelInfo = helper.decodeToken(labelInfo, token);
+        labelInfo = await helper.decodeToken(labelInfo, token);
         return Label.create(labelInfo, callback);
     };
 
@@ -38,9 +38,10 @@ class LabelService {
      * @method update is used to update Label by ID
      * @param callback is the callback for controller
      */
-    update = (labelInfo, callback) => {
+    update = async(labelInfo, callback) => {
         //labelInfo = helper.decodeToken(labelInfo, token);
-        return Label.update(labelInfo, callback);
+        const data = await Label.update(labelInfo, callback);
+        return data;
     };
 
     /**

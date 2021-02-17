@@ -45,6 +45,7 @@ require("./app/routes/note.js")(app);
 
 // Require User routes
 require("./app/routes/user.js")(app);
+
 // Require label routes
 require("./app/routes/label.js")(app);
 
