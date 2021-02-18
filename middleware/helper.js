@@ -18,6 +18,7 @@ class Helper {
      * @param {} data
      */
     createToken = (data) => {
+        console.log("creating token");
         return jwt.sign({
                 emailId: data.emailId,
                 id: data._id,
