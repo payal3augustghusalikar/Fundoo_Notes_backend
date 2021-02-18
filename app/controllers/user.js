@@ -67,55 +67,6 @@ class userController {
      * @method login is service class method
      * @param response is used to send the response
      */
-    // login = (req, res) => {
-    //     try {
-    //         let confirmPassword = req.body.confirmPassword;
-    //         let password = req.body.password;
-
-    //         if (password !== confirmPassword) {
-    //             return res.status(400).send({
-    //                 success: false,
-    //                 message: "Password not match",
-    //             });
-    //         } else {
-    //             const userLoginInfo = {
-    //                 emailId: req.body.emailId,
-    //                 password: password,
-    //             };
-    //             userService.login(userLoginInfo, (error, data) => {
-    //                 return (
-    //                     data.length < 1 ?
-    //                     (logger.info("user not exist with emailid" + error),
-    //                         res.status(404).send({
-    //                             success: false,
-    //                             status_code: 404,
-    //                             message: "Auth Failed " + error,
-    //                         })) //setex is user to set key
-    //                     :
-    //                     console.log(data),
-    //                     res.status(200).send({
-    //                         success: true,
-    //                         message: "login successfull",
-    //                         token: data.token,
-    //                     })
-    //                 );
-    //             });
-    //         }
-    //     } catch (error) {
-    //         logger.error("could not found user with emailid" + req.body.emailId);
-    //         return res.send({
-    //             success: false,
-    //             status_code: 500,
-    //             message: "error retrieving user with emailid " + req.body.emailId + error,
-    //         });
-    //     }
-    // };
-
-    /**
-     * @description Find user by id
-     * @method login is service class method
-     * @param response is used to send the response
-     */
     login = (req, res) => {
         try {
             let confirmPassword = req.body.confirmPassword;
@@ -138,8 +89,7 @@ class userController {
                                 success: false,
                                 status_code: 404,
                                 message: "Auth Failed " + error,
-                            })) //client.setex("loginData", 2000, JSON.stringify(data)),
-                        : // (data = JSON.parse(data)),
+                            })) :
                         res.status(200).send({
                             success: true,
                             message: "login successfull",

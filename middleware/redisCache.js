@@ -18,7 +18,6 @@ class RedisCache {
                 logger.error("Error retrieving data from redis cache") :
                 logger.info("retrieving data from redis cache"),
                 console.log("redisData : " + JSON.parse(redisData)),
-                //res.send(JSON.parse(redisData));
                 JSON.parse(redisData)
             );
         });

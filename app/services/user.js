@@ -25,50 +25,6 @@ class userService {
         User.save(userInfo, callback);
     };
 
-    // /**
-    //  * @description takes userInfo and calls model class method
-    //  * @param {*} userLoginInfo
-    //  * @param {*} callback is the callback for controller
-    //  */
-    // login = (userLoginInfo, callback) => {
-    //         const userEmail = userLoginInfo.emailId;
-    //         User.find(userLoginInfo, (error, data) => {
-    //                     if (error) return callback(error, null);
-    //                     else if (!data) {
-    //                         return callback(error, null);
-    //                         //  else if (data) {
-    //                         // // client.setex(process.env.REDIS_KEY, 2000, JSON.stringify(data));
-    //                         const token = helper.createToken(data);
-    //                         data.token = token;
-    //                         // const redisData = redisCache.setRedis(data, userEmail);
-    //                         // console.log("setting redis data : " + redisData);
-    //                     } else {
-    //                         bcrypt.compare(
-    //                             userLoginInfo.password,
-    //                             data.password,
-    //                             function(error, result) {
-    //                                 return error ?
-    //                                     // res.status(404).send({
-    //                                     //     success: false,
-    //                                     //     message: "auth Failed",
-    //                                     // })
-    //                                     callback(error, null) :
-    //                                     (token = helper.createToken(data)),
-    //                                     data.token = token,
-    //                                     logger.info("token created"),
-    //                                     // redisData = redisCache.setRedis(data, userEmail);
-    //                                     // console.log("setting redis data : " + redisData);
-    //                                     callback(null, data);
-    //                             }
-
-    //                             return callback(null, data);
-    //                         };
-
-    /**
-     * @description takes userInfo and calls model class method
-     * @param {*} userLoginInfo
-     * @param {*} callback is the callback for controller
-     */
     /**
      * @description takes userInfo and calls model class method
      * @param {*} userLoginInfo
@@ -84,8 +40,6 @@ class userService {
                 console.log("service token : " + token);
                 const redisData = redisCache.setRedis(data, userEmail);
                 console.log("setting redis data : " + redisData);
-                // } else {
-
                 bcrypt.compare(
                     userLoginInfo.password,
                     data.password,
@@ -96,53 +50,45 @@ class userService {
                             logger.info("token created"),
                             callback(null, data)
                         );
-
-                        // callback(null, data);
                     }
                 );
             }
-            // const redisData = redisCache.setRedis(data, userEmail);
-            // console.log("setting redis data : " + redisData);
             return callback(null, data);
         });
     };
-    // /**
-    //  * @description Update greeting by id and return response to controller
-    //  * @param {*} userInfo
-    //  * @param {*} callback
-    //  */
-    // login = (userInfo, callback) => {
-    //     User.find(userInfo, (error, data) => {
-    //         if (error) {
-    //             logger.error("Some error occurred");
-    //             return callback(new Error("Some error occurred"), null);
-    //         } else if (!data) {
-    //             logger.error("User with this email Id dosent exist");
-    //             return callback(
-    //                 new Error("User with this email Id dosent exist"),
-    //                 null
-    //             );
-    //         } else {
-    //             bcrypt.compare(
-    //                 userLoginInfo.password,
-    //                 data.password,
-    //                 function(err, result) {
-    //                     return err ?
-    //                         res.status(404).send({
-    //                             success: false,
-    //                             message: "auth Failed",
-    //                         }) :
-    //                         (logger.info("token created"),
-    //                             (token = helper.createToken(data)),
-    //                             (userInfo.token = token),
-    //                             console.log(token),
-    //                             callback(null, data));
-    //                 }
-    //             );
-    //         }
-    //         callback(null, data);
-    //     });
-    // };
+
+    /**
+     * @description Forgot password
+     * @method util.nodeEmailSender is util class method to send reset password link to user
+     */
+    forgotPassword = (userData, callBack) => {
+        userModel.findOne(userData, (error, data) => {
+            if (error) {
+                logger.error("Some error occurred");
+                return callBack(new Error("Some error occurred"), null);
+            } else if (!data) {
+                logger.error("ERR:401-User not found with this email Id");
+                return callBack(
+                    new Error("ERR:401-User not found with this email Id"),
+                    null
+                );
+            } else {
+                const token = util.generateToken(data);
+                userData.token = token;
+                userData.name = data.firstName;
+                util.nodeEmailSender(userData, (error, data) => {
+                    if (error) {
+                        logger.error("Some error occurred while sending email");
+                        return callBack(
+                            new Error("Some error occurred while sending email"),
+                            null
+                        );
+                    }
+                    return callBack(null, data);
+                });
+            }
+        });
+    };
 
     /**
      * @description Update user and return response to controller
