@@ -80,18 +80,22 @@ class userController {
                     password: password,
                 };
                 userService.login(userLoginInfo, (error, data) => {
-                    return data.length < 1 ?
+                    return (
+                        data.length < 1 ?
                         (logger.info("user not exist with emailid" + req.body.emailId),
                             res.status(404).send({
                                 success: false,
                                 status_code: 404,
                                 message: "Auth Failed " + error,
                             })) :
+                        client.setex("loginData", 2000, JSON.stringify(post)),
+                        (data = JSON.parse(data)),
                         res.status(200).send({
                             success: true,
                             message: "login successfull",
                             token: data.token,
-                        });
+                        })
+                    );
                 });
             }
         } catch (error) {

@@ -262,7 +262,7 @@ describe("Resetpassword", () => {
             .request(server)
             .put("/resetpassword")
             .send(userInfo)
-            //.set("token", token)
+            //.set("token", token),
             .set("x-auth-token", token)
             .end((err, res) => {
                 res.should.have.status(401);

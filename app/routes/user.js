@@ -8,6 +8,8 @@
 
 var helper = require("../../middleware/helper.js");
 
+var redisCache = require("../../middleware/redisCache.js");
+
 module.exports = (app) => {
     const user = require("../controllers/user.js");
 
@@ -15,7 +17,7 @@ module.exports = (app) => {
     app.post("/register", user.register);
 
     // Login existing user
-    app.post("/login", user.login);
+    app.post("/login", redisCache.redisPost, user.login);
 
     //forget password
     app.post("/forgotpassword", user.forgotPassword);
