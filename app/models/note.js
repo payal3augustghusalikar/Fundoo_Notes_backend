@@ -7,6 +7,7 @@
 -----------------------------------------------------------------------------------------------*/
 
 const mongoose = require("mongoose");
+const logger = require("../../logger/logger.js");
 
 const NoteSchema = mongoose.Schema({
     title: {

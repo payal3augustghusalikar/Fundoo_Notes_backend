@@ -8,6 +8,7 @@
 const Note = require("../models/note.js");
 
 const helper = require("../../middleware/helper.js");
+const logger = require("../../logger/logger.js");
 
 class NoteService {
     /**

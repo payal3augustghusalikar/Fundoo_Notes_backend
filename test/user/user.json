@@ -2,7 +2,7 @@
     "user": {
         "registerUserProperData": {
             "name": "Payal",
-            "emailId": "ghusalikarapayal10@gmail.com",
+            "emailId": "ghusalikar1apayal10@gmail.com",
             "password": "Ghjjjjj",
             "confirmPassword": "Ghjjjjj"
         },
@@ -38,12 +38,12 @@
             "password": "Ghjjjjj"
         },
         "loginUserProperData": {
-            "emailId": "abc@gmail.com",
-            "password": "newPassword2",
-            "confirmPassword": "newPassword2"
+            "emailId": "zzzz@gmail.com",
+            "password": "CCCCCCC",
+            "confirmPassword": "CCCCCCC"
         },
         "loginUserImproperData": {
-            "emailId": "ghusalikarapayal2@gmail.com",
+            "emailId": "zzzz@gmail.com",
             "password": ""
         },
         "loginUserEmptyEmail": {
@@ -55,10 +55,10 @@
             "password": "Ghjjjjj"
         },
         "forgotPasswordProperData": {
-            "emailId": "ghusalikarpayal@gmail.com"
+            "emailId": "zzzz@gmail.com"
         },
         "forgotPasswordImproperData": {
-            "emailId": "ghusalikarapgmail.com"
+            "emailId": "CCCCCCC"
         },
         "forgotPasswordEmptyEmail": {
             "emailId": ""

@@ -4,29 +4,28 @@
             "name": "Newwww"
         },
         "labelToUpdate": {
-            "labelId": "602f2b80b142633058809ae2",
+            "labelId": "602fe57aab2f532e30a6214a",
             "name": "payalllchanged"
         },
         "labelToDelete": {
-            "labelId": "602f2bf0b142633058809ae3",
-            "name": "Ccompany"
+            "labelId": "602fe5abab2f532e30a6214b"
         },
         "labelToPost": {
             "name": "Ccompany"
         },
         "labelWithoutname": {},
         "labelWithEmptyname": {
-            "name": ""
+            "name": "."
         },
         "postlabelWithImpropername": {
             "name": "co"
         },
         "labelWithImpropername": {
-            "labelId": "602f2b80b142633058809ae2",
+            "labelId": "602fe5c2ab2f532e30a6214c",
             "name": "co"
         },
         "properToken": {
-            "token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MTM3MjE0NzQsImV4cCI6MTYxMzg5NDI3NH0.rUDosyVBSbHniby2w2rQHqKm8iva72hhfjRH4_7Uxt0"
+            "token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbElkIjoiZ2h1c2FsaWthcnBheWFsMzIyQGdtYWlsLmNvbSIsImlkIjoiNjAyZjhmZDkyYmUzMzcyYjNjYTNlNDNjIiwiaWF0IjoxNjEzNzUxNDU1LCJleHAiOjE2MTg5MzU0NTV9.rYQDbriHjHNgUPMzxeLS_WoBQBnyVinEMUGoLxbuiHs"
         },
         "ImproperToken": {
             "token": "'JhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbElkIjoiZ2h1c2FsaWthcnBheWFsQGdtYWlsLmNvbSIsImlkIjoiNjAxOGRiOWM3MzU1YTkyM2I4OGFmM2UwIiwiaWF0IjoxNjEyMzgyMzg3LCJleHAiOjE2MTI0Njg3ODd9.6I8fMEnAS0_PpSMl5ixe0zPWhh0Vpx9QaNFQYShJLjA'"

@@ -48,7 +48,7 @@ describe("notes API", () => {
             chai
                 .request(server)
                 .get("/not")
-                //  .set(token)
+                .set("Authorization", token)
                 .end((err, res) => {
                     res.should.have.status(404);
                     done();
@@ -67,10 +67,10 @@ describe("notes API", () => {
                 .request(server)
                 .get("/notes/" + noteId)
                 // .set(token)
-                .set("x-auth-token", token)
-                .end((err, response) => {
-                    response.should.have.status(401);
-                    response.body.should.be.a("object");
+                .set("Authorization", token)
+                .end((err, res) => {
+                    res.should.have.status(401);
+                    res.body.should.be.a("object");
                     done();
                 });
         });
@@ -83,7 +83,7 @@ describe("notes API", () => {
                 .request(server)
                 .get("/notes/" + noteId)
                 //  .set(token)
-                .set("x-auth-token", token)
+                .set("Authorization", token)
                 .end((err, res) => {
                     res.should.have.status(401);
 
@@ -103,14 +103,15 @@ describe("notes API", () => {
             chai
                 .request(server)
                 .post("/notes/")
+                .set("Authorization", token)
                 .send(note)
-                .set("x-auth-token", token)
-                .end((error, response) => {
-                    response.should.have.status(200);
-                    response.body.should.be.a("object");
-                    response.should.have.message.equal("note added successfully !");
-                    done();
-                });
+
+            .end((error, res) => {
+                res.should.have.status(200);
+                res.body.should.be.a("object");
+                //   res.should.have.message.equal("note added successfully !");
+                done();
+            });
         });
 
         it("givennotes_WhenGivenNotPropertitleAnddescription_ShouldNotPostNote", (done) => {
@@ -119,16 +120,17 @@ describe("notes API", () => {
             chai
                 .request(server)
                 .post("/notes/")
+                .set("Authorization", token)
                 .send(note)
-                .set("x-auth-token", token)
-                .end((error, response) => {
-                    response.should.have.status(401);
-                    response.body.should.be.a("object");
-                    //  response.message.should.have.equal(
-                    //  "Some error occurred while creating note " + error
 
-                    done();
-                });
+            .end((error, res) => {
+                res.should.have.status(400);
+                res.body.should.be.a("object");
+                //  res.message.should.have.equal(
+                //  "Some error occurred while creating note " + error
+
+                done();
+            });
         });
 
         // test the POST API when provided improper data
@@ -138,12 +140,13 @@ describe("notes API", () => {
             chai
                 .request(server)
                 .post("/notes/")
+                .set("Authorization", token)
                 .send(note)
-                .set("x-auth-token", token)
-                .end((err, res) => {
-                    res.should.have.status(401);
-                    done();
-                });
+
+            .end((err, res) => {
+                res.should.have.status(400);
+                done();
+            });
         });
 
         it("givennotes_WhenNotGivenDescription_ShouldNotPostNote", (done) => {
@@ -151,12 +154,13 @@ describe("notes API", () => {
             chai
                 .request(server)
                 .post("/notes/")
+                .set("Authorization", token)
                 .send(note)
-                .set("x-auth-token", token)
-                .end((err, res) => {
-                    res.should.have.status(401);
-                    done();
-                });
+
+            .end((err, res) => {
+                res.should.have.status(400);
+                done();
+            });
         });
 
         it("givennotes_WhenGivenEmptyTitle_ShouldNotPostNote", (done) => {
@@ -164,12 +168,13 @@ describe("notes API", () => {
             chai
                 .request(server)
                 .post("/notes/")
+                .set("Authorization", token)
                 .send(note)
-                .set("x-auth-token", token)
-                .end((err, res) => {
-                    res.should.have.status(401);
-                    done();
-                });
+
+            .end((err, res) => {
+                res.should.have.status(400);
+                done();
+            });
         });
     });
 
@@ -184,14 +189,15 @@ describe("notes API", () => {
             chai
                 .request(server)
                 .put("/notes/" + noteId)
+                .set("Authorization", token)
                 .send(note)
-                .set("x-auth-token", token)
-                .end((err, res) => {
-                    res.should.have.status(200);
-                    console.log("Response Body:", res.body);
-                    res.body.should.be.a("Object");
-                    done();
-                });
+
+            .end((err, res) => {
+                res.should.have.status(200);
+                console.log("res Body:", res.body);
+                res.body.should.be.a("Object");
+                done();
+            });
         });
         // test the PUT API when provided improper Id
         it("givennotes_WhenGivenImropertitle_ShouldNotUpdateNote", (done) => {
@@ -200,13 +206,14 @@ describe("notes API", () => {
             chai
                 .request(server)
                 .put("/notes/" + noteId)
+                .set("Authorization", token)
                 .send(note)
-                .set("x-auth-token", token)
-                .end((err, res) => {
-                    res.should.have.status(401);
 
-                    done();
-                });
+            .end((err, res) => {
+                res.should.have.status(400);
+
+                done();
+            });
         });
         it("givennotes_WhenGivenImropertitle_ShouldNotUpdateNote", (done) => {
             const noteId = greet.notes.noteWithEmptytitle.noteId;
@@ -214,6 +221,7 @@ describe("notes API", () => {
             chai
                 .request(server)
                 .put("/notes/" + noteId)
+                .set("Authorization", token)
                 .send(note)
                 .end((err, res) => {
                     res.should.have.status(401);
@@ -227,6 +235,7 @@ describe("notes API", () => {
             chai
                 .request(server)
                 .put("/notes/" + noteId)
+                .set("Authorization", token)
                 .send(note)
                 .end((err, res) => {
                     res.should.have.status(401);
@@ -241,9 +250,9 @@ describe("notes API", () => {
             chai
                 .request(server)
                 .delete("/notes/" + noteID)
-                .set("x-auth-token", token)
-                .end((err, response) => {
-                    response.should.have.status(401);
+                .set("Authorization", token)
+                .end((err, res) => {
+                    res.should.have.status(200);
                     done();
                 });
         });
@@ -253,9 +262,11 @@ describe("notes API", () => {
             chai
                 .request(server)
                 .delete("/notes/" + noteID)
-                .end((err, response) => {
-                    response.should.have.status(401);
-                    //response.text.should.be.eq("it cannot delete with wrong note id");
+                .set("Authorization", token)
+                .end((err, res) => {
+                    res.should.have.status(401);
+                    //res.should.have.status(401);
+                    //res.text.should.be.eq("it cannot delete with wrong note id");
                     done();
                 });
         });
