@@ -27,7 +27,14 @@ class NoteService {
      * @param callback is the callback for controller
      */
     findAll = (callback) => {
-        Note.findAll(callback);
+        Note.findAll((error, data) => {
+            if (error) {
+                logger.error("Some error occurred");
+                return callback(new Error("Some error occurred"), null);
+            } else {
+                return callback(null, data);
+            }
+        });
     };
 
     /**
@@ -36,7 +43,14 @@ class NoteService {
      * @param callback is the callback for controller
      */
     findOne = (noteID, callback) => {
-        Note.findOne(noteID, callback);
+        Note.findOne(noteID, (error, data) => {
+            if (error) {
+                logger.error("Some error occurred");
+                return callback(new Error("Some error occurred"), null);
+            } else {
+                return callback(null, data);
+            }
+        });
     };
 
     /**

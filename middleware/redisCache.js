@@ -9,7 +9,7 @@ class RedisCache {
      * @param {*} res
      * @param {*} next
      */
-    redisPost = (req, res, next) => {
+    redisGet = (req, res, next) => {
         const userEmail = req.body.emailId;
         console.log("getting redis data : ");
         client.get(`process.env.REDIS_KEY ${userEmail}`, (error, redisData) => {

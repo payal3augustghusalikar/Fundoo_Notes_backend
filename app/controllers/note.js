@@ -7,7 +7,7 @@ const ControllerDataValidation = Joi.object({
         .regex(/^[a-zA-Z ]+$/)
         .min(3)
         .required(),
-    description: Joi.string()
+    message: Joi.string()
         .regex(/^[a-zA-Z ]+$/)
         .min(3)
         .required(),
@@ -15,48 +15,46 @@ const ControllerDataValidation = Joi.object({
 
 class NoteController {
     /**
-     * @description Create and save a new note
+     * @message Create and save a new note
      * @param res is used to send the response
      */
     create = (req, res) => {
         try {
             const noteInfo = {
                 title: req.body.title,
-                description: req.body.description,
+                message: req.body.message,
             };
             const token = req.headers.authorization.split(" ")[1];
             const validation = ControllerDataValidation.validate(noteInfo);
             return validation.error ?
                 res.status(400).send({
                     success: false,
-                    description: "please enter valid details",
+                    message: "please enter valid details",
                 }) :
                 noteService.create(noteInfo, token, (error, data) => {
-                    return (
-                        error ?
+                    return error ?
                         (logger.error("Some error occurred while creating note"),
                             res.status(500).send({
                                 success: false,
-                                description: "Some error occurred while creating note " + error,
-                            })) :
-                        logger.info("note added successfully !"),
+                                message: "Some error occurred while creating note " + error,
+                            })) //                  logger.info("note added successfully !"),
+                        :
                         res.status(200).send({
                             success: true,
-                            description: "note added successfully !",
+                            message: "note added successfully !",
                             data: data,
-                        })
-                    );
+                        });
                 });
         } catch (error) {
             res.status(500).send({
                 success: false,
-                description: "Some error occurred while creating note",
+                message: "Some error occurred while creating note",
             });
         }
     };
 
     /**
-     * @description Find all the note
+     * @message Find all the note
      * @method findAll is service class method
      */
     findAll = (req, res) => {
@@ -67,28 +65,29 @@ class NoteController {
                         res.send({
                             success: false,
                             status_code: 404,
-                            description: `note not found`,
+                            message: `note not found`,
                         })) :
                     (logger.info("Successfully retrieved notes !"),
+                        console.log("data in cntr :", data),
                         res.send({
                             success: true,
                             status_code: 200,
-                            description: `note found`,
+                            message: `note found`,
                             data: data,
                         }));
             } catch (error) {
-                logger.error("note not found");
+                //             logger.error("note not found");
                 res.send({
                     success: false,
                     status_code: 500,
-                    description: `note not found`,
+                    message: `note not found`,
                 });
             }
         });
     };
 
     /**
-     * @description Find note by id
+     * @message Find note by id
      * @method findOne is service class method
      * @param response is used to send the response
      */
@@ -101,19 +100,19 @@ class NoteController {
                     (logger.error("Error retrieving note with id " + noteID),
                         res.status(500).send({
                             success: false,
-                            description: "Error retrieving note with id " + noteID,
+                            message: "Error retrieving note with id " + noteID,
                         })) :
                     !data ?
                     (logger.warn("Note not found with id : " + noteID),
                         res.status(404).send({
                             success: false,
-                            description: "Note not found with id : " + noteID,
+                            message: "Note not found with id : " + noteID,
                         })) :
                     logger.info("note found with id " + noteID),
                     res.send({
                         success: true,
                         status_code: 200,
-                        description: "Note found with id " + noteID,
+                        message: "Note found with id " + noteID,
                         data: data,
                     })
                 );
@@ -123,13 +122,13 @@ class NoteController {
             return res.send({
                 success: false,
                 status_code: 500,
-                description: "error retrieving note with id " + req.params.noteID,
+                message: "error retrieving note with id " + req.params.noteID,
             });
         }
     };
 
     /**
-     * @description Find note by labelId
+     * @message Find note by labelId
      * @method findOne is service class method
      * @param res is used to send the response
      */
@@ -142,19 +141,19 @@ class NoteController {
                     (logger.error("Error retrieving note with id " + labelID),
                         res.status(500).send({
                             success: false,
-                            description: "Error retrieving note with id " + labelID,
+                            message: "Error retrieving note with id " + labelID,
                         })) :
                     !data ?
                     (logger.warn("Note not found with id : " + labelID),
                         res.status(404).send({
                             success: false,
-                            description: "Note not found with id : " + labelID,
+                            message: "Note not found with id : " + labelID,
                         })) :
                     logger.info("note found with id " + labelID),
                     res.send({
                         success: true,
                         status_code: 200,
-                        description: "Note found with id " + labelID,
+                        message: "Note found with id " + labelID,
                         data: data,
                     })
                 );
@@ -164,13 +163,13 @@ class NoteController {
             return res.send({
                 success: false,
                 status_code: 500,
-                description: "error retrieving note with id " + labelID,
+                message: "error retrieving note with id " + labelID,
             });
         }
     };
 
     /**
-     * @description Update note by id
+     * @message Update note by id
      * @method update is service class method
      * @param res is used to send the response
      */
@@ -178,7 +177,7 @@ class NoteController {
         try {
             const noteInfo = {
                 title: req.body.title,
-                description: req.body.description,
+                message: req.body.message,
                 noteID: req.params.noteId,
             };
             noteService.update(noteInfo, (error, data) => {
@@ -190,19 +189,19 @@ class NoteController {
                         res.send({
                             success: false,
                             status_code: 500,
-                            description: "Error updating note with id : " + req.params.noteId,
+                            message: "Error updating note with id : " + req.params.noteId,
                         })) :
                     !data ?
                     (logger.warn("note not found with id : " + req.params.noteId),
                         res.send({
                             success: false,
                             status_code: 404,
-                            description: "note not found with id : " + req.params.noteId,
+                            message: "note not found with id : " + req.params.noteId,
                         })) :
                     logger.info("note updated successfully !"),
                     res.send({
                         success: true,
-                        description: "note updated successfully !",
+                        message: "note updated successfully !",
                         data: data,
                     })
                 );
@@ -214,20 +213,20 @@ class NoteController {
                     res.send({
                         success: false,
                         status_code: 404,
-                        description: "note not found with id " + req.params.noteId,
+                        message: "note not found with id " + req.params.noteId,
                     })) :
                 logger.error("Error updating note with id " + req.params.noteId),
                 res.send({
                     success: false,
                     status_code: 500,
-                    description: "Error updating note with id " + req.params.noteId,
+                    message: "Error updating note with id " + req.params.noteId,
                 })
             );
         }
     };
 
     /**
-     * @description Update note with id
+     * @message Update note with id
      * @method delete is service class method
      * @param response is used to send the response
      */
@@ -241,13 +240,13 @@ class NoteController {
                         res.send({
                             success: false,
                             status_code: 404,
-                            description: "note not found with id " + noteID,
+                            message: "note not found with id " + noteID,
                         })) :
                     logger.info("note deleted successfully!"),
                     res.send({
                         success: true,
                         status_code: 200,
-                        description: "note deleted successfully!",
+                        message: "note deleted successfully!",
                     })
                 );
             });
@@ -258,13 +257,13 @@ class NoteController {
                     res.send({
                         success: false,
                         status_code: 404,
-                        description: "note not found with id " + noteID,
+                        message: "note not found with id " + noteID,
                     })) :
                 logger.error("Could not delete note with id " + noteID),
                 res.send({
                     success: false,
                     status_code: 500,
-                    description: "Could not delete note with id " + noteID,
+                    message: "Could not delete note with id " + noteID,
                 })
             );
         }

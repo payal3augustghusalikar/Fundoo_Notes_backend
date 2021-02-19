@@ -17,7 +17,11 @@ module.exports = (app) => {
     app.post("/register", user.register);
 
     // Login existing user
-    app.post("/login", redisCache.redisPost, user.login);
+    app.post(
+        "/login",
+        //     // redisCache.redisPost,
+        user.login
+    );
 
     //forget password
     app.post("/forgotpassword", user.forgotPassword);

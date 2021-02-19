@@ -9,7 +9,7 @@ class LabelService {
      * @param callback is the callback for controller
      */
     create = async(labelInfo, token, callback) => {
-        console.log("token in service : " + token);
+        //  console.log("token in service : " + token);
         // create a Label
         labelInfo = await helper.decodeToken(labelInfo, token);
         return Label.create(labelInfo, callback);
@@ -21,7 +21,15 @@ class LabelService {
      * @param callback is the callback for controller
      */
     findAll = (callback) => {
-        return Label.findAll(callback);
+        console.log("service");
+        Label.findAll((error, data) => {
+            if (error) {
+                logger.error("Some error occurred");
+                return callback(new Error("Some error occurred"), null);
+            } else {
+                return callback(null, data);
+            }
+        });
     };
 
     /**

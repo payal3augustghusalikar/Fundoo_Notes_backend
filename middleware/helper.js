@@ -18,15 +18,17 @@ class Helper {
      * @param {} data
      */
     createToken = (data) => {
+        console.log(data.emailId);
         console.log("creating token");
         return jwt.sign({
                 emailId: data.emailId,
                 id: data._id,
             },
-            process.env.secret_key, {
-                expiresIn: "48h",
+            process.env.SECRET_KEY, {
+                expiresIn: "2h",
             }
         );
+        // console.log(token)
     };
 
     /**
@@ -58,9 +60,9 @@ class Helper {
     decodeToken = (noteInfo, token) => {
         let decode = jwt.verify(token, process.env.SECRET_KEY);
         let userId = decode.id;
-        console.log("user Id", userId);
+        //   console.log("user Id", userId);
         noteInfo.userId = userId;
-        console.log("user id for note: ", userId);
+        //   console.log("user id for note: ", userId);
         return noteInfo;
     };
 
@@ -79,7 +81,7 @@ class Helper {
                 pass: process.env.EMAIL_PASS,
             },
         });
-        console.log("token in email : " + userInfo.token);
+        //     console.log("token in email : " + userInfo.token);
         ejs.renderFile(
             "app/view/resetPassword.ejs", { link: process.env.URL + "/resetPassword/" + userInfo.token },
             (error, data) => {

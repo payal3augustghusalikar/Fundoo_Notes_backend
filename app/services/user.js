@@ -11,9 +11,6 @@ const helper = require("../../middleware/helper.js");
 const bcrypt = require("bcrypt");
 const logger = require("../../../logger/logger.js");
 const jwt = require("jsonwebtoken");
-const redis = require("redis");
-const client = redis.createClient();
-var redisCache = require("../../middleware/redisCache.js");
 
 class userService {
     /**
@@ -22,7 +19,10 @@ class userService {
      * @param callback is the callback for controller
      */
     register = (userInfo, callback) => {
-        User.save(userInfo, callback);
+        User.save(userInfo, (error, data) => {
+            if (error) return callback(error, null);
+            return callback(null, data);
+        });
     };
 
     /**
@@ -30,61 +30,78 @@ class userService {
      * @param {*} userLoginInfo
      * @param {*} callback is the callback for controller
      */
-    login = (userLoginInfo, callback) => {
-        const userEmail = userLoginInfo.emailId;
-        User.find(userLoginInfo, (error, data) => {
-            if (error) return callback(error, null);
-            else if (data) {
-                const token = helper.createToken(data);
-                data.token = token;
-                console.log("service token : " + token);
-                const redisData = redisCache.setRedis(data, userEmail);
-                console.log("setting redis data : " + redisData);
+    login = (userLoginData, callback) => {
+        User.find(userLoginData, (error, data) => {
+            console.log("service login data", data);
+            const password = data[0].password;
+            console.log("service login pass", data[0].password);
+            console.log("service login pass", userLoginData.password);
+            if (error) {
+                logger.error("ERR:500-Some error occured while logging in");
+                console.log("ERR:500-Some error occured while logging in");
+                return callback(
+                    new Error("ERR:500-Some error occured while logging in"),
+                    null
+                );
+            } else if (data) {
                 bcrypt.compare(
-                    userLoginInfo.password,
-                    data.password,
-                    function(err, result) {
-                        return (
-                            err ?
-                            (logger.info("Auth Failed", +error), callback(error, null)) :
-                            logger.info("token created"),
-                            callback(null, data)
-                        );
+                    userLoginData.password,
+                    data[0].password,
+                    (error, result) => {
+                        console.log(result);
+                        if (result) {
+                            // if (data) {
+                            console.log("inside bcryt", data[0].password);
+                            logger.info("Authorization success");
+                            console.log(data[0]);
+                            const token = helper.createToken(data[0]);
+                            data.token = token;
+                            console.log(token);
+
+                            return callback(null, data);
+                        } else {
+                            logger.info("ERR:401-Please verify email before login");
+                            return callback(
+                                new Error("ERR:401-Please verify email before login"),
+                                null
+                            );
+                        }
                     }
                 );
             }
-            return callback(null, data);
         });
     };
 
     /**
-     * @description Forgot password
-     * @method util.nodeEmailSender is util class method to send reset password link to user
+     * @description Update greeting by id and return response to controller
+     * @param {*} userInfo
+     * @param {*} callback
      */
-    forgotPassword = (userData, callBack) => {
-        userModel.findOne(userData, (error, data) => {
+    forgotPassword = (userInfo, callback) => {
+        User.findOne(userInfo, (error, data) => {
             if (error) {
                 logger.error("Some error occurred");
-                return callBack(new Error("Some error occurred"), null);
+                return callback(new Error("Some error occurred"), null);
             } else if (!data) {
-                logger.error("ERR:401-User not found with this email Id");
-                return callBack(
-                    new Error("ERR:401-User not found with this email Id"),
+                logger.error("User with this email Id dosent exist");
+                return callback(
+                    new Error("User with this email Id dosent exist"),
                     null
                 );
             } else {
-                const token = util.generateToken(data);
-                userData.token = token;
-                userData.name = data.firstName;
-                util.nodeEmailSender(userData, (error, data) => {
+                const token = helper.createToken(data);
+                userInfo.token = token;
+                console.log(token);
+                helper.emailSender(userInfo, (error, data) => {
+                    console.log("userInfo" + userInfo);
                     if (error) {
                         logger.error("Some error occurred while sending email");
-                        return callBack(
+                        return callback(
                             new Error("Some error occurred while sending email"),
                             null
                         );
                     }
-                    return callBack(null, data);
+                    return callback(null, data);
                 });
             }
         });
@@ -98,13 +115,13 @@ class userService {
     resetPassword = (userInfo, callback) => {
         let decode = jwt.verify(userInfo.token, process.env.SECRET_KEY);
         let userId = decode.id;
-        console.log("user Id", userId);
+        console.log(userId);
         console.log("service token ", userInfo.token);
         userInfo.userId = userId;
-        console.log("id: ", userId);
+        console.log("id", userId);
         User.update(userInfo, (error, data) => {
             if (error) return callback(error, null);
-            return callback(null, data);
+            else return callback(null, data);
         });
     };
 }

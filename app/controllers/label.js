@@ -12,7 +12,7 @@ const ControllerDataValidation = Joi.object({
 
 class LabelController {
     /**
-     * @description Create and save a new label
+     * @message Create and save a new label
      * @param res is used to send the response
      * @param req is used to take user request
      */
@@ -28,76 +28,78 @@ class LabelController {
                 res.send({
                     success: false,
                     status: Status.Bad_Request,
-                    description: "please enter valid details",
+                    message: "please enter valid details",
                 }) :
                 labelServices
                 .create(labelInfo, token)
                 .then((data) => {
                     console.log("data : " + data);
-                    logger.info("label added successfully !"),
-                        res.send({
-                            success: true,
-                            status: Status.Success,
-                            description: "label added successfully !",
-                            data: data,
-                        });
+                    //    logger.info("label added successfully !"),
+                    res.send({
+                        success: true,
+                        status: Status.Success,
+                        message: "label added successfully !",
+                        data: data,
+                    });
                 })
                 .catch((error) => {
-                    logger.error("Some error occurred while creating label", +error),
-                        res.send({
-                            success: false,
-                            status: Status.Internal_Server_Error,
-                            description: "Some error occurred while creating label",
-                        });
+                    //   logger.error("Some error occurred while creating label", +error),
+                    res.send({
+                        success: false,
+                        status: Status.Internal_Server_Error,
+                        message: "Some error occurred while creating label",
+                    });
                 });
         } catch (error) {
-            logger.error("Some error occurred while creating label"),
-                res.send({
-                    success: false,
-                    status: Status.Internal_Server_Error,
-                    description: "Some error occurred while creating label" + error,
-                });
-        }
-    };
-
-    /**
-     * @description Find all the label
-     * @method findAll is service class method
-     */
-
-    findAll = (req, res) => {
-        try {
-            labelServices
-                .findAll()
-                .then((data) => {
-                    logger.info("Successfully retrieved labels !"),
-                        res.send({
-                            success: true,
-                            status_code: Status.Success,
-                            description: `label found`,
-                            data: data,
-                        });
-                })
-                .catch((error) => {
-                    logger.error("Some error occurred while retrieving labels"),
-                        res.send({
-                            success: false,
-                            status_code: 404,
-                            description: `label not found` + error,
-                        });
-                });
-        } catch (error) {
-            logger.error("label not found");
+            //    logger.error("Some error occurred while creating label"),
             res.send({
                 success: false,
-                status_code: 500,
-                description: `label not found` + error,
+                status: Status.Internal_Server_Error,
+                message: "Some error occurred while creating label" + error,
             });
         }
     };
 
     /**
-     * @description Find label by id
+     * @message Find all the label
+     * @method findAll is service class method
+     */
+
+    findAll = (req, res) => {
+        try {
+            console.log("controlle");
+            labelServices
+                .findAll()
+                .then((data) => {
+                    console.log("data ", +data);
+                    //        logger.info("Successfully retrieved labels !"),
+                    res.send({
+                        success: true,
+                        status_code: Status.Success,
+                        message: "label of current account has been retrieved",
+                        data: data,
+                    });
+                })
+                .catch((error) => {
+                    //        logger.error("Some error occurred while retrieving labels"),
+                    res.send({
+                        success: false,
+                        status_code: 404,
+                        message: "label not found",
+                    });
+                });
+        } catch (error) {
+            //       logger.error("label not found");
+            res.send({
+                success: false,
+                status_code: 500,
+                message: "label not found",
+            });
+        }
+    };
+
+    /**
+     * @message Find label by id
      * @method findOne is service class method
      * @param response is used to send the response
      */
@@ -112,35 +114,35 @@ class LabelController {
                         (logger.warn("label not found with id : " + labelID),
                             res.status(404).send({
                                 success: false,
-                                description: "label not found with id : " + labelID + error,
+                                message: "label not found",
                             })) :
                         logger.info("label found with id " + labelID),
                         res.send({
                             success: true,
                             status_code: Status.Success,
-                            description: "label found with id " + labelID,
+                            message: "label found",
                             data: data,
                         });
                 })
                 .catch((error) => {
-                    logger.error("Error retrieving label with id " + labelID),
-                        res.status(500).send({
-                            success: false,
-                            description: "Error retrieving label with id" + labelID + error,
-                        });
+                    //          logger.error("Error retrieving label with id " + labelID),
+                    res.status(500).send({
+                        success: false,
+                        message: "label not found",
+                    });
                 });
         } catch (error) {
-            logger.error("could not found label with id" + labelID, +error);
+            // logger.error("could not found label with id" + labelID, +error);
             return res.send({
                 success: false,
                 status_code: 500,
-                description: "error retrieving label with id" + labelID + error,
+                message: "label not found",
             });
         }
     };
 
     /**
-     * @description Update label by id
+     * @message Update label by id
      * @method update is service class method
      * @param res is used to send the response
      */
@@ -150,14 +152,6 @@ class LabelController {
                 name: req.body.name,
                 labelID: req.params.labelId,
             };
-            const token = req.headers.authorization.split(" ")[1];
-            // const validation = ControllerDataValidation.validate(labelInfo);
-            // validation.error ?
-            // res.send({
-            //     success: false,
-            //     status: Status.Bad_Request,
-            //     description: "please enter valid details",
-            // }) :
             labelServices
                 .update(labelInfo)
                 .then((data) => {
@@ -167,45 +161,43 @@ class LabelController {
                             res.send({
                                 success: false,
                                 status_code: 404,
-                                description: "label not found with id : " + req.params.labelId,
-                            })) :
-                        logger.info("label updated successfully !"),
+                                message: "label not found",
+                            })) //        logger.info("label updated successfully !"),
+                        :
                         res.send({
                             success: true,
                             status_code: Status.Success,
-                            description: "label updated successfully !",
+                            message: "label updated successfully !",
                             data: data,
                         });
                 })
                 .catch((error) => {
-                    logger.error("Error updating label with id : " + req.params.labelId),
-                        res.send({
-                            success: false,
-                            status_code: 500,
-                            description: "Error updating label with id : " + req.params.labelId + error,
-                        });
+                    //         logger.error("Error updating label with id : " + req.params.labelId),
+                    res.send({
+                        success: false,
+                        status_code: 401,
+                        message: "Error updating label",
+                    });
                 });
         } catch (error) {
-            return (
-                error.kind === "ObjectId" ?
+            return error.kind === "ObjectId" ?
                 (logger.error("label not found with id " + req.params.labelId),
                     res.send({
                         success: false,
                         status_code: 404,
-                        description: "label not found with id " + req.params.labelId + error,
-                    })) :
-                logger.error("Error updating label with id " + req.params.labelId),
+                        message: "label not found ",
+                    })) //         logger.error("Error updating label with id " + req.params.labelId),
+                :
                 res.send({
                     success: false,
                     status_code: 500,
-                    description: "Error updating label with id " + req.params.labelId + error,
-                })
-            );
+                    message: "Error updating label",
+                });
         }
     };
 
     /**
-     * @description Update label with id
+     * @message Update label with id
      * @method delete is service class method
      * @param response is used to send the response
      */
@@ -219,20 +211,20 @@ class LabelController {
                     res.send({
                         success: false,
                         status_code: 404,
-                        description: "label not found with id " + labelID,
-                    })) :
-                logger.info("label deleted successfully!"),
+                        message: "label not found with id ",
+                    })) //          logger.info("label deleted successfully!"),
+                :
                 res.send({
                     success: true,
                     status_code: Status.Success,
-                    description: "label deleted successfully!",
+                    message: "label deleted successfully!",
                 });
             error(
-                logger.warn("label not found with id " + labelID),
+                //            logger.warn("label not found with id" + labelID),
                 res.send({
                     success: false,
                     status_code: 404,
-                    description: "label not found with id " + error + labelID,
+                    message: "label not found with id",
                 })
             );
         } catch (error) {
@@ -242,20 +234,20 @@ class LabelController {
                     res.send({
                         success: false,
                         status_code: 404,
-                        description: "label not found with id " + error + labelID,
+                        message: "label not found with id",
                     })) :
-                logger.error("Could not delete label with id " + error + labelID),
+                logger.error("Could not delete label with id" + error + labelID),
                 res.send({
                     success: false,
                     status_code: 500,
-                    description: "Could not delete label with id " + error + labelID,
+                    message: "Could not delete label with id",
                 })
             );
         }
     };
 
     /**
-     * @description Find label by user
+     * @message Find label by user
      * @method findOne is service class method
      * @param response is used to send the response
      */
@@ -268,28 +260,28 @@ class LabelController {
                 (logger.warn("label not found with id : " + userID),
                     res.status(404).send({
                         success: false,
-                        description: "label not found with id : " + userID + error,
-                    })) :
-                logger.info("label found with id " + userID),
+                        message: "label not found with id : " + userID + error,
+                    })) //           logger.info("label found with id " + userID),
+                :
                 res.send({
                     success: true,
                     status_code: Status.Success,
-                    description: "label found with id " + userID,
+                    message: "label found with id " + userID,
                     data: data,
                 });
             error(
-                logger.error("Error retrieving label with id " + userID),
+                //            logger.error("Error retrieving label with id " + userID),
                 res.status(500).send({
                     success: false,
-                    description: "Error retrieving label with id" + userID + error,
+                    message: "Error retrieving label with id" + userID + error,
                 })
             );
         } catch (error) {
-            logger.error("could not found label with id" + userID, +error);
+            //         logger.error("could not found label with id" + userID, +error);
             return res.send({
                 success: false,
                 status_code: 500,
-                description: "error retrieving label with id" + userID + error,
+                message: "error retrieving label with id" + userID + error,
             });
         }
     };

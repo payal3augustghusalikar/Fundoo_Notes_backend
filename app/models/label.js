@@ -43,6 +43,7 @@ class LabelModel {
      * @param {*} callback
      */
     findAll = (callback) => {
+        console.log("Model");
         return Label.find(callback);
     };
     /**

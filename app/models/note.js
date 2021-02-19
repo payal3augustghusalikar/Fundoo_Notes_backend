@@ -50,7 +50,14 @@ class NoteModel {
      * @param {*} callback
      */
     findAll = (callback) => {
-        Note.find(callback);
+        Note.find((error, data) => {
+            if (error) {
+                logger.error("Some error occurred");
+                return callback(new Error("Some error occurred"), null);
+            } else {
+                return callback(null, data);
+            }
+        });
     };
     /**
      *

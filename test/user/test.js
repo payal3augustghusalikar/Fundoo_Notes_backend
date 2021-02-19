@@ -132,7 +132,7 @@ describe("Login", () => {
             .post("/login")
             .send(userInfo)
             .end((err, res) => {
-                res.should.have.status(400);
+                res.should.have.status(404);
                 res.body.should.be.a("object");
                 done();
             });
@@ -144,7 +144,7 @@ describe("Login", () => {
             .post("/login")
             .send(userInfo)
             .end((err, res) => {
-                res.should.have.status(400);
+                res.should.have.status(404);
                 res.body.should.be.a("object");
                 done();
             });
@@ -157,7 +157,7 @@ describe("Login", () => {
             .post("/login")
             .send(userInfo)
             .end((err, res) => {
-                res.should.have.status(400);
+                res.should.have.status(404);
                 res.body.should.be.a("object");
                 done();
             });

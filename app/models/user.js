@@ -8,34 +8,22 @@
 
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-
+const helper = require("../../middleware/helper.js");
 const logger = require("../../logger/logger.js");
-let vallidator = require("../../middleware/vallidation.js");
 
 const UserSchema = mongoose.Schema({
     name: {
         type: String,
         required: true,
-        length: {
-            min: 3,
-            max: 36,
-        },
-        test: vallidator.namePattern,
     },
     emailId: {
         type: String,
         unique: true,
         required: true,
-        test: vallidator.emailIdPattern,
     },
     password: {
         type: String,
         required: true,
-        length: {
-            min: 6,
-            max: 15,
-        },
-        test: vallidator.passwordPattern,
     },
 }, {
     timestamps: true,
@@ -64,7 +52,10 @@ class UserModel {
             emailId: userInfo.emailId,
             password: userInfo.password,
         });
-        user.save(callback);
+        user.save((error, data) => {
+            if (error) return callback(error, null);
+            else return callback(null, data);
+        });
     };
 
     /**
@@ -73,7 +64,11 @@ class UserModel {
      * @param {*} callback
      */
     find = (userLoginData, callback) => {
-        User.find(userLoginData, callback);
+        User.find({ emailId: userLoginData.emailId }, (error, data) => {
+            if (error) return callback(error, null);
+            else console.log("model ", data);
+            return callback(null, data);
+        });
     };
 
     /**
@@ -103,7 +98,10 @@ class UserModel {
     update = (userInfo, callback) => {
         User.findByIdAndUpdate(
             userInfo.userId, { password: userInfo.newPassword }, { new: true },
-            callback
+            (error, data) => {
+                if (error) return callback(error, null);
+                else return callback(null, data);
+            }
         );
     };
 }

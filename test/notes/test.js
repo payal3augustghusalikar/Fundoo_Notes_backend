@@ -11,7 +11,11 @@ let chaiHttp = require("chai-http");
 let server = require("../../server");
 chai.use(chaiHttp);
 const greet = require("./notes.json");
-chai.should();
+const should = require("should");
+//(err === null).should.be.true;
+
+chai.should;
+
 const token = greet.notes.properToken.token;
 
 describe("notes API", () => {
@@ -27,10 +31,13 @@ describe("notes API", () => {
                 .request(server)
                 .get("/notes")
                 // .set(token)
-                .set("x-auth-token", token)
+                .set("Authorization", token)
                 .end((err, res) => {
-                    res.should.have.status(401);
-                    res.body.should.be.a("object");
+                    // res.should.have.status(401);
+                    // res.body.should.be.a("object");
+                    console.log("responce :", res);
+                    console.log("error :", err);
+
                     done();
                 });
         });
@@ -98,9 +105,10 @@ describe("notes API", () => {
                 .post("/notes/")
                 .send(note)
                 .set("x-auth-token", token)
-                .end((err, response) => {
+                .end((error, response) => {
                     response.should.have.status(200);
                     response.body.should.be.a("object");
+                    response.should.have.message.equal("note added successfully !");
                     done();
                 });
         });
@@ -113,9 +121,12 @@ describe("notes API", () => {
                 .post("/notes/")
                 .send(note)
                 .set("x-auth-token", token)
-                .end((err, response) => {
+                .end((error, response) => {
                     response.should.have.status(401);
                     response.body.should.be.a("object");
+                    //  response.message.should.have.equal(
+                    //  "Some error occurred while creating note " + error
+
                     done();
                 });
         });
