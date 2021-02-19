@@ -12,10 +12,8 @@ let server = require("../../server");
 chai.use(chaiHttp);
 const greet = require("./notes.json");
 const should = require("should");
-//(err === null).should.be.true;
 
 chai.should;
-
 const token = greet.notes.properToken.token;
 
 describe("notes API", () => {
@@ -30,11 +28,8 @@ describe("notes API", () => {
             chai
                 .request(server)
                 .get("/notes")
-                // .set(token)
                 .set("Authorization", token)
                 .end((err, res) => {
-                    // res.should.have.status(401);
-                    // res.body.should.be.a("object");
                     console.log("responce :", res);
                     console.log("error :", err);
 
@@ -66,7 +61,6 @@ describe("notes API", () => {
             chai
                 .request(server)
                 .get("/notes/" + noteId)
-                // .set(token)
                 .set("Authorization", token)
                 .end((err, res) => {
                     res.should.have.status(401);
@@ -82,11 +76,9 @@ describe("notes API", () => {
             chai
                 .request(server)
                 .get("/notes/" + noteId)
-                //  .set(token)
                 .set("Authorization", token)
                 .end((err, res) => {
                     res.should.have.status(401);
-
                     done();
                 });
         });
@@ -109,7 +101,6 @@ describe("notes API", () => {
             .end((error, res) => {
                 res.should.have.status(200);
                 res.body.should.be.a("object");
-                //   res.should.have.message.equal("note added successfully !");
                 done();
             });
         });
@@ -122,15 +113,11 @@ describe("notes API", () => {
                 .post("/notes/")
                 .set("Authorization", token)
                 .send(note)
-
-            .end((error, res) => {
-                res.should.have.status(400);
-                res.body.should.be.a("object");
-                //  res.message.should.have.equal(
-                //  "Some error occurred while creating note " + error
-
-                done();
-            });
+                .end((error, res) => {
+                    res.should.have.status(400);
+                    res.body.should.be.a("object");
+                    done();
+                });
         });
 
         // test the POST API when provided improper data
@@ -142,11 +129,10 @@ describe("notes API", () => {
                 .post("/notes/")
                 .set("Authorization", token)
                 .send(note)
-
-            .end((err, res) => {
-                res.should.have.status(400);
-                done();
-            });
+                .end((err, res) => {
+                    res.should.have.status(400);
+                    done();
+                });
         });
 
         it("givennotes_WhenNotGivenDescription_ShouldNotPostNote", (done) => {
@@ -156,11 +142,10 @@ describe("notes API", () => {
                 .post("/notes/")
                 .set("Authorization", token)
                 .send(note)
-
-            .end((err, res) => {
-                res.should.have.status(400);
-                done();
-            });
+                .end((err, res) => {
+                    res.should.have.status(400);
+                    done();
+                });
         });
 
         it("givennotes_WhenGivenEmptyTitle_ShouldNotPostNote", (done) => {
@@ -170,11 +155,10 @@ describe("notes API", () => {
                 .post("/notes/")
                 .set("Authorization", token)
                 .send(note)
-
-            .end((err, res) => {
-                res.should.have.status(400);
-                done();
-            });
+                .end((err, res) => {
+                    res.should.have.status(400);
+                    done();
+                });
         });
     });
 
@@ -265,8 +249,6 @@ describe("notes API", () => {
                 .set("Authorization", token)
                 .end((err, res) => {
                     res.should.have.status(401);
-                    //res.should.have.status(401);
-                    //res.text.should.be.eq("it cannot delete with wrong note id");
                     done();
                 });
         });

@@ -26,16 +26,10 @@ describe("labels API", () => {
             chai
                 .request(server)
                 .get("/labels")
-                // .set("Accept", "application/json")
                 .set("Authorization", token)
                 .end((err, res) => {
                     console.log("responce :", +res.body);
                     console.log("error :", +err);
-                    //  res.should.have.status(200);
-                    // res.body.should.be.a("object");
-                    // res.body.message.should.have.equal(
-                    //     "label of current account has been retrieved"
-                    // );
                     done();
                 });
         });
@@ -45,11 +39,9 @@ describe("labels API", () => {
             chai
                 .request(server)
                 .get("/not")
-                // .set("x-auth-token", token)
                 .set("Authorization", token)
                 .end((err, res) => {
                     res.should.have.status(404);
-                    //  res.body.message.should.have.equal("label not found");
                     done();
                 });
         });
@@ -60,11 +52,9 @@ describe("labels API", () => {
      */
     describe("/GET /labels/labelId", () => {
         it("givenlabels_WhenGivenProperlabelId_ShouldGiveObject", (done) => {
-            // const labelId = "602fe5c2ab2f532e30a6214c";
             chai
                 .request(server)
                 .get("/labels/" + labelId)
-                // .set("Accept", "application/json")
                 .set("Authorization", token)
                 .end((err, res) => {
                     res.should.have.status(200);
@@ -83,8 +73,6 @@ describe("labels API", () => {
                 .set("Authorization", token)
                 .end((err, res) => {
                     res.should.have.status(500);
-                    //  res.body.message.should.have.equal("label not found");
-
                     done();
                 });
         });
@@ -100,19 +88,12 @@ describe("labels API", () => {
             chai
                 .request(server)
                 .post("/labels")
-
-            //  .set("Accept", "application/json")
-            .set("Authorization", token)
+                .set("Authorization", token)
                 .send(label)
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.be.a("object");
                     res.body.message.should.have.equal("label added successfully !");
-                    //  res.body.should.have.property("name").eq("Newwww");
-
-                    // res.body.should.have.property("greetingId").eq(9);
-                    // res.body.should.have.property("name").eq("Newwww");
-                    // res.body.should.have.property("message").eq("CHello");
                     done();
                 });
         });
@@ -125,11 +106,10 @@ describe("labels API", () => {
                 .post("/labels/")
                 .set("Authorization", token)
                 .send(label)
-
-            .end((err, res) => {
-                res.should.have.status(401);
-                done();
-            });
+                .end((err, res) => {
+                    res.should.have.status(401);
+                    done();
+                });
         });
 
         it("givenlabels_WhenGivenEmptyName_ShouldNotPostlabel", (done) => {
@@ -154,7 +134,6 @@ describe("labels API", () => {
                 .send(label)
                 .end((err, res) => {
                     res.should.have.status(401);
-                    //res.should.have.message.eq("please enter valid details");
                     done();
                 });
         });
@@ -166,7 +145,6 @@ describe("labels API", () => {
     describe("/PUT  /labels/:labelId", () => {
         // test the PUT API when provided proper Id
         it("givenlabels_WhenGivenProperId_ShouldUpdatelabel", (done) => {
-            //  const labelId = "602fe5c2ab2f532e30a6214c";
             console.log("put: " + labelId);
             const label = greet.labels.labelToUpdate;
             chai
@@ -178,8 +156,6 @@ describe("labels API", () => {
                     res.should.have.status(200);
                     console.log("res Body:", res.body);
                     res.body.should.be.a("Object");
-                    //  res.body.message.should.have.equal("label updated successfully !");
-
                     done();
                 });
         });
@@ -195,16 +171,13 @@ describe("labels API", () => {
                 .send(label)
                 .end((err, res) => {
                     res.should.have.status(404);
-
-                    //  res.body.message.should.have.equal("label not found");
-
+                    res.body.message.should.have.equal("label not found");
                     done();
                 });
         });
 
         // test the PUT API when provided improper Id
         it("givenlabels_WhenGivenImroperName_ShouldNotUpdatelabel", (done) => {
-            //  const labelId = greet.labels.labelWithoutname.labelId;
             const label = greet.labels.labelWithoutName;
             chai
                 .request(server)
@@ -213,12 +186,10 @@ describe("labels API", () => {
                 .send(label)
                 .end((err, res) => {
                     res.should.have.status(401);
-                    //   res.body.message.should.have.equal("label not found");
                     done();
                 });
         });
         it("givenlabels_WhenGivenImroperName_ShouldNotUpdatelabel", (done) => {
-            //  const labelId = greet.labels.labelWithEmptyname.labelId;
             const label = greet.labels.labelWithEmptyname;
             chai
                 .request(server)
@@ -227,14 +198,12 @@ describe("labels API", () => {
                 .send(label)
                 .end((err, res) => {
                     res.should.have.status(401);
-                    //   res.body.message.should.have.equal("Error updating label");
                     done();
                 });
         });
     });
 
     describe("/GET /labels/:userId", () => {
-        // test the PUT API when provided proper Id
         it("givenUserId_WhenGivenProperUserId_ShouldGiveLabel", (done) => {
             const userId = greet.labels.userId;
             console.log("GET: " + userId);
@@ -242,13 +211,10 @@ describe("labels API", () => {
                 .request(server)
                 .put("/labels/" + userId)
                 .set("Authorization", token)
-                // .send(label)
                 .end((err, res) => {
                     res.should.have.status(200);
                     console.log("res Body:", res.body);
                     res.body.should.be.a("Object");
-                    //  res.body.message.should.have.equal("label updated successfully !");
-
                     done();
                 });
         });
@@ -263,8 +229,6 @@ describe("labels API", () => {
                 .set("Authorization", token)
                 .end((err, res) => {
                     res.should.have.status(200);
-                    //   res.body.message.should.have.equal("label deleted successfully!");
-
                     done();
                 });
         });
@@ -277,9 +241,6 @@ describe("labels API", () => {
                 .set("Authorization", token)
                 .end((err, res) => {
                     res.should.have.status(404);
-                    //  res.body.message.should.have.equal("label not found with id");
-
-                    //res.text.should.be.eq("it cannot delete with wrong label id");
                     done();
                 });
         });

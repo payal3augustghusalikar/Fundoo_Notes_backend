@@ -27,7 +27,6 @@ describe("register", () => {
                 console.log("body : " + res.body);
                 res.should.have.status(200);
                 res.body.should.be.a("array");
-                //  console.log("object : " + object);
                 done();
             });
     });
@@ -40,7 +39,6 @@ describe("register", () => {
             .send(userInfo)
             .end((err, res) => {
                 res.should.have.status(500);
-                //  res.body.should.be.a("object");
                 done();
             });
     });
@@ -53,7 +51,6 @@ describe("register", () => {
             .end((err, res) => {
                 res.should.have.status(400);
                 res.body.should.be.a("object");
-
                 done();
             });
     });
@@ -91,7 +88,6 @@ describe("register", () => {
             .end((err, res) => {
                 res.should.have.status(400);
                 res.body.should.be.a("object");
-
                 done();
             });
     });
@@ -105,7 +101,6 @@ describe("register", () => {
             .end((err, res) => {
                 res.should.have.status(400);
                 res.body.should.be.a("object");
-
                 done();
             });
     });
@@ -186,8 +181,6 @@ describe("ForgotPassword", () => {
             .send(userInfo)
             .end((err, res) => {
                 res.should.have.status(500);
-                //  res.body.should.be.a("object");
-                // done();
                 done();
             });
     });
@@ -199,10 +192,8 @@ describe("ForgotPassword", () => {
             .send(userInfo)
             .end((err, res) => {
                 res.should.have.status(500);
-                //   res.body.should.be.a("object");
                 done();
             });
-        //done();
     });
     it("givenUser_whenGivenProperData_shouldRespondsWithLink", (done) => {
         let userInfo = userData.user.forgotPasswordProperData;
@@ -212,7 +203,6 @@ describe("ForgotPassword", () => {
             .send(userInfo)
             .end((err, res) => {
                 res.should.have.status(200);
-                //  res.body.should.be.a("object");
                 done();
             });
     });
@@ -225,9 +215,8 @@ describe("Resetpassword", () => {
         chai
             .request(server)
             .put("/resetpassword")
-            .send(userInfo)
-            // .set("token", token)
             .set("Authorization", token)
+            .send(userInfo)
             .end((err, res) => {
                 res.should.have.status(200);
                 res.body.should.be.a("object");
@@ -240,9 +229,8 @@ describe("Resetpassword", () => {
         chai
             .request(server)
             .put("/resetpassword")
-            .send(userInfo)
-            // .set("token", token)
             .set("Authorization", token)
+            .send(userInfo)
             .end((err, res) => {
                 res.should.have.status(401);
                 res.body.should.be.a("object");
@@ -255,10 +243,8 @@ describe("Resetpassword", () => {
         chai
             .request(server)
             .put("/resetpassword")
-            .send(userInfo)
             .set("Authorization", token)
-            //  .set("token", token)
-            //.set("x-auth-token", token);
+            .send(userInfo)
             .end((err, res) => {
                 res.should.have.status(401);
                 res.body.should.be.a("object");
@@ -272,9 +258,8 @@ describe("Resetpassword", () => {
         chai
             .request(server)
             .put("/resetpassword")
-            .send(userInfo)
-            //.set("token", token),
             .set("Authorization", token)
+            .send(userInfo)
             .end((err, res) => {
                 res.should.have.status(401);
                 res.body.should.be.a("object");
