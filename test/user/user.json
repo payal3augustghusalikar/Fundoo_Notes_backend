@@ -6,6 +6,11 @@
             "password": "Ghjjjjj",
             "confirmPassword": "Ghjjjjj"
         },
+        "NotregisterUserProperDatatoLogin": {
+            "emailId": "ghusalikar1apayal333333@gmail.com",
+            "password": "Ghjjjjj",
+            "confirmPassword": "Ghjjjjj"
+        },
         "userWithEmptyName": {
             "name": "",
             "emailId": "ghusalikarapayal2@gmail.com",

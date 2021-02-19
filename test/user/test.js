@@ -162,6 +162,19 @@ describe("Login", () => {
                 done();
             });
     });
+
+    it.skip("givenUser_whenGivenNotRegisterdData_shouldNotRespondsWithJson", (done) => {
+        let userInfo = userData.user.NotregisterUserProperDatatoLogin;
+        chai
+            .request(server)
+            .post("/login")
+            .send(userInfo)
+            .end((err, res) => {
+                res.should.have.status(400);
+                res.body.should.be.a("object");
+                done();
+            });
+    });
 });
 
 describe("ForgotPassword", () => {
@@ -214,7 +227,7 @@ describe("Resetpassword", () => {
             .put("/resetpassword")
             .send(userInfo)
             // .set("token", token)
-            .set("x-auth-token", token)
+            .set("Authorization", token)
             .end((err, res) => {
                 res.should.have.status(200);
                 res.body.should.be.a("object");
@@ -229,7 +242,7 @@ describe("Resetpassword", () => {
             .put("/resetpassword")
             .send(userInfo)
             // .set("token", token)
-            .set("x-auth-token", token)
+            .set("Authorization", token)
             .end((err, res) => {
                 res.should.have.status(401);
                 res.body.should.be.a("object");
@@ -243,7 +256,7 @@ describe("Resetpassword", () => {
             .request(server)
             .put("/resetpassword")
             .send(userInfo)
-            .set("Authorization", `Bearer ${token}`)
+            .set("Authorization", token)
             //  .set("token", token)
             //.set("x-auth-token", token);
             .end((err, res) => {
@@ -261,7 +274,7 @@ describe("Resetpassword", () => {
             .put("/resetpassword")
             .send(userInfo)
             //.set("token", token),
-            .set("x-auth-token", token)
+            .set("Authorization", token)
             .end((err, res) => {
                 res.should.have.status(401);
                 res.body.should.be.a("object");

@@ -9,8 +9,12 @@
 const jwt = require("jsonwebtoken");
 const logger = require("../../logger/logger");
 const nodemailer = require("nodemailer");
+const express = require("express");
 require("dotenv").config();
 const ejs = require("ejs");
+const app = express();
+require("../config").set(process.env.NODE_ENV, app);
+const config = require("../config").get();
 
 class Helper {
     /**

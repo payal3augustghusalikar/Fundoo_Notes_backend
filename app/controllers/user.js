@@ -53,7 +53,8 @@ class userController {
             logger.error("Some error occurred while creating user");
             return res.status(500).send({
                 success: false,
-                message: error.message,
+                message: "Some error occurred while creating user",
+                error,
             });
         }
     };

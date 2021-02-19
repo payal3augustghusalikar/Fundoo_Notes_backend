@@ -134,7 +134,7 @@ class LabelController {
                 });
         } catch (error) {
             // logger.error("could not found label with id" + labelID, +error);
-            return res.send({
+            res.send({
                 success: false,
                 status_code: 500,
                 message: "label not found",
