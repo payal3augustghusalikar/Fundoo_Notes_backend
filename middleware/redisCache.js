@@ -3,6 +3,14 @@ const client = redis.createClient();
 const config = require("../config").get();
 const logger = require("../../logger/logger.js");
 
+client.on("connect", function() {
+    console.log("Connected to Redis");
+});
+
+client.on("error", function(err) {
+    console.log("Redis error: " + err.message);
+});
+
 class RedisCache {
     /**
      * @param {*} req
@@ -11,7 +19,7 @@ class RedisCache {
      */
     redisGet = (req, res, next) => {
         const userEmail = req.body.emailId;
-        console.log("getting redis data : ");
+        console.log("inside redis");
         client.get(`process.env.REDIS_KEY ${userEmail}`, (error, redisData) => {
             return (
                 error ?

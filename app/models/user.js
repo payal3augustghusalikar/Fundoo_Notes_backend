@@ -25,9 +25,9 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: true,
     },
-}, { versionKey: false }, {
+}, {
     timestamps: true,
-});
+}, { versionKey: false });
 
 // encrypted the password before saving to database
 UserSchema.pre("save", async function(next) {

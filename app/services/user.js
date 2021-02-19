@@ -11,6 +11,9 @@ const helper = require("../../middleware/helper.js");
 const bcrypt = require("bcrypt");
 const logger = require("../../../logger/logger.js");
 const jwt = require("jsonwebtoken");
+const redis = require("redis");
+const client = redis.createClient();
+var redisCache = require("../../middleware/redisCache.js");
 
 class userService {
     /**
@@ -31,6 +34,7 @@ class userService {
      * @param {*} callback is the callback for controller
      */
     login = (userLoginData, callback) => {
+        const userEmail = userLoginData.emailId;
         User.find(userLoginData, (error, data) => {
             console.log("service login data", data);
             const password = data[0].password;
@@ -57,7 +61,9 @@ class userService {
                             const token = helper.createToken(data[0]);
                             data.token = token;
                             console.log(token);
-
+                            // data = data[0];
+                            const redisData = redisCache.setRedis(data[0], userEmail);
+                            console.log("setting redis data : " + redisData);
                             return callback(null, data);
                         } else {
                             logger.info("ERR:401-Please verify email before login");
