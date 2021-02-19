@@ -67,9 +67,10 @@ class LabelController {
 
     findAll = (req, res) => {
         try {
+            const token = req.headers.authorization.split(" ")[1];
             console.log("controlle");
             labelServices
-                .findAll()
+                .findAll(token)
                 .then((data) => {
                     console.log("data ", +data);
                     //        logger.info("Successfully retrieved labels !"),

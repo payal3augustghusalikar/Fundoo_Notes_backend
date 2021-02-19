@@ -70,6 +70,13 @@ class Helper {
         return noteInfo;
     };
 
+    getEmailFromToken = (token) => {
+        let decode = jwt.verify(token, process.env.SECRET_KEY);
+        let emailId = decode.emailId;
+        console.log("emailId Id for redis :", emailId);
+        return emailId;
+    };
+
     /**
      * @description sends the email with reset link with token using nodemailer
      * @param {*} userInfo

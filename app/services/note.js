@@ -9,6 +9,9 @@ const Note = require("../models/note.js");
 
 const helper = require("../../middleware/helper.js");
 const logger = require("../../logger/logger.js");
+const redis = require("redis");
+const client = redis.createClient();
+var redisCache = require("../../middleware/redisCache.js");
 
 class NoteService {
     /**
@@ -27,12 +30,17 @@ class NoteService {
      * @method findAll is used to retrieve Notes
      * @param callback is the callback for controller
      */
-    findAll = (callback) => {
+    findAll = (token, callback) => {
+        console.log("service");
+        const userEmail = helper.getEmailFromToken(token);
+        console.log("get email :", userEmail);
         Note.findAll((error, data) => {
             if (error) {
                 logger.error("Some error occurred");
                 return callback(new Error("Some error occurred"), null);
             } else {
+                const redisData = redisCache.setRedis(data, userEmail);
+                console.log("setting redis data : " + redisData);
                 return callback(null, data);
             }
         });

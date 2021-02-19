@@ -59,8 +59,9 @@ class NoteController {
      * @method findAll is service class method
      */
     findAll = (req, res) => {
-        noteService.findAll((error, data) => {
-            try {
+        try {
+            const token = req.headers.authorization.split(" ")[1];
+            noteService.findAll(token, (error, data) => {
                 return error ?
                     (logger.error("Some error occurred while retrieving notes"),
                         res.send({
@@ -76,15 +77,15 @@ class NoteController {
                             message: `note found`,
                             data: data,
                         }));
-            } catch (error) {
-                //             logger.error("note not found");
-                res.send({
-                    success: false,
-                    status_code: 500,
-                    message: `note not found`,
-                });
-            }
-        });
+            });
+        } catch (error) {
+            //             logger.error("note not found");
+            res.send({
+                success: false,
+                status_code: 500,
+                message: `note not found`,
+            });
+        }
     };
 
     /**

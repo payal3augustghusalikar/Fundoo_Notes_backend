@@ -1,7 +1,9 @@
 const Label = require("../models/label.js");
 
 const helper = require("../../middleware/helper.js");
-
+const redis = require("redis");
+const client = redis.createClient();
+var redisCache = require("../../middleware/redisCache.js");
 class LabelService {
     /**
      * @description Create and save Label then send response to controller
@@ -20,9 +22,21 @@ class LabelService {
      * @method findAll is used to retrieve Labels
      * @param callback is the callback for controller
      */
-    findAll = (callback) => {
+    findAll = async(token, callback) => {
         console.log("service");
-        return Label.findAll(callback);
+        const userEmail = await helper.getEmailFromToken(token);
+        console.log("get email :", userEmail);
+        return Label.findAll((error, data) => {
+            if (error) {
+                logger.error("Some error occurred");
+                return callback(new Error("Some error occurred"), null);
+            } else {
+                const redisData = redisCache.setRedis(data, userEmail);
+                console.log("setting redis data : " + redisData);
+
+                return data;
+            }
+        });
     };
 
     /**
