@@ -25,7 +25,7 @@ class Helper {
                 id: data._id,
             },
             process.env.SECRET_KEY, {
-                expiresIn: "2h",
+                expiresIn: "60d",
             }
         );
         // console.log(token)

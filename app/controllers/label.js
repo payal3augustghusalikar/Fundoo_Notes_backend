@@ -85,7 +85,8 @@ class LabelController {
                     res.send({
                         success: false,
                         status_code: 404,
-                        message: "label not found",
+                        message: "label not found ",
+                        error,
                     });
                 });
         } catch (error) {
@@ -93,7 +94,7 @@ class LabelController {
             res.send({
                 success: false,
                 status_code: 500,
-                message: "label not found",
+                message: "error retriving labels",
             });
         }
     };
@@ -212,8 +213,7 @@ class LabelController {
                         success: false,
                         status_code: 404,
                         message: "label not found with id ",
-                    })) //          logger.info("label deleted successfully!"),
-                :
+                    })) :
                 res.send({
                     success: true,
                     status_code: Status.Success,

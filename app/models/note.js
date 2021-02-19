@@ -27,7 +27,7 @@ const NoteSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Label",
     }, ],
-}, {
+}, { versionKey: false }, {
     timestamps: true,
 });
 const Note = mongoose.model("Note", NoteSchema);
@@ -40,7 +40,7 @@ class NoteModel {
     create = (noteInfo, callback) => {
         const note = new Note({
             title: noteInfo.title,
-            description: noteInfo.description || "Empty description",
+            description: noteInfo.description,
             userId: noteInfo.userId,
         });
         note.save(callback);
@@ -84,7 +84,7 @@ class NoteModel {
         Note.findByIdAndUpdate(
             noteInfo.noteID, {
                 title: noteInfo.title,
-                description: noteInfo.description || "Empty description",
+                description: noteInfo.description,
             }, { new: true },
             callback
         );

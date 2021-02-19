@@ -22,14 +22,7 @@ class LabelService {
      */
     findAll = (callback) => {
         console.log("service");
-        Label.findAll((error, data) => {
-            if (error) {
-                logger.error("Some error occurred");
-                return callback(new Error("Some error occurred"), null);
-            } else {
-                return callback(null, data);
-            }
-        });
+        return Label.findAll(callback);
     };
 
     /**
@@ -57,8 +50,10 @@ class LabelService {
      * @method deleteById is used to remove Label by ID
      * @param callback is the callback for controller
      */
-    delete = (LabelID, callback) => {
-        return Label.deleteById(LabelID, callback);
+    delete = async(labelID, callback) => {
+        //  Label.deleteById(LabelID, callback);
+        const data = await Label.deleteById(labelID, callback);
+        return data;
     };
 }
 

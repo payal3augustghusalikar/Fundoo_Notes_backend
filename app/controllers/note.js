@@ -7,7 +7,7 @@ const ControllerDataValidation = Joi.object({
         .regex(/^[a-zA-Z ]+$/)
         .min(3)
         .required(),
-    message: Joi.string()
+    description: Joi.string()
         .regex(/^[a-zA-Z ]+$/)
         .min(3)
         .required(),
@@ -22,10 +22,11 @@ class NoteController {
         try {
             const noteInfo = {
                 title: req.body.title,
-                message: req.body.message,
+                description: req.body.description,
             };
             const token = req.headers.authorization.split(" ")[1];
             const validation = ControllerDataValidation.validate(noteInfo);
+            console.log(validation);
             return validation.error ?
                 res.status(400).send({
                     success: false,
@@ -177,7 +178,7 @@ class NoteController {
         try {
             const noteInfo = {
                 title: req.body.title,
-                message: req.body.message,
+                description: req.body.description,
                 noteID: req.params.noteId,
             };
             noteService.update(noteInfo, (error, data) => {

@@ -19,7 +19,7 @@ const LabelSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
     },
-}, {
+}, { versionKey: false }, {
     timestamps: true,
 });
 const Label = mongoose.model("Label", LabelSchema);
@@ -67,6 +67,7 @@ class LabelModel {
      *
      * @param {*} labelInfo
      * @param {*} callback
+     *
      */
     update = (labelInfo, callback) => {
         return Label.findByIdAndUpdate(
