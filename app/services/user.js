@@ -57,12 +57,14 @@ class userService {
                             // if (data) {
                             console.log("inside bcryt", data[0].password);
                             logger.info("Authorization success");
-                            //  console.log(data[0]);
+                            console.log("data[0] : ", data[0]);
                             const token = helper.createToken(data[0]);
-                            data.token = token;
+                            data[0].token = token;
+                            // data = data.token;
                             console.log(token);
-                            // data = data[0];
-                            const redisData = redisCache.setRedis(data[0], userEmail);
+                            data = data[0];
+                            console.log("data in service : ", data);
+                            const redisData = redisCache.setRedis(data, userEmail);
                             console.log("setting redis data : " + redisData);
                             return callback(null, data);
                         } else {
