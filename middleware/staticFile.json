@@ -1,0 +1,67 @@
+{
+    "Success": {
+        "Success": true,
+        "status_code": 200,
+        "message": "Ok"
+    },
+    "Accepted": {
+        "Success": true,
+        "status_code": 202,
+        "message": "Accepted"
+    },
+    "No_Content": {
+        "Success": true,
+        "status_code": 204,
+        "message": "No_Content"
+    },
+    "Reset_Content": {
+        "Success": true,
+        "status_code": 205,
+        "message": "Reset_Content"
+    },
+    "Not_Found": {
+        "Success": false,
+        "status_code": 404,
+        "message": "Not_Found"
+    },
+    "Bad_Request": {
+        "Success": false,
+        "status_code": 400,
+        "message": "Bad_Request"
+    },
+    "Unauthorized ": {
+        "Success": true,
+        "status_code": 401,
+        "message": "Unauthorized"
+    },
+    "Request_Timeout": {
+        "Success": false,
+        "status_code": 408,
+        "message": "Request_Timeout"
+    },
+    "Invalid_Token": {
+        "Success": false,
+        "status_code": 498,
+        "message": "Invalid_Token"
+    },
+    "Token_Required": {
+        "Success": false,
+        "status_code": 499,
+        "message": "Token_Required"
+    },
+    "Internal_Server_Error": {
+        "Success": false,
+        "status_code": 500,
+        "message": "Internal_Server_Error"
+    },
+    "Bad_Gateway": {
+        "Success": false,
+        "status_code": 502,
+        "message": "Bad_Gateway"
+    },
+    "Service_Unavailable": {
+        "Success": true,
+        "status_code": 503,
+        "message": "Service_Unavailable"
+    }
+}
