@@ -21,18 +21,7 @@ checkCacheData = (userEmail, res, next) => {
                 (console.log("no data in redis"),
                     logger.error("Error retrieving data from redis cache"),
                     next()) :
-                (redisData.key == "login" ?
-                    (logger.info("retrieving data from redis cache"),
-                        console.log("redisDataa : " + JSON.parse(redisData)),
-                        // JSON.parse(redisData),
-                        res.send({
-                            success: true,
-                            status_code: 200,
-                            message: `data found`,
-                            redisDataLogin: JSON.parse(redisData.token),
-                        })) :
-                    console.log("redisDataa : " + JSON.parse(redisData)),
-                    // JSON.parse(redisData),
+                (console.log("redisDataa : " + JSON.parse(redisData)),
                     res.send({
                         success: true,
                         status_code: 200,
@@ -49,7 +38,7 @@ class RedisCache {
      * @param {*} res
      * @param {*} next
      */
-    redisGet = (req, res, next) => {
+    redisGet = async(req, res, next) => {
         var start = new Date();
         const userEmail = req.body.emailId;
         console.log("get email from body :", userEmail);
@@ -58,12 +47,13 @@ class RedisCache {
             const userEmail = helper.getEmailFromToken(token);
             console.log("get email from token:", userEmail);
             console.log("inside note or label");
-            const data = checkCacheData(userEmail, res, next);
+            const data = await checkCacheData(userEmail, res, next);
             console.log("return from check cache: ", data);
             console.log("Request took2:", new Date() - start, "ms");
         } else {
             console.log("for login");
-            checkCacheData(userEmail, res, next);
+            const data = await checkCacheData(userEmail, res, next);
+            console.log("return from check cache: ", data);
             console.log("Request took1:", new Date() - start, "ms");
         }
     };
@@ -85,71 +75,3 @@ class RedisCache {
 }
 
 module.exports = new RedisCache();
-
-// checkCacheData = (userEmail, res, next) => {
-//     return client.get(
-//         `process.env.REDIS_KEY ${userEmail}`,
-//         (error, redisData) => {
-//             console.log("start : ", redisData);
-//             return error || redisData == null ?
-//                 (console.log("no data in redis"),
-//                     logger.error("Error retrieving data from redis cache"),
-//                     next()) :
-//                 (logger.info("retrieving data from redis cache"),
-//                     console.log("redisDataa : " + JSON.parse(redisData)),
-//                     JSON.parse(redisData),
-//                     res.send({
-//                         success: true,
-//                         status_code: 200,
-//                         message: `data found`,
-//                         redisData: JSON.parse(redisData),
-//                     }));
-//             // next()
-//             //next();
-//         }
-//     );
-//     // next()
-// };
-
-// class RedisCache {
-//     /**
-//      * @param {*} req
-//      * @param {*} res
-//      * @param {*} next
-//      */
-//     redisGet = async(req, res, next) => {
-//         var start = new Date();
-//         const userEmail = req.body.emailId;
-//         console.log("get email from body :", userEmail);
-//         if (userEmail == undefined) {
-//             const token = req.headers.authorization.split(" ")[1];
-//             const userEmail = helper.getEmailFromToken(token);
-//             console.log("get email from token:", userEmail);
-//             console.log("inside note or label");
-//             const data = await checkCacheData(userEmail, res, next);
-//             console.log("return from check cache: ", data);
-//             console.log("Request took2:", new Date() - start, "ms");
-//         } else {
-//             console.log("for login");
-//             const data = await checkCacheData(userEmail, res, next);
-//             console.log("return from check cache: ", data);
-//             console.log("Request took1:", new Date() - start, "ms");
-//         }
-//     };
-
-//     /**
-//      * @description set the data in rediscache
-//      * @param {*} data is the responce from database
-//      * @param {*} userEmail for unique identity
-//      */
-//     setRedis = (data, userEmail) => {
-//         console.log("userId for redis is: " + userEmail);
-//         return client.setex(
-//             `process.env.REDIS_KEY ${userEmail}`,
-//             30,
-//             JSON.stringify(data)
-//         );
-//     };
-// }
-
-// module.exports = new RedisCache();

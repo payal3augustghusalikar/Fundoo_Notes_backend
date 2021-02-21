@@ -37,7 +37,6 @@ class userService {
         var start = new Date();
         const userEmail = userLoginData.emailId;
         User.find(userLoginData, (error, data) => {
-            // const password = data[0].password;
             console.log("service login pass", data[0].password);
             console.log("service login pass", userLoginData.password);
             if (error) {
@@ -54,17 +53,12 @@ class userService {
                     (error, result) => {
                         console.log(result);
                         if (result) {
-                            // if (data) {
                             console.log("inside bcryt", data[0].password);
                             logger.info("Authorization success");
                             console.log("data[0] : ", data[0]);
                             const token = helper.createToken(data[0]);
-                            const key = "login";
                             data.token = token;
-                            data.key = key;
-                            // data = data.token;
                             console.log(token);
-                            //  data = data[0];
                             console.log("data in service : ", data);
                             const redisData = redisCache.setRedis(data.token, userEmail);
                             console.log("setting redis data : " + redisData);
