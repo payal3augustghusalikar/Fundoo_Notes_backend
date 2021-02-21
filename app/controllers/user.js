@@ -90,14 +90,14 @@ class userController {
                             message: "Auth Failed",
                         });
                     }
-                    console.log("Request took:", new Date() - start, "ms");
+
                     return res.status(200).send({
                         success: true,
                         message: "login successfull",
                         token: data.token,
                     });
-                    console.log("Request took:", new Date() - start, "ms");
                 });
+                console.log("Request took:", new Date() - start, "ms");
             }
         } catch (error) {
             //    logger.error("could not found user with emailid" + req.body.emailId);

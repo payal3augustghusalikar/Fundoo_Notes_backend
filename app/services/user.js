@@ -59,12 +59,14 @@ class userService {
                             logger.info("Authorization success");
                             console.log("data[0] : ", data[0]);
                             const token = helper.createToken(data[0]);
-                            data[0].token = token;
+                            const key = "login";
+                            data.token = token;
+                            data.key = key;
                             // data = data.token;
                             console.log(token);
-                            data = data[0];
+                            //  data = data[0];
                             console.log("data in service : ", data);
-                            const redisData = redisCache.setRedis(data, userEmail);
+                            const redisData = redisCache.setRedis(data.token, userEmail);
                             console.log("setting redis data : " + redisData);
                             return callback(null, data);
                         } else {
