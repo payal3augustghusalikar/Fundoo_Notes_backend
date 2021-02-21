@@ -3,6 +3,7 @@ const client = redis.createClient();
 const config = require("../config").get();
 const logger = require("../../logger/logger.js");
 const helper = require("./helper.js");
+const status = require("../middleware/staticFile.json");
 
 client.on("connect", function() {
     console.log("Connected to Redis");
@@ -23,8 +24,7 @@ checkCacheData = (userEmail, res, next) => {
                     next()) :
                 (console.log("redisDataa : " + JSON.parse(redisData)),
                     res.send({
-                        success: true,
-                        status_code: 200,
+                        status_code: status.Success,
                         message: `data found`,
                         redisData: JSON.parse(redisData),
                     }));

@@ -1,6 +1,7 @@
 const noteService = require("../services/note.js");
 const Joi = require("joi");
 const logger = require("../../logger/logger.js");
+const status = require("../../middleware/staticFile.json");
 
 const ControllerDataValidation = Joi.object({
     title: Joi.string()
@@ -35,20 +36,23 @@ class NoteController {
                 noteService.create(noteInfo, token, (error, data) => {
                     return error ?
                         (logger.error("Some error occurred while creating note"),
-                            res.status(500).send({
+                            res.send({
                                 success: false,
+                                status_code: status.Internal_Server_Error,
                                 message: "Some error occurred while creating note",
                             })) //                  logger.info("note added successfully !"),
                         :
-                        res.status(200).send({
+                        res.send({
                             success: true,
+                            status_code: status.Success,
                             message: "note added successfully !",
                             data: data,
                         });
                 });
         } catch (error) {
-            res.status(500).send({
+            res.send({
                 success: false,
+                status_code: status.Internal_Server_Error,
                 message: "Some error occurred while creating note",
             });
         }
@@ -67,7 +71,7 @@ class NoteController {
                     (logger.error("Some error occurred while retrieving notes"),
                         res.send({
                             success: false,
-                            status_code: 404,
+                            status_code: status.Not_Found,
                             message: `note not found`,
                         })) :
                     (logger.info("Successfully retrieved notes !"),
@@ -75,7 +79,7 @@ class NoteController {
                         console.log("Request took:", new Date() - start, "ms"),
                         res.send({
                             success: true,
-                            status_code: 200,
+                            status_code: status.Success,
                             message: `note found`,
                             data: data,
                         }));
@@ -85,7 +89,7 @@ class NoteController {
             //             logger.error("note not found");
             res.send({
                 success: false,
-                status_code: 500,
+                status_code: status.Internal_Server_Error,
                 message: `note not found`,
             });
         }
@@ -103,20 +107,22 @@ class NoteController {
                 return (
                     error ?
                     (logger.error("Error retrieving note with id " + noteID),
-                        res.status(500).send({
+                        res.send({
                             success: false,
+                            status_code: status.Internal_Server_Error,
                             message: "Error retrieving note with id " + noteID,
                         })) :
                     !data ?
                     (logger.warn("Note not found with id : " + noteID),
-                        res.status(404).send({
+                        res.send({
                             success: false,
+                            status_code: status.Not_Found,
                             message: "Note not found with id : " + noteID,
                         })) :
                     logger.info("note found with id " + noteID),
                     res.send({
                         success: true,
-                        status_code: 200,
+                        status_code: status.Success,
                         message: "Note found with id " + noteID,
                         data: data,
                     })
@@ -126,7 +132,7 @@ class NoteController {
             logger.error("could not found note with id" + req.params.noteID);
             return res.send({
                 success: false,
-                status_code: 500,
+                status_code: status.Internal_Server_Error,
                 message: "error retrieving note with id " + req.params.noteID,
             });
         }
@@ -193,14 +199,14 @@ class NoteController {
                         ),
                         res.send({
                             success: false,
-                            status_code: 500,
+                            status_code: status.Internal_Server_Error,
                             message: "Error updating note with id : " + req.params.noteId,
                         })) :
                     !data ?
                     (logger.warn("note not found with id : " + req.params.noteId),
                         res.send({
                             success: false,
-                            status_code: 404,
+                            status_code: status.Not_Found,
                             message: "note not found with id : " + req.params.noteId,
                         })) :
                     logger.info("note updated successfully !"),
@@ -217,13 +223,13 @@ class NoteController {
                 (logger.error("note not found with id " + req.params.noteId),
                     res.send({
                         success: false,
-                        status_code: 404,
+                        status_code: status.Not_Found,
                         message: "note not found with id " + req.params.noteId,
                     })) :
                 logger.error("Error updating note with id " + req.params.noteId),
                 res.send({
                     success: false,
-                    status_code: 500,
+                    status_code: status.Internal_Server_Error,
                     message: "Error updating note with id " + req.params.noteId,
                 })
             );
@@ -244,13 +250,13 @@ class NoteController {
                     (logger.warn("note not found with id " + noteID),
                         res.send({
                             success: false,
-                            status_code: 404,
+                            status_code: status.Not_Found,
                             message: "note not found with id " + noteID,
                         })) :
                     logger.info("note deleted successfully!"),
                     res.send({
                         success: true,
-                        status_code: 200,
+                        status_code: status.Success,
                         message: "note deleted successfully!",
                     })
                 );
@@ -261,13 +267,13 @@ class NoteController {
                 (logger.error("could not found note with id" + noteID),
                     res.send({
                         success: false,
-                        status_code: 404,
+                        status_code: status.Not_Found,
                         message: "note not found with id " + noteID,
                     })) :
                 logger.error("Could not delete note with id " + noteID),
                 res.send({
                     success: false,
-                    status_code: 500,
+                    status_code: status.Internal_Server_Error,
                     message: "Could not delete note with id " + noteID,
                 })
             );

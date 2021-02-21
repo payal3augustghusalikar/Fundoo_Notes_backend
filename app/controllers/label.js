@@ -1,7 +1,7 @@
 const labelServices = require("../services/label.js");
 const Joi = require("joi");
 const logger = require("../../logger/logger.js");
-const Status = require("../../middleware/statusCode.json");
+const status = require("../../middleware/staticFile.json");
 
 const ControllerDataValidation = Joi.object({
     name: Joi.string()
@@ -27,7 +27,7 @@ class LabelController {
             return validation.error ?
                 res.send({
                     success: false,
-                    status: Status.Bad_Request,
+                    status: status.Bad_Request,
                     message: "please enter valid details",
                 }) :
                 labelServices
@@ -37,7 +37,7 @@ class LabelController {
                     //    logger.info("label added successfully !"),
                     res.send({
                         success: true,
-                        status: Status.Success,
+                        status: status.Success,
                         message: "label added successfully !",
                         data: data,
                     });
@@ -46,7 +46,7 @@ class LabelController {
                     //   logger.error("Some error occurred while creating label", +error),
                     res.send({
                         success: false,
-                        status: Status.Internal_Server_Error,
+                        status: status.Internal_Server_Error,
                         message: "Some error occurred while creating label",
                     });
                 });
@@ -54,7 +54,7 @@ class LabelController {
             //    logger.error("Some error occurred while creating label"),
             res.send({
                 success: false,
-                status: Status.Internal_Server_Error,
+                status: status.Internal_Server_Error,
                 message: "Some error occurred while creating label" + error,
             });
         }
@@ -77,7 +77,7 @@ class LabelController {
                     //        logger.info("Successfully retrieved labels !"),
                     res.send({
                         success: true,
-                        status_code: Status.Success,
+                        status_code: status.Success,
                         message: "label of current account has been retrieved",
                         time: (new Date() - start, "ms"),
                         data: data,
@@ -88,7 +88,7 @@ class LabelController {
                     //        logger.error("Some error occurred while retrieving labels"),
                     res.send({
                         success: false,
-                        status_code: 404,
+                        status_code: status.Not_Found,
                         message: "label not found ",
                         error,
                     });
@@ -97,7 +97,7 @@ class LabelController {
             //       logger.error("label not found");
             res.send({
                 success: false,
-                status_code: 500,
+                status_code: status.Internal_Server_Error,
                 message: "error retriving labels",
             });
         }
@@ -117,22 +117,24 @@ class LabelController {
                     !data
                         ?
                         (logger.warn("label not found with id : " + labelID),
-                            res.status(404).send({
+                            res.send({
                                 success: false,
+                                Status_code: status.Not_Found,
                                 message: "label not found",
                             })) :
                         logger.info("label found with id " + labelID),
                         res.send({
                             success: true,
-                            status_code: Status.Success,
+                            status_code: status.Success,
                             message: "label found",
                             data: data,
                         });
                 })
                 .catch((error) => {
                     //          logger.error("Error retrieving label with id " + labelID),
-                    res.status(500).send({
+                    res.send({
                         success: false,
+                        status_code: status.Internal_Server_Error,
                         message: "label not found",
                     });
                 });
@@ -140,7 +142,7 @@ class LabelController {
             // logger.error("could not found label with id" + labelID, +error);
             res.send({
                 success: false,
-                status_code: 500,
+                status_code: status.Internal_Server_Error,
                 message: "label not found",
             });
         }
@@ -165,13 +167,13 @@ class LabelController {
                         (logger.warn("label not found with id : " + req.params.labelId),
                             res.send({
                                 success: false,
-                                status_code: 404,
+                                status_code: status.Not_Found,
                                 message: "label not found",
                             })) //        logger.info("label updated successfully !"),
                         :
                         res.send({
                             success: true,
-                            status_code: Status.Success,
+                            status_code: status.Success,
                             message: "label updated successfully !",
                             data: data,
                         });
@@ -180,7 +182,7 @@ class LabelController {
                     //         logger.error("Error updating label with id : " + req.params.labelId),
                     res.send({
                         success: false,
-                        status_code: 401,
+                        status_code: status.Unauthorized,
                         message: "Error updating label",
                     });
                 });
@@ -189,13 +191,13 @@ class LabelController {
                 (logger.error("label not found with id " + req.params.labelId),
                     res.send({
                         success: false,
-                        status_code: 404,
+                        status_code: status.Not_Found,
                         message: "label not found ",
                     })) //         logger.error("Error updating label with id " + req.params.labelId),
                 :
                 res.send({
                     success: false,
-                    status_code: 500,
+                    status_code: status.Internal_Server_Error,
                     message: "Error updating label",
                 });
         }
@@ -215,19 +217,19 @@ class LabelController {
                 (logger.warn("label not found with id " + labelID),
                     res.send({
                         success: false,
-                        status_code: 404,
+                        status_code: status.Not_Found,
                         message: "label not found with id ",
                     })) :
                 res.send({
                     success: true,
-                    status_code: Status.Success,
+                    status_code: status.Success,
                     message: "label deleted successfully!",
                 });
             error(
                 //            logger.warn("label not found with id" + labelID),
                 res.send({
                     success: false,
-                    status_code: 404,
+                    status_code: status.Not_Found,
                     message: "label not found with id",
                 })
             );
@@ -237,13 +239,13 @@ class LabelController {
                 (logger.error("could not found label with id" + labelID),
                     res.send({
                         success: false,
-                        status_code: 404,
+                        status_code: status.Not_Found,
                         message: "label not found with id",
                     })) :
                 logger.error("Could not delete label with id" + error + labelID),
                 res.send({
                     success: false,
-                    status_code: 500,
+                    status_code: status.Internal_Server_Error,
                     message: "Could not delete label with id",
                 })
             );

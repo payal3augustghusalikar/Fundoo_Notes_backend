@@ -9,6 +9,7 @@ const userService = require("../services/user.js");
 const logger = require("../../logger/logger.js");
 nodemailer = require("nodemailer");
 let vallidator = require("../../middleware/vallidation.js");
+const status = require("../../middleware/staticFile.json");
 
 class userController {
     /**
@@ -20,8 +21,9 @@ class userController {
             let confirmPassword = req.body.confirmPassword;
             let password = req.body.password;
             if (password !== confirmPassword) {
-                return res.status(400).send({
+                return res.send({
                     success: false,
+                    status_code: status.Bad_Request,
                     message: "Password not match",
                 });
             } else {
@@ -32,18 +34,21 @@ class userController {
                 };
                 const validation = vallidator.validate(userInfo);
                 return validation.error ?
-                    res.status(400).send({
+                    res.send({
                         success: false,
+                        status_code: status.Bad_Request,
                         message: validation.error.message,
                     }) :
                     userService.register(userInfo, (error, data) => {
                         return error ?
-                            res.status(500).send({
+                            res.send({
                                 success: false,
+                                status_code: status.Internal_Server_Error,
                                 message: error.message,
                             }) :
-                            res.status(200).send({
+                            res.send({
                                 success: true,
+                                status_code: status.Success,
                                 message: "user added successfully !",
                                 data: data,
                             });
@@ -51,8 +56,9 @@ class userController {
             }
         } catch (error) {
             //  logger.error("Some error occurred while creating user");
-            return res.status(500).send({
+            return res.send({
                 success: false,
+                status_code: status.Internal_Server_Error,
                 message: "Some error occurred while creating user",
                 error,
             });
@@ -71,8 +77,9 @@ class userController {
             let password = req.body.password;
 
             if (password !== confirmPassword) {
-                return res.status(400).send({
+                return res.send({
                     success: false,
+                    status_code: status.Bad_Request,
                     message: "Password not match",
                 });
             } else {
@@ -84,15 +91,15 @@ class userController {
                     console.log("controller login data", data);
                     if (data.length < 1) {
                         //     logger.info("user not exist with emailid" + req.body.emailId);
-                        return res.status(404).send({
+                        return res.send({
                             success: false,
-                            status_code: 404,
+                            status_code: status.Not_Found,
                             message: "Auth Failed",
                         });
                     }
 
-                    return res.status(200).send({
-                        success: true,
+                    return res.send({
+                        success: status.Success,
                         message: "login successfull",
                         token: data.token,
                     });
@@ -103,7 +110,7 @@ class userController {
             //    logger.error("could not found user with emailid" + req.body.emailId);
             return res.send({
                 success: false,
-                status_code: 500,
+                status_code: status.Internal_Server_Error,
                 message: "error retrieving user with emailid " + req.body.emailId,
             });
         }
@@ -122,28 +129,32 @@ class userController {
             userService.forgotPassword(userInfo, (error, user) => {
                 if (error) {
                     logger.error(error.message);
-                    return res.status(500).send({
+                    return res.send({
                         success: false,
+                        status_code: status.Internal_Server_Error,
                         message: "error occured " + error.message,
                     });
                 } else if (!user) {
                     //     logger.error("Authorization failed");
-                    return res.status(401).send({
+                    return res.send({
                         success: false,
+                        status_code: status.Unauthorized,
                         message: "Authorization failed",
                     });
                 } else {
                     logger.info("Email has been sent !");
-                    return res.status(200).send({
+                    return res.send({
                         success: true,
+                        status_code: status.Success,
                         message: "Email has been sent !",
                     });
                 }
             });
         } catch (error) {
             //    logger.error("Some error occurred !");
-            return res.status(500).send({
+            return res.send({
                 success: false,
+                status_code: status.Internal_Server_Error,
                 message: "Authorization failed  " + error.message,
             });
         }
@@ -162,8 +173,9 @@ class userController {
             let confirmPassword = req.body.confirmPassword;
             let token = req.headers.authorization.split(" ")[1];
             if (newPassword !== confirmPassword) {
-                res.status(400).send({
+                res.send({
                     success: false,
+                    status_code: status.Bad_Request,
                     message: "Password not match",
                 });
             } else {
@@ -174,27 +186,31 @@ class userController {
                 };
                 validationResult = vallidator.validate(resetPasswordData.newPassword);
                 return validationResult.error ?
-                    res.status(400).send({
+                    res.send({
                         success: false,
+                        status_code: status.Bad_Request,
                         message: validation.error.message,
                     }) :
                     userService.resetPassword(resetPasswordData, (error, data) => {
                         if (error) {
                             logger.error(error.message);
-                            return res.status(500).send({
+                            return res.send({
                                 success: false,
+                                status_code: status.Internal_Server_Error,
                                 message: error.message,
                             });
                         } else if (!data) {
                             logger.error("Authorization failed");
-                            return res.status(500).send({
+                            return res.send({
                                 success: false,
+                                status_code: status.Internal_Server_Error,
                                 message: "Authorization failed  " + error.message,
                             });
                         } else {
                             logger.info("Password has been changed !");
-                            return res.status(200).send({
+                            return res.send({
                                 success: true,
+                                status_code: status.Success,
                                 message: "Password has been changed ",
                             });
                         }
@@ -202,8 +218,9 @@ class userController {
             }
         } catch (error) {
             //   logger.error("Some error occurred !");
-            return res.status(500).send({
+            return res.send({
                 success: false,
+                status_code: status.Internal_Server_Error,
                 message: "Some error occurred !" + error.message,
             });
         }
