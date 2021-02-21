@@ -11,8 +11,6 @@ class LabelService {
      * @param callback is the callback for controller
      */
     create = async(labelInfo, token, callback) => {
-        //  console.log("token in service : " + token);
-        // create a Label
         labelInfo = await helper.decodeToken(labelInfo, token);
         return Label.create(labelInfo, callback);
     };
@@ -33,7 +31,6 @@ class LabelService {
             } else {
                 const redisData = redisCache.setRedis(data, userEmail);
                 console.log("setting redis data : " + redisData);
-
                 return data;
             }
         });

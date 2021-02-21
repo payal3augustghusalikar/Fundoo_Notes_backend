@@ -55,13 +55,13 @@ class LabelModel {
         return Label.findById(labelId, callback);
     };
 
-    /**
-     *
-     * @param {*} labelInfo
-     */
-    findLabelByUser = (labelInfo) => {
-        return Label.find({ userId: labelInfo.userId });
-    };
+    // /**
+    //  *
+    //  * @param {*} labelInfo
+    //  */
+    // findLabelByUserId = (labelInfo) => {
+    //     return Label.find({ userId: labelInfo.userId });
+    // };
 
     /**
      *

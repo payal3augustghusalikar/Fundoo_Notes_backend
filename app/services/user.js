@@ -34,10 +34,10 @@ class userService {
      * @param {*} callback is the callback for controller
      */
     login = (userLoginData, callback) => {
+        var start = new Date();
         const userEmail = userLoginData.emailId;
         User.find(userLoginData, (error, data) => {
-            console.log("service login data", data);
-            const password = data[0].password;
+            // const password = data[0].password;
             console.log("service login pass", data[0].password);
             console.log("service login pass", userLoginData.password);
             if (error) {
@@ -57,7 +57,7 @@ class userService {
                             // if (data) {
                             console.log("inside bcryt", data[0].password);
                             logger.info("Authorization success");
-                            console.log(data[0]);
+                            //  console.log(data[0]);
                             const token = helper.createToken(data[0]);
                             data.token = token;
                             console.log(token);

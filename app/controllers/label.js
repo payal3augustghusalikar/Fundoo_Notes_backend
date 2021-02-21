@@ -33,7 +33,7 @@ class LabelController {
                 labelServices
                 .create(labelInfo, token)
                 .then((data) => {
-                    console.log("data : " + data);
+                    //   console.log("data : " + data);
                     //    logger.info("label added successfully !"),
                     res.send({
                         success: true,
@@ -67,19 +67,22 @@ class LabelController {
 
     findAll = (req, res) => {
         try {
+            var start = new Date();
             const token = req.headers.authorization.split(" ")[1];
             console.log("controlle");
             labelServices
                 .findAll(token)
                 .then((data) => {
-                    console.log("data ", +data);
+                    // console.log("data ", +data);
                     //        logger.info("Successfully retrieved labels !"),
                     res.send({
                         success: true,
                         status_code: Status.Success,
                         message: "label of current account has been retrieved",
+                        time: (new Date() - start, "ms"),
                         data: data,
                     });
+                    console.log("Request took:", new Date() - start, "ms");
                 })
                 .catch((error) => {
                     //        logger.error("Some error occurred while retrieving labels"),
@@ -252,40 +255,40 @@ class LabelController {
      * @method findOne is service class method
      * @param response is used to send the response
      */
-    findOneByUserId = async(req, res) => {
-        try {
-            const userID = req.body.userId;
-            let data = await labelServices.findLabelByUserId(userID);
-            !data
-                ?
-                (logger.warn("label not found with id : " + userID),
-                    res.status(404).send({
-                        success: false,
-                        message: "label not found with id : " + userID + error,
-                    })) //           logger.info("label found with id " + userID),
-                :
-                res.send({
-                    success: true,
-                    status_code: Status.Success,
-                    message: "label found with id " + userID,
-                    data: data,
-                });
-            error(
-                //            logger.error("Error retrieving label with id " + userID),
-                res.status(500).send({
-                    success: false,
-                    message: "Error retrieving label with id" + userID + error,
-                })
-            );
-        } catch (error) {
-            //         logger.error("could not found label with id" + userID, +error);
-            return res.send({
-                success: false,
-                status_code: 500,
-                message: "error retrieving label with id" + userID + error,
-            });
-        }
-    };
+    // findOneByUserId = async(req, res) => {
+    //     try {
+    //         const userID = req.body.userId;
+    //         let data = await labelServices.findLabelByUserId(userID);
+    //         !data
+    //             ?
+    //             (logger.warn("label not found with id : " + userID),
+    //                 res.status(404).send({
+    //                     success: false,
+    //                     message: "label not found with id : " + userID + error,
+    //                 })) //           logger.info("label found with id " + userID),
+    //             :
+    //             res.send({
+    //                 success: true,
+    //                 status_code: Status.Success,
+    //                 message: "label found with id " + userID,
+    //                 data: data,
+    //             });
+    //         error(
+    //             //            logger.error("Error retrieving label with id " + userID),
+    //             res.status(500).send({
+    //                 success: false,
+    //                 message: "Error retrieving label with id" + userID + error,
+    //             })
+    //         );
+    //     } catch (error) {
+    //         //         logger.error("could not found label with id" + userID, +error);
+    //         return res.send({
+    //             success: false,
+    //             status_code: 500,
+    //             message: "error retrieving label with id" + userID + error,
+    //         });
+    //     }
+    // };
 }
 
 module.exports = new LabelController();

@@ -50,7 +50,7 @@ class userController {
                     });
             }
         } catch (error) {
-            logger.error("Some error occurred while creating user");
+            //  logger.error("Some error occurred while creating user");
             return res.status(500).send({
                 success: false,
                 message: "Some error occurred while creating user",
@@ -66,6 +66,7 @@ class userController {
      */
     login = (req, res) => {
         try {
+            var start = new Date();
             let confirmPassword = req.body.confirmPassword;
             let password = req.body.password;
 
@@ -82,22 +83,24 @@ class userController {
                 userService.login(userLoginInfo, (error, data) => {
                     console.log("controller login data", data);
                     if (data.length < 1) {
-                        logger.info("user not exist with emailid" + req.body.emailId);
+                        //     logger.info("user not exist with emailid" + req.body.emailId);
                         return res.status(404).send({
                             success: false,
                             status_code: 404,
                             message: "Auth Failed",
                         });
                     }
+                    console.log("Request took:", new Date() - start, "ms");
                     return res.status(200).send({
                         success: true,
                         message: "login successfull",
                         token: data.token,
                     });
+                    console.log("Request took:", new Date() - start, "ms");
                 });
             }
         } catch (error) {
-            logger.error("could not found user with emailid" + req.body.emailId);
+            //    logger.error("could not found user with emailid" + req.body.emailId);
             return res.send({
                 success: false,
                 status_code: 500,
@@ -124,7 +127,7 @@ class userController {
                         message: "error occured " + error.message,
                     });
                 } else if (!user) {
-                    logger.error("Authorization failed");
+                    //     logger.error("Authorization failed");
                     return res.status(401).send({
                         success: false,
                         message: "Authorization failed",
@@ -138,7 +141,7 @@ class userController {
                 }
             });
         } catch (error) {
-            logger.error("Some error occurred !");
+            //    logger.error("Some error occurred !");
             return res.status(500).send({
                 success: false,
                 message: "Authorization failed  " + error.message,
@@ -154,8 +157,7 @@ class userController {
      */
     resetPassword = (req, res) => {
         try {
-            //  console.log("controller token ", helper.token);
-
+            // console.log("controller token ", helper.token);
             let newPassword = req.body.newPassword;
             let confirmPassword = req.body.confirmPassword;
             let token = req.headers.authorization.split(" ")[1];
@@ -170,36 +172,36 @@ class userController {
                     confirmPassword: confirmPassword,
                     token: token,
                 };
-                //     validationResult = vallidator.validate(resetPasswordData.newPassword)
-                // return validationResult.error ?
-                //     res.status(400).send({
-                //         success: false,
-                //         message: validation.error.message,
-                //     }) :
-                userService.resetPassword(resetPasswordData, (error, data) => {
-                    if (error) {
-                        logger.error(error.message);
-                        return res.status(500).send({
-                            success: false,
-                            message: error.message,
-                        });
-                    } else if (!data) {
-                        logger.error("Authorization failed");
-                        return res.status(500).send({
-                            success: false,
-                            message: "Authorization failed  " + error.message,
-                        });
-                    } else {
-                        logger.info("Password has been changed !");
-                        return res.status(200).send({
-                            success: true,
-                            message: "Password has been changed ",
-                        });
-                    }
-                });
+                validationResult = vallidator.validate(resetPasswordData.newPassword);
+                return validationResult.error ?
+                    res.status(400).send({
+                        success: false,
+                        message: validation.error.message,
+                    }) :
+                    userService.resetPassword(resetPasswordData, (error, data) => {
+                        if (error) {
+                            logger.error(error.message);
+                            return res.status(500).send({
+                                success: false,
+                                message: error.message,
+                            });
+                        } else if (!data) {
+                            logger.error("Authorization failed");
+                            return res.status(500).send({
+                                success: false,
+                                message: "Authorization failed  " + error.message,
+                            });
+                        } else {
+                            logger.info("Password has been changed !");
+                            return res.status(200).send({
+                                success: true,
+                                message: "Password has been changed ",
+                            });
+                        }
+                    });
             }
         } catch (error) {
-            logger.error("Some error occurred !");
+            //   logger.error("Some error occurred !");
             return res.status(500).send({
                 success: false,
                 message: "Some error occurred !" + error.message,

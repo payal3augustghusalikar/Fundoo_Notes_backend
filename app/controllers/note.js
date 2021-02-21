@@ -60,6 +60,7 @@ class NoteController {
      */
     findAll = (req, res) => {
         try {
+            var start = new Date();
             const token = req.headers.authorization.split(" ")[1];
             noteService.findAll(token, (error, data) => {
                 return error ?
@@ -70,7 +71,8 @@ class NoteController {
                             message: `note not found`,
                         })) :
                     (logger.info("Successfully retrieved notes !"),
-                        console.log("data in cntr :", data),
+                        //  console.log("data in cntr :", data),
+                        console.log("Request took:", new Date() - start, "ms"),
                         res.send({
                             success: true,
                             status_code: 200,
@@ -78,6 +80,7 @@ class NoteController {
                             data: data,
                         }));
             });
+            console.log("Request took:", new Date() - start, "ms");
         } catch (error) {
             //             logger.error("note not found");
             res.send({

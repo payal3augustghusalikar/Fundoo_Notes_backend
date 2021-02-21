@@ -2,7 +2,7 @@
     "user": {
         "registerUserProperData": {
             "name": "Payal",
-            "emailId": "ghusalikar1apayal10@gmail.com",
+            "emailId": "ghusalikar1apayal58@gmail.com",
             "password": "Ghjjjjj",
             "confirmPassword": "Ghjjjjj"
         },
@@ -72,8 +72,12 @@
             "newPassword": "AAAAAAAAAA",
             "confirmPassword": "AAAAAAAAAA"
         },
+        "resetPasswordAndCPassNotSame": {
+            "newPassword": "AAAAA",
+            "confirmPassword": "AAAAAAAAAA"
+        },
         "resetPasswordImproperData": {
-            "newPassword": "bg"
+            "newPassword": "b"
         },
         "properToken": {
             "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbElkIjoiYWJjZEBnbWFpbC5jb20iLCJpZCI6IjYwMTNjYWE4N2E3NGIwMjlhOGM5NDliYyIsImlhdCI6MTYxMzQ0NDgxNiwiZXhwIjoxNjEzNTMxMjE2fQ.H9e3lT0Dx5aKXWv1Z1YEJdAWYXXU2i7FE0EfckAlVic"

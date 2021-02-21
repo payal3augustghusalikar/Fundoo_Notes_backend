@@ -24,7 +24,7 @@ describe("register", () => {
             .post("/register")
             .send(userInfo)
             .end((err, res) => {
-                console.log("body : " + res.body);
+                //   console.log("body : " + res.body);
                 res.should.have.status(200);
                 res.body.should.be.a("array");
                 done();
@@ -158,7 +158,7 @@ describe("Login", () => {
             });
     });
 
-    it.skip("givenUser_whenGivenNotRegisterdData_shouldNotRespondsWithJson", (done) => {
+    it("givenUser_whenGivenNotRegisterdData_shouldNotRespondsWithJson", (done) => {
         let userInfo = userData.user.NotregisterUserProperDatatoLogin;
         chai
             .request(server)
@@ -238,7 +238,7 @@ describe("Resetpassword", () => {
             });
     });
     it("givenUser_whenGivenPasswordConfirmPasswordNotSame_shouldNotResetPassword", (done) => {
-        let userInfo = userData.user.resetPasswordProperData;
+        let userInfo = userData.user.resetPasswordAndCPassNotSame;
         let token = userData.user.properToken.token;
         chai
             .request(server)
@@ -247,7 +247,9 @@ describe("Resetpassword", () => {
             .send(userInfo)
             .end((err, res) => {
                 res.should.have.status(401);
+                console.log(res.body);
                 res.body.should.be.a("object");
+                //  res.body.message.should.have.equal("Password not match");
                 done();
             });
     });

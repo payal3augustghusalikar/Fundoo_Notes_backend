@@ -22,7 +22,7 @@ module.exports = (app) => {
     app.get("/labels/:labelId", helper.verifyToken, labels.findOne);
 
     // Retrieve a single label with userId
-    app.get("/labels/:userId", helper.verifyToken, labels.findOneByUserId);
+    //   app.get("/labels/:userId", helper.verifyToken, labels.findOneByUserId);
 
     // Update a label with labelId
     app.put("/labels/:labelId", helper.verifyToken, labels.update);
