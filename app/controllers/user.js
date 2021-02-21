@@ -55,7 +55,7 @@ class userController {
                     });
             }
         } catch (error) {
-            //  logger.error("Some error occurred while creating user");
+            logger.error("Some error occurred while creating user");
             return res.send({
                 success: false,
                 status_code: status.Internal_Server_Error,
@@ -90,7 +90,7 @@ class userController {
                 userService.login(userLoginInfo, (error, data) => {
                     console.log("controller login data", data);
                     if (data.length < 1) {
-                        //     logger.info("user not exist with emailid" + req.body.emailId);
+                        logger.info("user not exist with emailid" + req.body.emailId);
                         return res.send({
                             success: false,
                             status_code: status.Not_Found,
@@ -107,7 +107,7 @@ class userController {
                 console.log("Request took:", new Date() - start, "ms");
             }
         } catch (error) {
-            //    logger.error("could not found user with emailid" + req.body.emailId);
+            logger.error("could not found user with emailid" + req.body.emailId);
             return res.send({
                 success: false,
                 status_code: status.Internal_Server_Error,
@@ -135,7 +135,7 @@ class userController {
                         message: "error occured " + error.message,
                     });
                 } else if (!user) {
-                    //     logger.error("Authorization failed");
+                    logger.error("Authorization failed");
                     return res.send({
                         success: false,
                         status_code: status.Unauthorized,
@@ -151,7 +151,7 @@ class userController {
                 }
             });
         } catch (error) {
-            //    logger.error("Some error occurred !");
+            logger.error("Some error occurred !");
             return res.send({
                 success: false,
                 status_code: status.Internal_Server_Error,
@@ -168,7 +168,7 @@ class userController {
      */
     resetPassword = (req, res) => {
         try {
-            // console.log("controller token ", helper.token);
+            console.log("controller token ", helper.token);
             let newPassword = req.body.newPassword;
             let confirmPassword = req.body.confirmPassword;
             let token = req.headers.authorization.split(" ")[1];
@@ -217,7 +217,7 @@ class userController {
                     });
             }
         } catch (error) {
-            //   logger.error("Some error occurred !");
+            logger.error("Some error occurred !");
             return res.send({
                 success: false,
                 status_code: status.Internal_Server_Error,

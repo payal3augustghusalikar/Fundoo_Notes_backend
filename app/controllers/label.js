@@ -33,30 +33,29 @@ class LabelController {
                 labelServices
                 .create(labelInfo, token)
                 .then((data) => {
-                    //   console.log("data : " + data);
-                    //    logger.info("label added successfully !"),
-                    res.send({
-                        success: true,
-                        status: status.Success,
-                        message: "label added successfully !",
-                        data: data,
-                    });
+                    logger.info("label added successfully !"),
+                        res.send({
+                            success: true,
+                            status: status.Success,
+                            message: "label added successfully !",
+                            data: data,
+                        });
                 })
                 .catch((error) => {
-                    //   logger.error("Some error occurred while creating label", +error),
-                    res.send({
-                        success: false,
-                        status: status.Internal_Server_Error,
-                        message: "Some error occurred while creating label",
-                    });
+                    logger.error("Some error occurred while creating label", +error),
+                        res.send({
+                            success: false,
+                            status: status.Internal_Server_Error,
+                            message: "Some error occurred while creating label",
+                        });
                 });
         } catch (error) {
-            //    logger.error("Some error occurred while creating label"),
-            res.send({
-                success: false,
-                status: status.Internal_Server_Error,
-                message: "Some error occurred while creating label" + error,
-            });
+            logger.error("Some error occurred while creating label"),
+                res.send({
+                    success: false,
+                    status: status.Internal_Server_Error,
+                    message: "Some error occurred while creating label" + error,
+                });
         }
     };
 
@@ -64,7 +63,6 @@ class LabelController {
      * @message Find all the label
      * @method findAll is service class method
      */
-
     findAll = (req, res) => {
         try {
             var start = new Date();
@@ -73,28 +71,27 @@ class LabelController {
             labelServices
                 .findAll(token)
                 .then((data) => {
-                    // console.log("data ", +data);
-                    //        logger.info("Successfully retrieved labels !"),
-                    res.send({
-                        success: true,
-                        status_code: status.Success,
-                        message: "label of current account has been retrieved",
-                        time: (new Date() - start, "ms"),
-                        data: data,
-                    });
+                    logger.info("Successfully retrieved labels !"),
+                        res.send({
+                            success: true,
+                            status_code: status.Success,
+                            message: "label of current account has been retrieved",
+                            time: (new Date() - start, "ms"),
+                            data: data,
+                        });
                     console.log("Request took:", new Date() - start, "ms");
                 })
                 .catch((error) => {
-                    //        logger.error("Some error occurred while retrieving labels"),
-                    res.send({
-                        success: false,
-                        status_code: status.Not_Found,
-                        message: "label not found ",
-                        error,
-                    });
+                    logger.error("Some error occurred while retrieving labels"),
+                        res.send({
+                            success: false,
+                            status_code: status.Not_Found,
+                            message: "label not found ",
+                            error,
+                        });
                 });
         } catch (error) {
-            //       logger.error("label not found");
+            logger.error("label not found");
             res.send({
                 success: false,
                 status_code: status.Internal_Server_Error,
@@ -131,15 +128,15 @@ class LabelController {
                         });
                 })
                 .catch((error) => {
-                    //          logger.error("Error retrieving label with id " + labelID),
-                    res.send({
-                        success: false,
-                        status_code: status.Internal_Server_Error,
-                        message: "label not found",
-                    });
+                    logger.error("Error retrieving label with id " + labelID),
+                        res.send({
+                            success: false,
+                            status_code: status.Internal_Server_Error,
+                            message: "label not found",
+                        });
                 });
         } catch (error) {
-            // logger.error("could not found label with id" + labelID, +error);
+            logger.error("could not found label with id" + labelID, +error);
             res.send({
                 success: false,
                 status_code: status.Internal_Server_Error,
@@ -169,8 +166,8 @@ class LabelController {
                                 success: false,
                                 status_code: status.Not_Found,
                                 message: "label not found",
-                            })) //        logger.info("label updated successfully !"),
-                        :
+                            })) :
+                        logger.info("label updated successfully !"),
                         res.send({
                             success: true,
                             status_code: status.Success,
@@ -179,27 +176,29 @@ class LabelController {
                         });
                 })
                 .catch((error) => {
-                    //         logger.error("Error updating label with id : " + req.params.labelId),
-                    res.send({
-                        success: false,
-                        status_code: status.Unauthorized,
-                        message: "Error updating label",
-                    });
+                    logger.error("Error updating label with id : " + req.params.labelId),
+                        res.send({
+                            success: false,
+                            status_code: status.Unauthorized,
+                            message: "Error updating label",
+                        });
                 });
         } catch (error) {
-            return error.kind === "ObjectId" ?
+            return (
+                error.kind === "ObjectId" ?
                 (logger.error("label not found with id " + req.params.labelId),
                     res.send({
                         success: false,
                         status_code: status.Not_Found,
                         message: "label not found ",
-                    })) //         logger.error("Error updating label with id " + req.params.labelId),
-                :
+                    })) :
+                logger.error("Error updating label with id " + req.params.labelId),
                 res.send({
                     success: false,
                     status_code: status.Internal_Server_Error,
                     message: "Error updating label",
-                });
+                })
+            );
         }
     };
 
@@ -226,7 +225,7 @@ class LabelController {
                     message: "label deleted successfully!",
                 });
             error(
-                //            logger.warn("label not found with id" + labelID),
+                logger.warn("label not found with id" + labelID),
                 res.send({
                     success: false,
                     status_code: status.Not_Found,
@@ -251,46 +250,6 @@ class LabelController {
             );
         }
     };
-
-    /**
-     * @message Find label by user
-     * @method findOne is service class method
-     * @param response is used to send the response
-     */
-    // findOneByUserId = async(req, res) => {
-    //     try {
-    //         const userID = req.body.userId;
-    //         let data = await labelServices.findLabelByUserId(userID);
-    //         !data
-    //             ?
-    //             (logger.warn("label not found with id : " + userID),
-    //                 res.status(404).send({
-    //                     success: false,
-    //                     message: "label not found with id : " + userID + error,
-    //                 })) //           logger.info("label found with id " + userID),
-    //             :
-    //             res.send({
-    //                 success: true,
-    //                 status_code: Status.Success,
-    //                 message: "label found with id " + userID,
-    //                 data: data,
-    //             });
-    //         error(
-    //             //            logger.error("Error retrieving label with id " + userID),
-    //             res.status(500).send({
-    //                 success: false,
-    //                 message: "Error retrieving label with id" + userID + error,
-    //             })
-    //         );
-    //     } catch (error) {
-    //         //         logger.error("could not found label with id" + userID, +error);
-    //         return res.send({
-    //             success: false,
-    //             status_code: 500,
-    //             message: "error retrieving label with id" + userID + error,
-    //         });
-    //     }
-    // };
 }
 
 module.exports = new LabelController();

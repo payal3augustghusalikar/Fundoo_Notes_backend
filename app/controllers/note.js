@@ -138,47 +138,6 @@ class NoteController {
         }
     };
 
-    // /**
-    //  * @message Find note by labelId
-    //  * @method findOne is service class method
-    //  * @param res is used to send the response
-    //  */
-    // findNotesByLabelId = (req, res) => {
-    //     try {
-    //         const labelID = req.body.labelId;
-    //         noteService.findNotesByLabel(labelID, (error, data) => {
-    //             return (
-    //                 error ?
-    //                 (logger.error("Error retrieving note with id " + labelID),
-    //                     res.status(500).send({
-    //                         success: false,
-    //                         message: "Error retrieving note with id " + labelID,
-    //                     })) :
-    //                 !data ?
-    //                 (logger.warn("Note not found with id : " + labelID),
-    //                     res.status(404).send({
-    //                         success: false,
-    //                         message: "Note not found with id : " + labelID,
-    //                     })) :
-    //                 logger.info("note found with id " + labelID),
-    //                 res.send({
-    //                     success: true,
-    //                     status_code: 200,
-    //                     message: "Note found with id " + labelID,
-    //                     data: data,
-    //                 })
-    //             );
-    //         });
-    //     } catch (error) {
-    //         logger.error("could not found note with id" + labelID);
-    //         return res.send({
-    //             success: false,
-    //             status_code: 500,
-    //             message: "error retrieving note with id " + labelID,
-    //         });
-    //     }
-    // };
-
     /**
      * @message Update note by id
      * @method update is service class method

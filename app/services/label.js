@@ -51,7 +51,6 @@ class LabelService {
      * @param callback is the callback for controller
      */
     update = async(labelInfo, callback) => {
-        //labelInfo = helper.decodeToken(labelInfo, token);
         const data = await Label.update(labelInfo, callback);
         return data;
     };
@@ -62,7 +61,6 @@ class LabelService {
      * @param callback is the callback for controller
      */
     delete = async(labelID, callback) => {
-        //  Label.deleteById(LabelID, callback);
         const data = await Label.deleteById(labelID, callback);
         return data;
     };

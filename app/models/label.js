@@ -39,15 +39,14 @@ class LabelModel {
     };
 
     /**
-     *
      * @param {*} callback
      */
     findAll = (callback) => {
         console.log("Model");
         return Label.find(callback);
     };
+
     /**
-     *
      * @param {*} labelId
      * @param {*} callback
      */
@@ -55,19 +54,9 @@ class LabelModel {
         return Label.findById(labelId, callback);
     };
 
-    // /**
-    //  *
-    //  * @param {*} labelInfo
-    //  */
-    // findLabelByUserId = (labelInfo) => {
-    //     return Label.find({ userId: labelInfo.userId });
-    // };
-
     /**
-     *
      * @param {*} labelInfo
      * @param {*} callback
-     *
      */
     update = (labelInfo, callback) => {
         return Label.findByIdAndUpdate(
@@ -79,7 +68,6 @@ class LabelModel {
     };
 
     /**
-     *
      * @param {*} labelId
      * @param {*} callback
      */
