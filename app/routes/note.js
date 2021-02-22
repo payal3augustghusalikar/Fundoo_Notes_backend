@@ -25,6 +25,13 @@ module.exports = (app) => {
     // Retrieve a single note with noteId
     app.get("/notes/:noteId", helper.verifyToken, notes.findOne);
 
+    // add label to specific note
+    app.put(
+        "/notes/addlabeltonote/:noteId",
+        helper.verifyToken,
+        notes.addLabelToNote
+    );
+
     // Retrieve a single note with labelId
     //  app.get("/notes/:labelId", helper.verifyToken, notes.findNotesByLabelId);
 

@@ -22,7 +22,7 @@ class NoteService {
     create = (noteInfo, token, callback) => {
         // create a Note
         noteInfo = helper.decodeToken(noteInfo, token);
-        Note.create(noteInfo, callback);
+        return Note.create(noteInfo, callback);
     };
 
     /**
@@ -69,7 +69,7 @@ class NoteService {
      * @param callback is the callback for controller
      */
     update = (noteInfo, callback) => {
-        Note.update(noteInfo, callback);
+        return Note.update(noteInfo, callback);
     };
 
     /**
@@ -78,7 +78,16 @@ class NoteService {
      * @param callback is the callback for controller
      */
     delete = (noteID, callback) => {
-        Note.deleteById(noteID, callback);
+        return Note.deleteById(noteID, callback);
+    };
+
+    /**
+     * @description add label to note
+     * @method add calls model class method
+     */
+    addLabelToNotes = (noteData, callback) => {
+        console.log("service");
+        return Note.addLabelToSingleNote(noteData, callback);
     };
 }
 module.exports = new NoteService();

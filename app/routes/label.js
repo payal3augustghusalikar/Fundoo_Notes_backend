@@ -8,10 +8,9 @@
 
 var helper = require("../../middleware/helper.js");
 var redisCache = require("../../middleware/redisCache.js");
+const labels = require("../controllers/label.js");
 
 module.exports = (app) => {
-    const labels = require("../controllers/label.js");
-
     // Create a new label
     app.post("/labels", helper.verifyToken, labels.create);
 

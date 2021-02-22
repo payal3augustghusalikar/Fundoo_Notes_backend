@@ -8,6 +8,7 @@
 
 const mongoose = require("mongoose");
 const logger = require("../../logger/logger.js");
+const Label = require("../models/label.js");
 
 const NoteSchema = mongoose.Schema({
     title: {
@@ -98,6 +99,22 @@ class NoteModel {
      */
     deleteById = (noteID, callback) => {
         Note.findByIdAndRemove(noteID, callback);
+    };
+
+    addLabelToSingleNote = (noteInfo, callback) => {
+        console.log("model");
+        return Label.findOne({ _id: noteInfo.labelId }).then((label) => {
+            console.log("model");
+            if (label) {
+                logger.info("label found");
+                return Note.findByIdAndUpdate(
+                    noteInfo.noteID, {
+                        labelId: noteInfo.labelId,
+                    }, { new: true },
+                    callback
+                );
+            }
+        });
     };
 }
 

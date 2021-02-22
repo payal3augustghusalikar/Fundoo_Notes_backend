@@ -153,24 +153,19 @@ class NoteController {
             noteService.update(noteInfo, (error, data) => {
                 return (
                     error ?
-                    (logger.error(
-                            "Error updating note with id : " + req.params.noteId
-                        ),
+                    (logger.error("Error updating note with id : " + noteID),
                         res.send({
-                            success: false,
                             status_code: status.Internal_Server_Error,
-                            message: "Error updating note with id : " + req.params.noteId,
+                            message: "Error updating note with id : " + noteID,
                         })) :
                     !data ?
-                    (logger.warn("note not found with id : " + req.params.noteId),
+                    (logger.warn("note not found with id : " + noteID),
                         res.send({
-                            success: false,
                             status_code: status.Not_Found,
-                            message: "note not found with id : " + req.params.noteId,
+                            message: "note not found with id : " + noteID,
                         })) :
                     logger.info("note updated successfully !"),
                     res.send({
-                        success: true,
                         message: "note updated successfully !",
                         data: data,
                     }),
@@ -181,17 +176,15 @@ class NoteController {
         } catch (error) {
             return (
                 err.kind === "ObjectId" ?
-                (logger.error("note not found with id " + req.params.noteId),
+                (logger.error("note not found with id " + noteID),
                     res.send({
-                        success: false,
                         status_code: status.Not_Found,
-                        message: "note not found with id " + req.params.noteId,
+                        message: "note not found with id " + noteID,
                     })) :
-                logger.error("Error updating note with id " + req.params.noteId),
+                logger.error("Error updating note with id " + noteID),
                 res.send({
-                    success: false,
                     status_code: status.Internal_Server_Error,
-                    message: "Error updating note with id " + req.params.noteId,
+                    message: "Error updating note with id " + noteID,
                 })
             );
         }
@@ -210,13 +203,11 @@ class NoteController {
                     error ?
                     (logger.warn("note not found with id " + noteID),
                         res.send({
-                            success: false,
                             status_code: status.Not_Found,
                             message: "note not found with id " + noteID,
                         })) :
                     logger.info("note deleted successfully!"),
                     res.send({
-                        success: true,
                         status_code: status.Success,
                         message: "note deleted successfully!",
                     })
@@ -227,19 +218,120 @@ class NoteController {
                 error.kind === "ObjectId" || error.title === "NotFound" ?
                 (logger.error("could not found note with id" + noteID),
                     res.send({
-                        success: false,
                         status_code: status.Not_Found,
                         message: "note not found with id " + noteID,
                     })) :
                 logger.error("Could not delete note with id " + noteID),
                 res.send({
-                    success: false,
                     status_code: status.Internal_Server_Error,
                     message: "Could not delete note with id " + noteID,
                 })
             );
         }
     }
+
+    // addLabelToNote = (req, res) => {
+    //     try {
+    //         const noteData = {
+    //             noteID: req.params.noteID,
+    //             labelId: req.body.labelId,
+    //         };
+    //         noteService
+    //             .addLabelToNote(noteData)
+    //             .then((data) => {
+    //                 if (!data) {
+    //                     const response = {
+    //                         success: false,
+    //                         message: "Note not found with this id",
+    //                     };
+    //                     logger.error("Note not found with this id");
+    //                     return res.status(404).send(response);
+    //                 }
+    //                 logger.info("Successfully added label to note !");
+    //                 const response = {
+    //                     success: true,
+    //                     message: "Successfully added label to note!",
+    //                     data: data,
+    //                 };
+    //                 return res.status(200).send(response);
+    //             })
+    //             .catch((error) => {
+    //                 console.log(error);
+    //                 const response = {
+    //                     success: false,
+    //                     message: "Some error occurred while label to note",
+    //                 };
+    //                 logger.error("Some error occurred while label to note");
+    //                 return res.status(500).send(response);
+    //             });
+    //     } catch (error) {
+    //         console.log(error);
+    //         const response = { success: false, message: "Some error occurred !" };
+    //         logger.error("Some error occurred !");
+    //         return res.status(500).send(response);
+    //     }
+    // };
+
+    /**
+     * @message Update note by id
+     * @method update is service class method
+     * @param res is used to send the response
+     */
+    addLabelToNote = (req, res) => {
+        console.log("controller");
+        try {
+            const noteInfoWithLabelId = {
+                noteID: req.params.noteId,
+                labelId: req.body.labelId,
+            };
+            noteService.addLabelToNotes(noteInfoWithLabelId, (error, data) => {
+                return (
+                    error ?
+                    (logger.error(
+                            "Error updating note with id : " + req.params.noteId
+                        ),
+                        res.send({
+                            success: false,
+                            status_code: status.Internal_Server_Error,
+                            message: "Error updating note with id : " + req.params.noteId,
+                        })) :
+                    !data ?
+                    (logger.warn("note not found with id : " + req.params.noteId),
+                        res.send({
+                            success: false,
+                            status_code: status.Not_Found,
+                            message: "note not found with id : " + req.params.noteId,
+                        })) :
+                    logger.info("Label added to note successfully !"),
+                    res.send({
+                        success: true,
+                        message: "Label added to note successfully ! !",
+                        data: data,
+                    })
+                );
+            });
+        } catch (error) {
+            return (
+                error.kind === "ObjectId" ?
+                (logger.error(
+                        "note not found with id " + error + req.params.noteId
+                    ),
+                    res.send({
+                        success: false,
+                        status_code: status.Not_Found,
+                        message: "note not found with id " + error + req.params.noteId,
+                    })) :
+                logger.error(
+                    "Error updating note with id " + error + req.params.noteId
+                ),
+                res.send({
+                    success: false,
+                    status_code: status.Internal_Server_Error,
+                    message: "Error updating note with id " + error + req.params.noteId,
+                })
+            );
+        }
+    };
 }
 
 module.exports = new NoteController();
