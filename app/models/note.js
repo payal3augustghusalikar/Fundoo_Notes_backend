@@ -93,28 +93,34 @@ class NoteModel {
         );
     };
     /**
-     *
-     * @param {*} noteID
-     * @param {*} callback
+     * @description delete the id from databse and returns the result to service
+     * @param {*} noteID coming from service class
+     * @param {*} callback callback for service class
      */
     deleteById = (noteID, callback) => {
         Note.findByIdAndRemove(noteID, callback);
     };
 
+    /**
+     * @description add lable to single note
+     * @param {*} noteInfo holds labelid and noteId
+     * @param {*} callback returns error or data to service
+     */
     addLabelToSingleNote = (noteInfo, callback) => {
         console.log("model");
-        return Label.findOne({ _id: noteInfo.labelId }).then((label) => {
-            console.log("model");
-            if (label) {
-                logger.info("label found");
-                return Note.findByIdAndUpdate(
-                    noteInfo.noteID, {
-                        labelId: noteInfo.labelId,
-                    }, { new: true },
-                    callback
-                );
-            }
-        });
+        // return Label.findOne({ _id: noteInfo.labelId }).then((label) => {
+        //     console.log("model");
+        //     if (label) {
+        logger.info("label found");
+        return Note.findByIdAndUpdate(
+            noteInfo.noteID, {
+                labelId: noteInfo.labelId,
+            }, { new: true },
+            callback
+        );
+        // }
+        // else logger.info("label not found");
+        // });
     };
 }
 
