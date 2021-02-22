@@ -173,7 +173,9 @@ class NoteController {
                         success: true,
                         message: "note updated successfully !",
                         data: data,
-                    })
+                    }),
+                    console.log("calling find all")
+                    //findAll()
                 );
             });
         } catch (error) {

@@ -14,7 +14,7 @@ const winston = require("winston");
  */
 module.exports = () => {
     return {
-        port: process.env.PROD_APP_PORT || 4000,
+        port: process.env.PROD_APP_PORT || 3000,
         logger: winston.createLogger({
             format: winston.format.json(),
             transports: [

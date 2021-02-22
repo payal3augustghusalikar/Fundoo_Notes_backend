@@ -6,6 +6,7 @@
         "lib": "lib"
     },
     "dependencies": {
+        "amqplib": "^0.6.0",
         "async-require": "^1.2.2",
         "bcrypt": "^5.0.0",
         "bluebird": "^3.7.2",

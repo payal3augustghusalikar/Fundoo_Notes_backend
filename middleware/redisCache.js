@@ -13,6 +13,12 @@ client.on("error", function(err) {
     console.log("Redis error: " + err);
 });
 
+/**
+ * @description this method is to check redis data is present in cache or not
+ * @param {*} userEmail for unique identity
+ * @param {*} res to send responce with redis data if data is present
+ * @param {*} next will call next function if data is not present
+ */
 checkCacheData = (userEmail, res, next) => {
     return client.get(
         `process.env.REDIS_KEY ${userEmail}`,
@@ -34,9 +40,10 @@ checkCacheData = (userEmail, res, next) => {
 
 class RedisCache {
     /**
-     * @param {*} req
-     * @param {*} res
-     * @param {*} next
+     * @description this methods calls from routes to check redis data
+     * @param {*} req is to take email from body
+     * @param {*} res to send response
+     * @param {*} next is pass as a argument
      */
     redisGet = async(req, res, next) => {
         var start = new Date();

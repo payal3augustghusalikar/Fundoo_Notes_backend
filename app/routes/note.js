@@ -8,10 +8,9 @@
 
 var helper = require("../../middleware/helper.js");
 var redisCache = require("../../middleware/redisCache.js");
+const notes = require("../controllers/note.js");
 
 module.exports = (app) => {
-    const notes = require("../controllers/note.js");
-
     // Create a new note
     app.post("/notes", helper.verifyToken, notes.create);
 

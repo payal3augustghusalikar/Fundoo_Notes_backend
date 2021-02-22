@@ -12,22 +12,25 @@ const helper = require("../../middleware/helper.js");
 const logger = require("../../logger/logger.js");
 
 const UserSchema = mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
+        name: {
+            type: String,
+            required: true,
+        },
+        emailId: {
+            type: String,
+            unique: true,
+            required: true,
+        },
+        password: {
+            type: String,
+            required: true,
+        },
+    }, {
+        timestamps: true,
     },
-    emailId: {
-        type: String,
-        unique: true,
-        required: true,
-    },
-    password: {
-        type: String,
-        required: true,
-    },
-}, {
-    timestamps: true,
-}, { versionKey: false });
+
+    { versionKey: false }
+);
 
 // encrypted the password before saving to database
 UserSchema.pre("save", async function(next) {

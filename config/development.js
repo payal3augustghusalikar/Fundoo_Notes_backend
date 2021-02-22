@@ -10,7 +10,6 @@ const winston = require("winston");
 
 /**
  * @exports : Exports developement Config Environment based Configuration
- *
  */
 module.exports = () => {
     return {
