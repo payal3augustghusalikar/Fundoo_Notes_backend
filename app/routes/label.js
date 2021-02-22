@@ -16,7 +16,12 @@ module.exports = (app) => {
     app.post("/labels", helper.verifyToken, labels.create);
 
     // Retrieve all labels
-    app.get("/labels", helper.verifyToken, redisCache.redisGet, labels.findAll);
+    app.get(
+        "/labels",
+        helper.verifyToken,
+        redisCache.redisGetLabel,
+        labels.findAll
+    );
 
     // Retrieve a single label with labelId
     app.get("/labels/:labelId", helper.verifyToken, labels.findOne);

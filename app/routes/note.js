@@ -15,7 +15,12 @@ module.exports = (app) => {
     app.post("/notes", helper.verifyToken, notes.create);
 
     // Retrieve all notes
-    app.get("/notes", helper.verifyToken, redisCache.redisGet, notes.findAll);
+    app.get(
+        "/notes",
+        helper.verifyToken,
+        redisCache.redisGetNotes,
+        notes.findAll
+    );
 
     // Retrieve a single note with noteId
     app.get("/notes/:noteId", helper.verifyToken, notes.findOne);
