@@ -80,7 +80,7 @@ class RedisCache {
         console.log("getting redis data : ");
         console.log("inside redis");
         return client.get(
-            `process.env.REDIS_KEY ${userEmail}`,
+            `process.env.LABEL_REDIS_KEY ${userEmail}`,
             (error, redisData) => {
                 console.log("start : ", redisData);
                 return error || redisData == null ?
@@ -106,7 +106,7 @@ class RedisCache {
         console.log("getting redis data : ");
         console.log("inside redis");
         return client.get(
-            `process.env.REDIS_KEY ${userEmail}`,
+            `process.env.NOTES_REDIS_KEY ${userEmail}`,
             (error, redisData) => {
                 console.log("start : ", redisData);
                 return error || redisData == null ?
@@ -170,7 +170,7 @@ class RedisCache {
      */
     setRedisLabel = (data, userEmail) => {
         console.log("userId for redis is: " + userEmail);
-        console.log("set Data : ", data);
+        // console.log("set Data : ", data);
         return client.setex(
             `process.env.LABEL_REDIS_KEY ${userEmail}`,
             30,
