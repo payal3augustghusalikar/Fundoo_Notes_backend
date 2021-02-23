@@ -32,6 +32,12 @@ module.exports = (app) => {
         notes.addLabelToNote
     );
 
+    app.put(
+        "/notes/removelabelfromnote/:noteId",
+        helper.verifyToken,
+        notes.removelabelfromnote
+    );
+
     // Retrieve a single note with labelId
     //  app.get("/notes/:labelId", helper.verifyToken, notes.findNotesByLabelId);
 

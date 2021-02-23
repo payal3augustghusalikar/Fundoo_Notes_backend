@@ -107,31 +107,49 @@ class NoteModel {
      * @param {*} callback returns error or data to service
      */
     addLabelToSingleNote = (noteInfo, callback) => {
-        console.log("model");
-        Note.findById({ _id: noteInfo.noteID }, (error, data) => {
-            console.log("note data is ", data);
-            // data.labelId.forEach((s) => {
-            //     const result = s == noteInfo.labelId;
-            //     console.log("result", result);
-            //     if (result != true)
-            //         continue;
-            // });
+        logger.info("label found");
+        return Note.findByIdAndUpdate(
+            noteInfo.noteID, {
+                $push: { labelId: noteInfo.labelId },
+            }, { new: true },
+            callback
+        );
+        //     console.log("model");
+        //     Note.findById({ _id: noteInfo.noteID }, (error, data) => {
+        //         console.log("note data is ", data);
+        //         // data.labelId.forEach((s) => {
+        //         //     const result = s == noteInfo.labelId;
+        //         //     console.log("result", result);
+        //         //     if (result != true)
+        //         //         continue;
+        //         // });
 
-            var result = data.labelId.every((id) => {
-                return id != noteInfo.labelId;
-            });
-            console.log("result", result);
-            if (result == true)
-                Note.findByIdAndUpdate(
-                    noteInfo.noteID, {
-                        $push: { labelId: noteInfo.labelId },
-                    }, { new: true },
-                    (error, data) => {
-                        return error ? callback(error, null) : callback(null, data);
-                    }
-                );
-            return callback(error, null);
-        });
+        //         var result = data.labelId.every((id) => {
+        //             return id != noteInfo.labelId;
+        //         });
+        //         console.log("result", result);
+        //         if (result == true)
+        //             Note.findByIdAndUpdate(
+        //                 noteInfo.noteID, {
+        //                     $push: { labelId: noteInfo.labelId },
+        //                 }, { new: true },
+        //                 (error, data) => {
+        //                     return error ? callback(error, null) : callback(null, data);
+        //                 }
+        //             );
+        //         return callback(error, null);
+        //     });
+        // };
+    };
+
+    removeLabel = (noteInfo, callback) => {
+        logger.info("label found");
+        return Note.findByIdAndUpdate(
+            noteInfo.noteID, {
+                $pull: { labelId: noteInfo.labelId },
+            }, { new: true },
+            callback
+        );
     };
 }
 

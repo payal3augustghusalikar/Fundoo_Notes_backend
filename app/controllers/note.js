@@ -290,6 +290,51 @@ class NoteController {
             );
         }
     };
+
+    /**
+     * @message delete note with id
+     * @method delete is service class method
+     * @param response is used to send the response
+     */
+    removelabelfromnote(req, res) {
+        try {
+            const noteInfoWithLabelId = {
+                noteID: req.params.noteId,
+                labelId: req.body.labelId,
+            };
+            noteService.removeLabel(noteInfoWithLabelId, (error, data) => {
+                return (
+                    error ?
+                    (logger.warn("Label not found with id " + req.params.labelId),
+                        res.send({
+                            status_code: status.Not_Found,
+                            message: "Label not found with id " + req.params.labelId,
+                        })) :
+                    logger.info("Label deleted successfully!"),
+                    res.send({
+                        status_code: status.Success,
+                        message: "Label deleted successfully!",
+                    })
+                );
+            });
+        } catch (error) {
+            return (
+                error.kind === "ObjectId" || error.title === "NotFound" ?
+                (logger.error("could not found note with id" + req.params.labelId),
+                    res.send({
+                        status_code: status.Not_Found,
+                        message: "note not found with id " + req.params.labelId,
+                    })) :
+                logger.error(
+                    "Could not delete Label with id " + req.params.labelId
+                ),
+                res.send({
+                    status_code: status.Internal_Server_Error,
+                    message: "Could not delete Label with id " + req.params.labelId,
+                })
+            );
+        }
+    }
 }
 
 module.exports = new NoteController();

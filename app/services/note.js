@@ -91,5 +91,10 @@ class NoteService {
         console.log("service");
         return Note.addLabelToSingleNote(noteData, callback);
     };
+
+    removeLabel = (noteData, callback) => {
+        console.log("service");
+        return Note.removeLabel(noteData, callback);
+    };
 }
 module.exports = new NoteService();
