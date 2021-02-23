@@ -10,27 +10,37 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const helper = require("../../middleware/helper.js");
 const logger = require("../../logger/logger.js");
-
+let vallidator = require("../../middleware/vallidation.js");
 const UserSchema = mongoose.Schema({
-        name: {
-            type: String,
-            required: true,
+    name: {
+        type: String,
+        required: true,
+        length: {
+            min: 3,
+            max: 36,
         },
-        emailId: {
-            type: String,
-            unique: true,
-            required: true,
-        },
-        password: {
-            type: String,
-            required: true,
-        },
-    }, {
-        timestamps: true,
+        test: /^[a-z0-9]+$/gi,
+        test: vallidator.namePattern,
     },
-
-    { versionKey: false }
-);
+    emailId: {
+        type: String,
+        unique: true,
+        required: true,
+        test: vallidator.emailIdPattern,
+    },
+    password: {
+        type: String,
+        required: true,
+        length: {
+            min: 6,
+            max: 15,
+        },
+        test: vallidator.passwordPattern,
+    },
+    __v: { type: Number, select: false },
+}, {
+    timestamps: true,
+});
 
 // encrypted the password before saving to database
 UserSchema.pre("save", async function(next) {

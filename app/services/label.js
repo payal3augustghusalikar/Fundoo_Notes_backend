@@ -29,6 +29,8 @@ class LabelService {
                 logger.error("Some error occurred");
                 return callback(new Error("Some error occurred"), null);
             } else {
+                // const key = "label";
+                //  const redisData = redisCache.setRedis(data, userEmail, key);
                 const redisData = redisCache.setRedisLabel(data, userEmail);
                 console.log("setting redis data : " + redisData);
                 return data;

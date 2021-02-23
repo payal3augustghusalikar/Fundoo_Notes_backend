@@ -60,6 +60,8 @@ class userService {
                             data.token = token;
                             console.log(token);
                             console.log("data in service : ", data);
+                            // const key = "login";
+                            //const redisData = redisCache.setRedis(data.token, userEmail, key);
                             // const redisData = redisCache.setRedis(data.token, userEmail);
                             const redisData = redisCache.setRedisLogin(data.token, userEmail);
                             console.log("setting redis data : " + redisData);

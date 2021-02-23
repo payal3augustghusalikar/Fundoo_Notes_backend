@@ -79,6 +79,7 @@ class LabelController {
                             time: (new Date() - start, "ms"),
                             data: data,
                         });
+
                     console.log("Request took:", new Date() - start, "ms");
                 })
                 .catch((error) => {
@@ -174,6 +175,7 @@ class LabelController {
                             message: "label updated successfully !",
                             data: data,
                         });
+                    this.findAll();
                 })
                 .catch((error) => {
                     logger.error("Error updating label with id : " + req.params.labelId),

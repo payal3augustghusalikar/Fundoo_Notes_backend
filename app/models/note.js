@@ -108,19 +108,30 @@ class NoteModel {
      */
     addLabelToSingleNote = (noteInfo, callback) => {
         console.log("model");
-        // return Label.findOne({ _id: noteInfo.labelId }).then((label) => {
-        //     console.log("model");
-        //     if (label) {
-        logger.info("label found");
-        return Note.findByIdAndUpdate(
-            noteInfo.noteID, {
-                labelId: noteInfo.labelId,
-            }, { new: true },
-            callback
-        );
-        // }
-        // else logger.info("label not found");
-        // });
+        Note.findById({ _id: noteInfo.noteID }, (error, data) => {
+            console.log("note data is ", data);
+            // data.labelId.forEach((s) => {
+            //     const result = s == noteInfo.labelId;
+            //     console.log("result", result);
+            //     if (result != true)
+            //         continue;
+            // });
+
+            var result = data.labelId.every((id) => {
+                return id != noteInfo.labelId;
+            });
+            console.log("result", result);
+            if (result == true)
+                Note.findByIdAndUpdate(
+                    noteInfo.noteID, {
+                        $push: { labelId: noteInfo.labelId },
+                    }, { new: true },
+                    (error, data) => {
+                        return error ? callback(error, null) : callback(null, data);
+                    }
+                );
+            return callback(error, null);
+        });
     };
 }
 

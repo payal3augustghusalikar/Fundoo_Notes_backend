@@ -21,27 +21,20 @@ class RedisCache {
      * @param {*} next is pass as a argument
      */
     redisGetLabel = (req, res, next) => {
-        console.log("");
-        console.log("redisGetLabel");
         const token = req.headers.authorization.split(" ")[1];
         const userEmail = helper.getEmailFromToken(token);
-        console.log("get email from token:", userEmail);
-        console.log("getting redis data : ");
-        console.log("inside redis");
         return client.get(
             `process.env.LABEL_REDIS_KEY ${userEmail}`,
+            // `userData label ${userEmail}`,
             (error, redisData) => {
                 console.log("start : ", redisData);
                 return error || redisData == null ?
-                    (console.log("no data in redis"),
-                        logger.error("Error retrieving data from redis cache"),
-                        next()) :
-                    (console.log("redisDataa : " + JSON.parse(redisData)),
-                        res.send({
-                            status_code: status.Success,
-                            message: `data found`,
-                            redisData: JSON.parse(redisData),
-                        }));
+                    (logger.error("Error retrieving data from redis cache"), next()) :
+                    res.send({
+                        status_code: status.Success,
+                        message: `data found`,
+                        redisData: JSON.parse(redisData),
+                    });
             }
         );
     };
@@ -88,11 +81,10 @@ class RedisCache {
         console.log("");
         console.log("redisGetLogin");
         const userEmail = req.body.emailId;
-
         console.log("getting redis data : ");
         console.log("inside redis");
         return client.get(
-            `process.env.REDIS_KEY ${userEmail}`,
+            `process.env.LOGIN_REDIS_KEY ${userEmail}`,
             (error, redisData) => {
                 console.log("start : ", redisData);
                 return error || redisData == null ?
@@ -109,6 +101,22 @@ class RedisCache {
         );
     };
 
+    //     /**
+    //      * @description set the data in rediscache
+    //      * @param {*} data is the responce from database
+    //      * @param {*} userEmail for unique identity
+    //      */
+    //     setRedis = (data, userEmail, key) => {
+    //         console.log("userId for redis is: " + userEmail);
+    //         console.log("set Data : ", data);
+    //         return client.setex(
+    //             `process.env.REDIS_KEY ${key} ${userEmail}`,
+    //             2000,
+    //             JSON.stringify(data)
+    //         );
+    //     };
+    // }
+
     /**
      * @description set the data in rediscache
      * @param {*} data is the responce from database
@@ -118,8 +126,8 @@ class RedisCache {
         console.log("userId for redis is: " + userEmail);
         console.log("set Data : ", data);
         return client.setex(
-            `process.env.REDIS_KEY ${userEmail}`,
-            30,
+            `process.env.LOGIN_REDIS_KEY ${userEmail}`,
+            20000000,
             JSON.stringify(data)
         );
     };
@@ -131,10 +139,9 @@ class RedisCache {
      */
     setRedisLabel = (data, userEmail) => {
         console.log("userId for redis is: " + userEmail);
-        // console.log("set Data : ", data);
         return client.setex(
             `process.env.LABEL_REDIS_KEY ${userEmail}`,
-            30,
+            20000000,
             JSON.stringify(data)
         );
     };
@@ -149,10 +156,9 @@ class RedisCache {
         console.log("set Data : ", data);
         return client.setex(
             `process.env.NOTES_REDIS_KEY ${userEmail}`,
-            30,
+            20000000,
             JSON.stringify(data)
         );
     };
 }
-
 module.exports = new RedisCache();

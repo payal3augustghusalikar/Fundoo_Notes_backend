@@ -40,6 +40,8 @@ class NoteService {
                 return callback(new Error("Some error occurred"), null);
             } else {
                 console.log("from database ", data);
+                // const key = "note";
+                //const redisData = redisCache.setRedis(data, userEmail, key);
                 const redisData = redisCache.setRedisNotes(data, userEmail);
                 console.log("setting redis data : " + redisData);
                 return callback(null, data);

@@ -168,9 +168,9 @@ class NoteController {
                     res.send({
                         message: "note updated successfully !",
                         data: data,
-                    }),
-                    console.log("calling find all")
-                    //findAll()
+                    })
+                    // console.log("calling find all"),
+                    // this.findAll()
                 );
             });
         } catch (error) {
@@ -191,7 +191,7 @@ class NoteController {
     };
 
     /**
-     * @message Update note with id
+     * @message delete note with id
      * @method delete is service class method
      * @param response is used to send the response
      */
@@ -230,50 +230,8 @@ class NoteController {
         }
     }
 
-    // addLabelToNote = (req, res) => {
-    //     try {
-    //         const noteData = {
-    //             noteID: req.params.noteID,
-    //             labelId: req.body.labelId,
-    //         };
-    //         noteService
-    //             .addLabelToNote(noteData)
-    //             .then((data) => {
-    //                 if (!data) {
-    //                     const response = {
-    //                         success: false,
-    //                         message: "Note not found with this id",
-    //                     };
-    //                     logger.error("Note not found with this id");
-    //                     return res.status(404).send(response);
-    //                 }
-    //                 logger.info("Successfully added label to note !");
-    //                 const response = {
-    //                     success: true,
-    //                     message: "Successfully added label to note!",
-    //                     data: data,
-    //                 };
-    //                 return res.status(200).send(response);
-    //             })
-    //             .catch((error) => {
-    //                 console.log(error);
-    //                 const response = {
-    //                     success: false,
-    //                     message: "Some error occurred while label to note",
-    //                 };
-    //                 logger.error("Some error occurred while label to note");
-    //                 return res.status(500).send(response);
-    //             });
-    //     } catch (error) {
-    //         console.log(error);
-    //         const response = { success: false, message: "Some error occurred !" };
-    //         logger.error("Some error occurred !");
-    //         return res.status(500).send(response);
-    //     }
-    // };
-
     /**
-     * @message Update note by id
+     * @message add label note by id
      * @method update is service class method
      * @param res is used to send the response
      */
@@ -288,24 +246,24 @@ class NoteController {
                 return (
                     error ?
                     (logger.error(
-                            "Error updating note with id : " + req.params.noteId
+                            "Error updating note with id : " + req.params.noteId + error
                         ),
                         res.send({
                             success: false,
                             status_code: status.Internal_Server_Error,
-                            message: "Error updating note with id : " + req.params.noteId,
+                            message: "Error updating note with id : " + req.params.noteId + error,
                         })) :
                     !data ?
                     (logger.warn("note not found with id : " + req.params.noteId),
                         res.send({
                             success: false,
                             status_code: status.Not_Found,
-                            message: "note not found with id : " + req.params.noteId,
+                            message: "note not found with id : " + req.params.noteId + error,
                         })) :
                     logger.info("Label added to note successfully !"),
                     res.send({
                         success: true,
-                        message: "Label added to note successfully ! !",
+                        message: "Label added to note successfully ! !" + error,
                         data: data,
                     })
                 );
