@@ -133,33 +133,6 @@ class NoteModel {
                     ) :
                     callback(error, null));
         });
-
-        //     console.log("model");
-        //     Note.findById({ _id: noteInfo.noteID }, (error, data) => {
-        //         console.log("note data is ", data);
-        //         // data.labelId.forEach((s) => {
-        //         //     const result = s == noteInfo.labelId;
-        //         //     console.log("result", result);
-        //         //     if (result != true)
-        //         //         continue;
-        //         // });
-
-        //         var result = data.labelId.every((id) => {
-        //             return id != noteInfo.labelId;
-        //         });
-        //         console.log("result", result);
-        //         if (result == true)
-        //             Note.findByIdAndUpdate(
-        //                 noteInfo.noteID, {
-        //                     $push: { labelId: noteInfo.labelId },
-        //                 }, { new: true },
-        //                 (error, data) => {
-        //                     return error ? callback(error, null) : callback(null, data);
-        //                 }
-        //             );
-        //         return callback(error, null);
-        //     });
-        // };
     };
 
     removeLabel = (noteInfo, callback) => {
@@ -190,20 +163,5 @@ class NoteModel {
         );
     };
 }
-
-//{ new: true },
-//     (error, data) => {
-//         if (error) {
-//             logger.error("Error occurred while restoring note");
-//             return callback(error, null);
-//         }
-//         return callback(null, data);
-//     }
-// );
-//  } else return callback(null, null);
-//             }
-//         });
-//     };
-// }
 
 module.exports = new NoteModel();

@@ -2,13 +2,7 @@ const labelServices = require("../services/label.js");
 const Joi = require("joi");
 const logger = require("../../logger/logger.js");
 const status = require("../../middleware/staticFile.json");
-
-const ControllerDataValidation = Joi.object({
-    name: Joi.string()
-        .regex(/^[a-zA-Z0-1]+$/)
-        .min(3)
-        .required(),
-});
+let vallidator = require("../../middleware/vallidation.js");
 
 class LabelController {
     /**
@@ -23,7 +17,7 @@ class LabelController {
                 name: req.body.name,
             };
             const token = req.headers.authorization.split(" ")[1];
-            const validation = ControllerDataValidation.validate(labelInfo);
+            const validation = vallidator.validate(labelInfo);
             return validation.error ?
                 res.send({
                     success: false,
