@@ -18,7 +18,7 @@ module.exports = (app) => {
     app.get(
         "/notes",
         helper.verifyToken,
-        redisCache.redisGetNotes,
+        //   redisCache.redisGetNotes,
         notes.findAll
     );
 

@@ -32,22 +32,50 @@ class NoteService {
      */
     findAll = (token, callback) => {
         console.log("service");
+        const key = "note";
         const userEmail = helper.getEmailFromToken(token);
         console.log("get email :", userEmail);
-        Note.findAll((error, data) => {
-            if (error) {
-                logger.error("Some error occurred");
-                return callback(new Error("Some error occurred"), null);
-            } else {
-                console.log("from database ", data);
-                // const key = "note";
-                //const redisData = redisCache.setRedis(data, userEmail, key);
-                const redisData = redisCache.setRedisNotes(data, userEmail);
-                console.log("setting redis data : " + redisData);
+        redisCache.redisGet(userEmail, key, (error, data) => {
+            if (data) {
+                console.log();
                 return callback(null, data);
+            } else if (!data) {
+                Note.findAll((error, data) => {
+                    if (error) {
+                        logger.error("Some error occurred");
+                        return callback(new Error("Some error occurred"), null);
+                    } else {
+                        // console.log("from database ", data);
+                        const redisData = redisCache.setRedis(data, userEmail, key);
+                        console.log("setting redis data : " + redisData);
+                        return callback(null, data);
+                    }
+                });
             }
+            // else {
+            //     return callback(null, data);
+            // }
         });
     };
+
+    // redisCache.redisGetLabel(userEmail, key, (error, data) => {
+    //             if (data) {
+    //                 return callback(null, data);
+    //             } else if (!data) {
+    //                 return Label.findAll((error, data) => {
+    //                     if (error) {
+    //                         logger.error("Some error occurred");
+    //                         return callback(new Error("Some error occurred"), null);
+    //                     } else {
+    //                         const redisData = redisCache.setRedisLabel(data, userEmail, key);
+    //                         console.log("setting redis data : " + redisData);
+    //                         return callback(null, data);
+    //                     }
+    //                 });
+    //             }
+    //else {
+    //     return callback(null, data);
+    // }
 
     /**
      * @description Find Note by id and return response to controller

@@ -39,27 +39,19 @@ class RedisCache {
     //     );
     // };
 
-    redisGetLabel = (userEmail, key, req, response, callback) => {
+    redisGet = (userEmail, key, callback) => {
         console.log("inside get redis ");
-        // const token = req.headers.authorization.split(" ")[1];
-        // const userEmail = helper.getEmailFromToken(token);
-        console.log(`process.env.LABEL_REDIS_KEY${key}${userEmail}`);
+        console.log(`process.env.REDIS_KEY${key}${userEmail}`);
         return client.get(
-            `process.env.LABEL_REDIS_KEY${key}${userEmail}`,
-            // `userData label ${userEmail}`,
+            `process.env.REDIS_KEY${key}${userEmail}`,
             (error, redisData) => {
-                //  console.log("start : ", redisData);
                 return (
                     error || redisData == null ?
                     (logger.error("Error retrieving data from redis cache", +error),
+                        console.log("no data in getredis"),
                         callback(error, null)) :
-                    console.log("data found in redis "),
-                    // callback(null, redisData),
-                    response.send({
-                        status_code: status.Success,
-                        message: `data found`,
-                        redisData: JSON.parse(redisData),
-                    })
+                    console.log("data found in redis ", JSON.parse(redisData)),
+                    callback(null, JSON.parse(redisData))
                 );
             }
         );
@@ -172,13 +164,14 @@ class RedisCache {
     //     );
     // };
 
-    setRedisLabel = (data, userEmail, key) => {
+    setRedis = (data, userEmail, key) => {
         console.log("");
-        console.log("inside set redis");
+        console.log("inside set redis", data);
+        console.log(key);
         console.log("userId for redis is: " + userEmail);
-        console.log(`process.env.LABEL_REDIS_KEY${key}${userEmail}`);
+        console.log(`process.env.REDIS_KEY${key}${userEmail}`);
         return client.setex(
-            `process.env.LABEL_REDIS_KEY${key}${userEmail}`,
+            `process.env.REDIS_KEY${key}${userEmail}`,
             20000000,
             JSON.stringify(data)
         );

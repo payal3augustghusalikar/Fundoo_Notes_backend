@@ -36,49 +36,61 @@ class userService {
     login = (userLoginData, callback) => {
         var start = new Date();
         const userEmail = userLoginData.emailId;
-        User.find(userLoginData, (error, data) => {
-            console.log("service login pass", data[0].password);
-            console.log("service login pass", userLoginData.password);
-            if (error) {
-                logger.error("ERR:500-Some error occured while logging in");
-                console.log("ERR:500-Some error occured while logging in");
-                return callback(
-                    new Error("ERR:500-Some error occured while logging in"),
-                    null
-                );
-            } else if (data) {
-                bcrypt.compare(
-                    userLoginData.password,
-                    data[0].password,
-                    (error, result) => {
-                        console.log(result);
-                        if (result) {
-                            console.log("inside bcryt", data[0].password);
-                            logger.info("Authorization success");
-                            console.log("data[0] : ", data[0]);
-                            const token = helper.createToken(data[0]);
-                            data.token = token;
-                            console.log(token);
-                            console.log("data in service : ", data);
-                            // const key = "login";
-                            //const redisData = redisCache.setRedis(data.token, userEmail, key);
-                            // const redisData = redisCache.setRedis(data.token, userEmail);
-                            const redisData = redisCache.setRedisLogin(data.token, userEmail);
-                            console.log("setting redis data : " + redisData);
-                            return callback(null, data);
-                        } else {
-                            logger.info("ERR:401-Please verify email before login");
-                            return callback(
-                                new Error("ERR:401-Please verify email before login"),
-                                null
-                            );
-                        }
+        const key = "login";
+        redisCache.redisGet(userEmail, key, (error, data) => {
+            if (data) {
+                console.log(data);
+
+                const token = helper.createToken(data[0]);
+                data.token = token;
+                console.log(token);
+
+                return callback(null, data);
+            } else if (!data) {
+                User.find(userLoginData, (error, data) => {
+                    console.log("service login pass", data[0].password);
+                    console.log("service login pass", userLoginData.password);
+                    if (error) {
+                        logger.error("ERR:500-Some error occured while logging in");
+                        console.log("ERR:500-Some error occured while logging in");
+                        return callback(
+                            new Error("ERR:500-Some error occured while logging in"),
+                            null
+                        );
+                    } else if (data) {
+                        bcrypt.compare(
+                            userLoginData.password,
+                            data[0].password,
+                            (error, result) => {
+                                console.log(result);
+                                if (result) {
+                                    console.log("inside bcryt", data[0].password);
+                                    logger.info("Authorization success");
+                                    console.log("data[0] : ", data[0]);
+                                    const token = helper.createToken(data[0]);
+                                    data.token = token;
+                                    console.log(token);
+                                    console.log("data in service : ", data);
+                                    // const key = "login";
+                                    //const redisData = redisCache.setRedis(data.token, userEmail, key);
+                                    // const redisData = redisCache.setRedis(data.token, userEmail);
+                                    const redisData = redisCache.setRedis(data, userEmail, key);
+                                    console.log("setting redis data : " + redisData);
+                                    return callback(null, data);
+                                } else {
+                                    logger.info("ERR:401-Please verify email before login");
+                                    return callback(
+                                        new Error("ERR:401-Please verify email before login"),
+                                        null
+                                    );
+                                }
+                            }
+                        );
                     }
-                );
+                });
             }
         });
     };
-
     /**
      * @description Update greeting by id and return response to controller
      * @param {*} userInfo

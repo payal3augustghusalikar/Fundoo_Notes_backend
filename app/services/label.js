@@ -4,6 +4,7 @@ const helper = require("../../middleware/helper.js");
 const redis = require("redis");
 const client = redis.createClient();
 var redisCache = require("../../middleware/redisCache.js");
+
 class LabelService {
     /**
      * @description Create and save Label then send response to controller
@@ -21,42 +22,45 @@ class LabelService {
      * @param callback is the callback for controller
      */
     findAll = (token, callback) => {
-        console.log("service");
-
-        const userEmail = helper.getEmailFromToken(token);
-        const key = "A";
-        // console.log("A: ", keys);
-        const result = redisCache.redisGetLabel(
-            userEmail,
-            key,
-
-            (error, data) => {
-                if (!data) {
-                    console.log("from redis", data);
-                    // return callback(new Error("Some error occurred"), null);
-                    // const key = "label";
-                    // console.log("res : ", result);
-                    console.log("get email :", userEmail);
-                    // const key = "A";
-                    console.log("A: ", key);
-                    // const res = redisCache.redisGetLabel(userEmail, res, key);
-                    console.log("res : ", result);
-
-                    return Label.findAll((error, data) => {
-                        if (error) {
-                            logger.error("Some error occurred");
-                            return callback(new Error("Some error occurred"), null);
-                        } else {
-                            const redisData = redisCache.setRedisLabel(data, userEmail, key);
-                            // const redisData = redisCache.setRedisLabel(data, userEmail);
-                            console.log("setting redis data : " + redisData);
-                            // return data;
-                        }
-                    });
-                }
-            }
-        );
+        //     console.log("service");
+        //     const userEmail = helper.getEmailFromToken(token);
+        //     const key = "A";
+        //     redisCache.redisGet(userEmail, key, (error, data) => {
+        //         if (data) {
+        //             return callback(null, data);
+        //         } else if (!data) {
+        //             return Label.findAll((error, data) => {
+        //                 if (error) {
+        //                     logger.error("Some error occurred");
+        //                     return callback(new Error("Some error occurred"), null);
+        //                 } else {
+        //                     const redisData = redisCache.setRedis(data, userEmail, key);
+        //                     console.log("setting redis data : " + redisData);
+        //                     return callback(null, data);
+        //                 }
+        //             });
+        //         }
+        //         //else {
+        //         //     return callback(null, data);
+        //         // }
+        //     });
+        //     console.log("service");
+        //     const userEmail = helper.getEmailFromToken(token);
+        //     const key = "A";
+        //     return redisCache.redisGetLabel(userEmail, key)
+        //         .then((!data) => {
+        //             Label.findAll
+        //                 .then((data) => redisCache.setRedisLabel(data, userEmail, key)
+        //                 }))
     };
+
+    // console.log("from redis", data);
+
+    // console.log("get email :", userEmail);
+
+    // console.log("A: ", key);
+
+    // console.log("res : ", result);
 
     /**
      * @description Find Label by id and return response to controller
