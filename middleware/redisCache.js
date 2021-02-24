@@ -24,7 +24,7 @@ class RedisCache {
         const token = req.headers.authorization.split(" ")[1];
         const userEmail = helper.getEmailFromToken(token);
         return client.get(
-            `process.env.LABEL_REDIS_KEY ${userEmail}`,
+            `process.env.LABEL_REDIS_KEY${userEmail}`,
             // `userData label ${userEmail}`,
             (error, redisData) => {
                 console.log("start : ", redisData);
@@ -54,7 +54,7 @@ class RedisCache {
         console.log("getting redis data : ");
         console.log("inside redis");
         return client.get(
-            `process.env.NOTES_REDIS_KEY ${userEmail}`,
+            `process.env.NOTES_REDIS_KEY${userEmail}`,
             (error, redisData) => {
                 console.log("start : ", redisData);
                 return error || redisData == null ?
@@ -84,7 +84,7 @@ class RedisCache {
         console.log("getting redis data : ");
         console.log("inside redis");
         return client.get(
-            `process.env.LOGIN_REDIS_KEY ${userEmail}`,
+            `process.env.LOGIN_REDIS_KEY${userEmail}`,
             (error, redisData) => {
                 console.log("start : ", redisData);
                 return error || redisData == null ?
@@ -126,7 +126,7 @@ class RedisCache {
         console.log("userId for redis is: " + userEmail);
         console.log("set Data : ", data);
         return client.setex(
-            `process.env.LOGIN_REDIS_KEY ${userEmail}`,
+            `process.env.LOGIN_REDIS_KEY${userEmail}`,
             20000000,
             JSON.stringify(data)
         );
@@ -140,7 +140,7 @@ class RedisCache {
     setRedisLabel = (data, userEmail) => {
         console.log("userId for redis is: " + userEmail);
         return client.setex(
-            `process.env.LABEL_REDIS_KEY ${userEmail}`,
+            `process.env.LABEL_REDIS_KEY${userEmail}`,
             20000000,
             JSON.stringify(data)
         );
@@ -155,7 +155,7 @@ class RedisCache {
         console.log("userId for redis is: " + userEmail);
         console.log("set Data : ", data);
         return client.setex(
-            `process.env.NOTES_REDIS_KEY ${userEmail}`,
+            `process.env.NOTES_REDIS_KEY${userEmail}`,
             20000000,
             JSON.stringify(data)
         );

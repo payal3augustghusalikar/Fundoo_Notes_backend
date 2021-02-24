@@ -21,7 +21,6 @@ const NoteSchema = mongoose.Schema({
         required: true,
         trim: true,
     },
-
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
@@ -30,7 +29,16 @@ const NoteSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Label",
     }, ],
-}, { versionKey: false }, {
+    isArchived: {
+        type: Boolean,
+        default: false,
+    },
+    isDeleted: {
+        type: Boolean,
+        default: false,
+    },
+    __v: { type: Number, select: false },
+}, {
     timestamps: true,
 });
 const Note = mongoose.model("Note", NoteSchema);
@@ -48,6 +56,7 @@ class NoteModel {
         });
         note.save(callback);
     };
+
     /**
      *
      * @param {*} callback
@@ -62,6 +71,7 @@ class NoteModel {
             }
         });
     };
+
     /**
      *
      * @param {*} noteID
@@ -70,6 +80,7 @@ class NoteModel {
     findOne = (noteID, callback) => {
         Note.findById(noteID, callback);
     };
+
     /**
      *
      * @param {*} labelId
@@ -78,6 +89,7 @@ class NoteModel {
     findNotesByLabel = (labelId, callback) => {
         Note.findById(labelId, callback);
     };
+
     /**
      *
      * @param {*} noteInfo
@@ -92,6 +104,7 @@ class NoteModel {
             callback
         );
     };
+
     /**
      * @description delete the id from databse and returns the result to service
      * @param {*} noteID coming from service class
@@ -107,13 +120,20 @@ class NoteModel {
      * @param {*} callback returns error or data to service
      */
     addLabelToSingleNote = (noteInfo, callback) => {
-        logger.info("label found");
-        return Note.findByIdAndUpdate(
-            noteInfo.noteID, {
-                $push: { labelId: noteInfo.labelId },
-            }, { new: true },
-            callback
-        );
+        Note.findById(noteInfo.noteID, (error, noteData) => {
+            return error ?
+                callback(error, null) :
+                (logger.info("note found"),
+                    console.log(noteData), !noteData.labelId.includes(noteInfo.labelId) ?
+                    Note.findByIdAndUpdate(
+                        noteInfo.noteID, {
+                            $push: { labelId: noteInfo.labelId },
+                        }, { new: true },
+                        callback
+                    ) :
+                    callback(error, null));
+        });
+
         //     console.log("model");
         //     Note.findById({ _id: noteInfo.noteID }, (error, data) => {
         //         console.log("note data is ", data);
@@ -151,6 +171,39 @@ class NoteModel {
             callback
         );
     };
+
+    hardDeleteById = (noteID, callback) => {
+        Note.findById(noteID, (error, data) => {
+            if (error) return callback(error, null);
+            else {
+                logger.info("Note found");
+                Note.findByIdAndRemove(noteID, callback);
+                return callback(null, data);
+            }
+        });
+    };
+
+    softDeleteById = (noteID, callback) => {
+        Note.findByIdAndUpdate(
+            noteID, { isDeleted: true }, { new: true },
+            callback
+        );
+    };
 }
+
+//{ new: true },
+//     (error, data) => {
+//         if (error) {
+//             logger.error("Error occurred while restoring note");
+//             return callback(error, null);
+//         }
+//         return callback(null, data);
+//     }
+// );
+//  } else return callback(null, null);
+//             }
+//         });
+//     };
+// }
 
 module.exports = new NoteModel();

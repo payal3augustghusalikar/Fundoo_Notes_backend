@@ -45,5 +45,17 @@ module.exports = (app) => {
     app.put("/notes/:noteId", helper.verifyToken, notes.update);
 
     // Delete a note with noteId
-    app.delete("/notes/:noteId", helper.verifyToken, notes.delete);
+    // app.delete("/notes/:noteId", helper.verifyToken, notes.delete);
+
+    app.put(
+        "/notes/softdelete/:noteId",
+        helper.verifyToken,
+        notes.softDeleteNote
+    );
+
+    app.delete(
+        "/notes/harddelete/:noteId",
+        helper.verifyToken,
+        notes.hardDeleteNote
+    );
 };

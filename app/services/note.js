@@ -96,5 +96,18 @@ class NoteService {
         console.log("service");
         return Note.removeLabel(noteData, callback);
     };
+
+    /**
+     * @description Delete Note by id and return response to controller
+     * @method deleteById is used to remove Note by ID
+     * @param callback is the callback for controller
+     */
+    deleteNote = (noteID, callback) => {
+        return Note.hardDeleteById(noteID, callback);
+    };
+
+    softDelete = (noteID, callback) => {
+        return Note.softDeleteById(noteID, callback);
+    };
 }
 module.exports = new NoteService();
