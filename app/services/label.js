@@ -20,22 +20,42 @@ class LabelService {
      * @method findAll is used to retrieve Labels
      * @param callback is the callback for controller
      */
-    findAll = async(token, callback) => {
+    findAll = (token, callback) => {
         console.log("service");
-        const userEmail = await helper.getEmailFromToken(token);
-        console.log("get email :", userEmail);
-        return Label.findAll((error, data) => {
-            if (error) {
-                logger.error("Some error occurred");
-                return callback(new Error("Some error occurred"), null);
-            } else {
-                // const key = "label";
-                //  const redisData = redisCache.setRedis(data, userEmail, key);
-                const redisData = redisCache.setRedisLabel(data, userEmail);
-                console.log("setting redis data : " + redisData);
-                return data;
+
+        const userEmail = helper.getEmailFromToken(token);
+        const key = "A";
+        // console.log("A: ", keys);
+        const result = redisCache.redisGetLabel(
+            userEmail,
+            key,
+
+            (error, data) => {
+                if (!data) {
+                    console.log("from redis", data);
+                    // return callback(new Error("Some error occurred"), null);
+                    // const key = "label";
+                    // console.log("res : ", result);
+                    console.log("get email :", userEmail);
+                    // const key = "A";
+                    console.log("A: ", key);
+                    // const res = redisCache.redisGetLabel(userEmail, res, key);
+                    console.log("res : ", result);
+
+                    return Label.findAll((error, data) => {
+                        if (error) {
+                            logger.error("Some error occurred");
+                            return callback(new Error("Some error occurred"), null);
+                        } else {
+                            const redisData = redisCache.setRedisLabel(data, userEmail, key);
+                            // const redisData = redisCache.setRedisLabel(data, userEmail);
+                            console.log("setting redis data : " + redisData);
+                            // return data;
+                        }
+                    });
+                }
             }
-        });
+        );
     };
 
     /**

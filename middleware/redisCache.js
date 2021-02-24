@@ -20,21 +20,47 @@ class RedisCache {
      * @param {*} res to send response
      * @param {*} next is pass as a argument
      */
-    redisGetLabel = (req, res, next) => {
-        const token = req.headers.authorization.split(" ")[1];
-        const userEmail = helper.getEmailFromToken(token);
+    // redisGetLabel = (req, res, next) => {
+    //     const token = req.headers.authorization.split(" ")[1];
+    //     const userEmail = helper.getEmailFromToken(token);
+    //     return client.get(
+    //         `process.env.LABEL_REDIS_KEY${userEmail}`,
+    //         // `userData label ${userEmail}`,
+    //         (error, redisData) => {
+    //             console.log("start : ", redisData);
+    //             return error || redisData == null ?
+    //                 (logger.error("Error retrieving data from redis cache"), next()) :
+    //                 res.send({
+    //                     status_code: status.Success,
+    //                     message: `data found`,
+    //                     redisData: JSON.parse(redisData),
+    //                 });
+    //         }
+    //     );
+    // };
+
+    redisGetLabel = (userEmail, key, req, response, callback) => {
+        console.log("inside get redis ");
+        // const token = req.headers.authorization.split(" ")[1];
+        // const userEmail = helper.getEmailFromToken(token);
+        console.log(`process.env.LABEL_REDIS_KEY${key}${userEmail}`);
         return client.get(
-            `process.env.LABEL_REDIS_KEY${userEmail}`,
+            `process.env.LABEL_REDIS_KEY${key}${userEmail}`,
             // `userData label ${userEmail}`,
             (error, redisData) => {
-                console.log("start : ", redisData);
-                return error || redisData == null ?
-                    (logger.error("Error retrieving data from redis cache"), next()) :
-                    res.send({
+                //  console.log("start : ", redisData);
+                return (
+                    error || redisData == null ?
+                    (logger.error("Error retrieving data from redis cache", +error),
+                        callback(error, null)) :
+                    console.log("data found in redis "),
+                    // callback(null, redisData),
+                    response.send({
                         status_code: status.Success,
                         message: `data found`,
                         redisData: JSON.parse(redisData),
-                    });
+                    })
+                );
             }
         );
     };
@@ -137,10 +163,22 @@ class RedisCache {
      * @param {*} data is the responce from database
      * @param {*} userEmail for unique identity
      */
-    setRedisLabel = (data, userEmail) => {
+    // setRedisLabel = (data, userEmail) => {
+    //     console.log("userId for redis is: " + userEmail);
+    //     return client.setex(
+    //         `process.env.LABEL_REDIS_KEY${userEmail}`,
+    //         20000000,
+    //         JSON.stringify(data)
+    //     );
+    // };
+
+    setRedisLabel = (data, userEmail, key) => {
+        console.log("");
+        console.log("inside set redis");
         console.log("userId for redis is: " + userEmail);
+        console.log(`process.env.LABEL_REDIS_KEY${key}${userEmail}`);
         return client.setex(
-            `process.env.LABEL_REDIS_KEY${userEmail}`,
+            `process.env.LABEL_REDIS_KEY${key}${userEmail}`,
             20000000,
             JSON.stringify(data)
         );

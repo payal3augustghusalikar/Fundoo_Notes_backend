@@ -88,9 +88,8 @@ class LabelController {
         } catch (error) {
             logger.error("label not found");
             res.send({
-                success: false,
                 status_code: status.Internal_Server_Error,
-                message: "error retriving labels",
+                message: "error retriving labels" + error,
             });
         }
     };

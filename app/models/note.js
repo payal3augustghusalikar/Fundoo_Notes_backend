@@ -140,7 +140,7 @@ class NoteModel {
         return Note.findByIdAndUpdate(
             noteInfo.noteID, {
                 $pull: { labelId: noteInfo.labelId },
-            }, { new: true },
+            },
             callback
         );
     };
