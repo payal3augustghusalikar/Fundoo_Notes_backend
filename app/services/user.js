@@ -40,11 +40,9 @@ class userService {
         redisCache.redisGet(userEmail, key, (error, data) => {
             if (data) {
                 console.log(data);
-
                 const token = helper.createToken(data[0]);
                 data.token = token;
                 console.log(token);
-
                 return callback(null, data);
             } else if (!data) {
                 User.find(userLoginData, (error, data) => {
@@ -71,9 +69,6 @@ class userService {
                                     data.token = token;
                                     console.log(token);
                                     console.log("data in service : ", data);
-                                    // const key = "login";
-                                    //const redisData = redisCache.setRedis(data.token, userEmail, key);
-                                    // const redisData = redisCache.setRedis(data.token, userEmail);
                                     const redisData = redisCache.setRedis(data, userEmail, key);
                                     console.log("setting redis data : " + redisData);
                                     return callback(null, data);

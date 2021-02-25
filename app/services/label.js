@@ -22,37 +22,98 @@ class LabelService {
      * @param callback is the callback for controller
      */
     findAll = (token, callback) => {
-        //     console.log("service");
-        //     const userEmail = helper.getEmailFromToken(token);
-        //     const key = "A";
-        //     redisCache.redisGet(userEmail, key, (error, data) => {
-        //         if (data) {
-        //             return callback(null, data);
-        //         } else if (!data) {
-        //             return Label.findAll((error, data) => {
-        //                 if (error) {
-        //                     logger.error("Some error occurred");
-        //                     return callback(new Error("Some error occurred"), null);
-        //                 } else {
-        //                     const redisData = redisCache.setRedis(data, userEmail, key);
-        //                     console.log("setting redis data : " + redisData);
-        //                     return callback(null, data);
-        //                 }
-        //             });
-        //         }
-        //         //else {
-        //         //     return callback(null, data);
-        //         // }
-        //     });
-        //     console.log("service");
-        //     const userEmail = helper.getEmailFromToken(token);
-        //     const key = "A";
-        //     return redisCache.redisGetLabel(userEmail, key)
-        //         .then((!data) => {
-        //             Label.findAll
-        //                 .then((data) => redisCache.setRedisLabel(data, userEmail, key)
-        //                 }))
+        console.log("service");
+        const key = "label";
+        const userEmail = helper.getEmailFromToken(token);
+        console.log("get email :", userEmail);
+        redisCache.redisGet(userEmail, key, (error, data) => {
+            if (data) {
+                console.log();
+                return callback(null, data);
+            } else if (!data) {
+                Label.findAll((error, data) => {
+                    if (error) {
+                        logger.error("Some error occurred");
+                        return callback(new Error("Some error occurred"), null);
+                    } else {
+                        const redisData = redisCache.setRedis(data, userEmail, key);
+                        console.log("setting redis data : " + redisData);
+                        return callback(null, data);
+                    }
+                });
+            }
+        });
     };
+
+    //     console.log("service");
+    //     const key = "label";
+    //     const userEmail = helper.getEmailFromToken(token);
+    //     console.log("get email :", userEmail);
+    //     return redisCache.redisGet(userEmail, key, (error, data) => {
+    //         if (data) {
+    //             console.log("again in srvice");
+    //             return callback(data, null);
+    //         } else if (!data) {
+    //             return Label.findAll((error, data) => {
+    //                 if (error) {
+    //                     logger.error("Some error occurred");
+    //                     // return callback(new Error("Some error occurred"), null);
+    //                 } else {
+    //                     const redisData = redisCache.setRedis(data, userEmail, key);
+    //                     console.log("setting redis data : " + redisData);
+    //                     return callback(data, null);
+    //                 }
+    //             });
+    //         }
+    //     });
+    // };
+
+    //     console.log("service");
+    //     const userEmail = helper.getEmailFromToken(token);
+    //     const key = "A";
+    //     redisCache.redisGet(userEmail, key, (error, data) => {
+    //         if (data) {
+    //             return callback(null, data);
+    //         } else if (!data) {
+    //             return Label.findAll((error, data) => {
+    //                 if (error) {
+    //                     logger.error("Some error occurred");
+    //                     return callback(new Error("Some error occurred"), null);
+    //                 } else {
+    //                     const redisData = redisCache.setRedis(data, userEmail, key);
+    //                     console.log("setting redis data : " + redisData);
+    //                     return callback(null, data);
+    //                 }
+    //             });
+    //         }
+    //         //else {
+    //         //     return callback(null, data);
+    //         // }
+    //     });
+    //     console.log("service");
+    //     const userEmail = helper.getEmailFromToken(token);
+    //     const key = "label";
+    //     return redisCache
+    //         .redisGet(userEmail, key)
+    //         .then((data) => {
+    //             if (data) {
+    //                 return data;
+    //             } else if (!data) {
+    //                 return Note.findAll
+    //                     .then((data) => {
+    //                         const redisData = redisCache.setRedis(data, userEmail, key);
+    //                         console.log("setting redis data : " + redisData);
+    //                         return data;
+    //                     })
+    //                     .catch((error) => {
+    //                         logger.error("Some error occurred", error);
+    //                     });
+    //             }
+    //         })
+    //         .catch((error) => {
+    //             logger.error("Some error occurred", error);
+    //         });
+    // };
 
     // console.log("from redis", data);
 
