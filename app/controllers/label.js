@@ -90,43 +90,6 @@ class LabelController {
         }
     };
 
-    //     try {
-    //         var start = new Date();
-    //         const token = req.headers.authorization.split(" ")[1];
-    //         console.log("controller");
-    //         labelServices
-    //             .findAll(token)
-    //             .then((data) => {
-    //                 console.log("data of label in ctrl", data);
-    //                 logger.info("Successfully retrieved labels !"),
-    //                     res.send({
-    //                         success: true,
-    //                         status_code: status.Success,
-    //                         message: "label of current account has been retrieved",
-    //                         time: (new Date() - start, "ms"),
-    //                         data: data,
-    //                     });
-
-    //                 console.log("Request took:", new Date() - start, "ms");
-    //             })
-    //             .catch((error) => {
-    //                 logger.error("Some error occurred while retrieving labels"),
-    //                     res.send({
-    //                         success: false,
-    //                         status_code: status.Not_Found,
-    //                         message: "label not found ",
-    //                         error,
-    //                     });
-    //             });
-    //     } catch (error) {
-    //         logger.error("label not found");
-    //         res.send({
-    //             status_code: status.Internal_Server_Error,
-    //             message: "error retriving labels" + error,
-    //         });
-    //     }
-    // };
-
     /**
      * @message Find label by id
      * @method findOne is service class method
