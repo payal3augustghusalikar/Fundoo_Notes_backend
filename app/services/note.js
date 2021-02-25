@@ -31,13 +31,10 @@ class NoteService {
      * @param callback is the callback for controller
      */
     findAll = (token, callback) => {
-        console.log("service");
         const key = "note";
         const userEmail = helper.getEmailFromToken(token);
-        console.log("get email :", userEmail);
         redisCache.redisGet(userEmail, key, (error, data) => {
             if (data) {
-                console.log();
                 return callback(null, data);
             } else if (!data) {
                 Note.findAll((error, data) => {
@@ -45,8 +42,7 @@ class NoteService {
                         logger.error("Some error occurred");
                         return callback(new Error("Some error occurred"), null);
                     } else {
-                        const redisData = redisCache.setRedis(data, userEmail, key);
-                        console.log("setting redis data : " + redisData);
+                        redisCache.setRedis(data, userEmail, key);
                         return callback(null, data);
                     }
                 });
@@ -93,12 +89,10 @@ class NoteService {
      * @method add calls model class method
      */
     addLabelToNotes = (noteData, callback) => {
-        console.log("service");
         return Note.addLabelToSingleNote(noteData, callback);
     };
 
     removeLabel = (noteData, callback) => {
-        console.log("service");
         return Note.removeLabel(noteData, callback);
     };
 

@@ -22,13 +22,10 @@ class LabelService {
      * @param callback is the callback for controller
      */
     findAll = (token, callback) => {
-        console.log("service");
         const key = "label";
         const userEmail = helper.getEmailFromToken(token);
-        console.log("get email :", userEmail);
         redisCache.redisGet(userEmail, key, (error, data) => {
             if (data) {
-                console.log();
                 return callback(null, data);
             } else if (!data) {
                 Label.findAll((error, data) => {
@@ -37,7 +34,7 @@ class LabelService {
                         return callback(new Error("Some error occurred"), null);
                     } else {
                         const redisData = redisCache.setRedis(data, userEmail, key);
-                        console.log("setting redis data : " + redisData);
+
                         return callback(null, data);
                     }
                 });

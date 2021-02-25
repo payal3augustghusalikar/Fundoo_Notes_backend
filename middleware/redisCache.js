@@ -21,28 +21,18 @@ class RedisCache {
      * @param {*} callback calls service class method and passed the data if found
      */
     redisGet = (userEmail, key, callback) => {
-        console.log("inside get redis ");
-        console.log(`process.env.REDIS_KEY${key}${userEmail}`);
-        return client.get(
-            `process.env.REDIS_KEY${key}${userEmail}`,
-            (error, redisData) => {
-                return (
-                    error || redisData == null ?
-                    (logger.error("Error retrieving data from redis cache", +error),
-                        console.log("no data in getredis"),
-                        callback(error, null)) :
-                    console.log(
-                        "data found in redis "
-                        // JSON.parse(redisData)
-                    ),
-                    logger.info(
-                        "data found in redis "
-                        // JSON.parse(redisData)
-                    ),
-                    callback(null, JSON.parse(redisData))
-                );
-            }
-        );
+        return client.get(`${key}${userEmail}`, (error, redisData) => {
+            return (
+                error || redisData == null ?
+                (logger.error("Error retrieving data from redis cache", +error),
+                    callback(error, null)) :
+                logger.info(
+                    "data found in redis "
+                    // JSON.parse(redisData)
+                ),
+                callback(null, JSON.parse(redisData))
+            );
+        });
     };
 
     /**
@@ -53,16 +43,7 @@ class RedisCache {
      */
 
     setRedis = (data, userEmail, key) => {
-        console.log("");
-        console.log("inside set redis", data);
-        console.log(key);
-        console.log("userId for redis is: " + userEmail);
-        console.log(`process.env.REDIS_KEY${key}${userEmail}`);
-        return client.setex(
-            `process.env.REDIS_KEY${key}${userEmail}`,
-            20000000,
-            JSON.stringify(data)
-        );
+        return client.setex(`${key}${userEmail}`, 20000000, JSON.stringify(data));
     };
 }
 module.exports = new RedisCache();
