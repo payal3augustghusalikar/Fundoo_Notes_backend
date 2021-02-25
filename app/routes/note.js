@@ -33,24 +33,17 @@ module.exports = (app) => {
         notes.removelabelfromnote
     );
 
-    // Retrieve a single note with labelId
-    //  app.get("/notes/:labelId", helper.verifyToken, notes.findNotesByLabelId);
-
     // Update a note with noteId
     app.put("/notes/:noteId", helper.verifyToken, notes.update);
 
     // Delete a note with noteId
     // app.delete("/notes/:noteId", helper.verifyToken, notes.delete);
 
-    app.put(
-        "/notes/softdelete/:noteId",
-        helper.verifyToken,
-        notes.softDeleteNote
-    );
+    app.put("/notes/delete/:noteId", helper.verifyToken, notes.deleteNote);
 
     app.delete(
-        "/notes/harddelete/:noteId",
+        "/notes/deleteforever/:noteId",
         helper.verifyToken,
-        notes.hardDeleteNote
+        notes.deleteForever
     );
 };

@@ -97,7 +97,6 @@ class userController {
                             message: "Auth Failed",
                         });
                     }
-
                     return res.send({
                         success: status.Success,
                         message: "login successfull",

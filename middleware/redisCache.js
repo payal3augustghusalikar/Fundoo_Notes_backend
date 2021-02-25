@@ -35,6 +35,10 @@ class RedisCache {
                         "data found in redis "
                         // JSON.parse(redisData)
                     ),
+                    logger.info(
+                        "data found in redis "
+                        // JSON.parse(redisData)
+                    ),
                     callback(null, JSON.parse(redisData))
                 );
             }

@@ -121,17 +121,16 @@ class NoteModel {
      */
     addLabelToSingleNote = (noteInfo, callback) => {
         Note.findById(noteInfo.noteID, (error, noteData) => {
-            return error ?
-                callback(error, null) :
-                (logger.info("note found"),
-                    console.log(noteData), !noteData.labelId.includes(noteInfo.labelId) ?
-                    Note.findByIdAndUpdate(
-                        noteInfo.noteID, {
-                            $push: { labelId: noteInfo.labelId },
-                        }, { new: true },
-                        callback
-                    ) :
-                    callback(error, null));
+            if (error) callback(error, null);
+            else if (!noteData.labelId.includes(noteInfo.labelId)) {
+                return Note.findByIdAndUpdate(
+                    noteInfo.noteID, {
+                        labelId: noteInfo.labelId,
+                    }, { new: true },
+                    callback
+                );
+            }
+            callback(error, null);
         });
     };
 
@@ -140,12 +139,12 @@ class NoteModel {
         return Note.findByIdAndUpdate(
             noteInfo.noteID, {
                 $pull: { labelId: noteInfo.labelId },
-            },
+            }, { new: true },
             callback
         );
     };
 
-    hardDeleteById = (noteID, callback) => {
+    deleteNoteById = (noteID, callback) => {
         Note.findById(noteID, (error, data) => {
             if (error) return callback(error, null);
             else {
@@ -156,7 +155,7 @@ class NoteModel {
         });
     };
 
-    softDeleteById = (noteID, callback) => {
+    removeNote = (noteID, callback) => {
         Note.findByIdAndUpdate(
             noteID, { isDeleted: true }, { new: true },
             callback

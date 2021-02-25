@@ -108,11 +108,11 @@ class NoteService {
      * @param callback is the callback for controller
      */
     deleteNote = (noteID, callback) => {
-        return Note.hardDeleteById(noteID, callback);
+        return Note.deleteNoteById(noteID, callback);
     };
 
-    softDelete = (noteID, callback) => {
-        return Note.softDeleteById(noteID, callback);
+    removeNote = (noteID, callback) => {
+        return Note.removeNote(noteID, callback);
     };
 }
 module.exports = new NoteService();

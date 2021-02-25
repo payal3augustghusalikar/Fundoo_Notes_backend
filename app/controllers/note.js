@@ -341,7 +341,7 @@ class NoteController {
      * @method delete is service class method
      * @param response is used to send the response
      */
-    hardDeleteNote(req, res) {
+    deleteForever(req, res) {
         try {
             const noteID = req.params.noteId;
             noteService.deleteNote(noteID, (error, data) => {
@@ -381,10 +381,10 @@ class NoteController {
      * @method delete is service class method
      * @param response is used to send the response
      */
-    softDeleteNote(req, res) {
+    deleteNote(req, res) {
         try {
             const noteID = req.params.noteId;
-            noteService.softDelete(noteID, (error, data) => {
+            noteService.removeNote(noteID, (error, data) => {
                 return (
                     error ?
                     (logger.warn("note not found with id " + noteID),
