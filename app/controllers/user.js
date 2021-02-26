@@ -224,5 +224,52 @@ class userController {
             });
         }
     };
+
+    /**
+     * @message Find user by id
+     * @method findOne is service class method
+     * @param response is used to send the response
+     */
+    verifyEmail = (req, res) => {
+        try {
+            const userInfo = {
+                emailId: req.body.emailId,
+            };
+            userService.findOne(userInfo, (error, data) => {
+                return (
+                    error ?
+                    (logger.error(
+                            "Error retrieving user with id " + userInfo.emailId
+                        ),
+                        res.send({
+                            success: false,
+                            status_code: status.Internal_Server_Error,
+                            message: "Error retrieving user with id " + userInfo.emailId,
+                        })) :
+                    !data ?
+                    (logger.warn("user not found with id : " + userInfo.emailId),
+                        res.send({
+                            success: false,
+                            status_code: status.Not_Found,
+                            message: "user not found with id : " + userInfo.emailId,
+                        })) :
+                    logger.info("user found with id " + userInfo.emailId),
+                    res.send({
+                        success: true,
+                        status_code: status.Success,
+                        message: "user found with id " + userInfo.emailId,
+                        data: data,
+                    })
+                );
+            });
+        } catch (error) {
+            logger.error("could not found user with id" + req.params.emailId);
+            return res.send({
+                success: false,
+                status_code: status.Internal_Server_Error,
+                message: "error retrieving user with id " + req.params.emailId,
+            });
+        }
+    };
 }
 module.exports = new userController();

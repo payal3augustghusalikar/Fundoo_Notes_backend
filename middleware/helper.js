@@ -82,7 +82,7 @@ class Helper {
      * @param {*} userInfo
      * @param {*} callback
      */
-    emailSender = (userInfo, callback) => {
+    emailSender = (userInfo, subject, callback) => {
         let transporter = nodemailer.createTransport({
             service: "gmail",
             //  PORT: process.env.PORT,
@@ -104,7 +104,7 @@ class Helper {
                     from: process.env.EMAIL_USER,
                     // to: process.env.EMAIL_RECEIVER,
                     to: userInfo.emailId,
-                    subject: "Reset Password",
+                    subject: subject,
                     html: ejs.render(data),
                 };
                 transporter.sendMail(mailOptions, (error, data) => {

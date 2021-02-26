@@ -37,6 +37,10 @@ const UserSchema = mongoose.Schema({
         },
         test: vallidator.passwordPattern,
     },
+    name: {
+        type: Boolean,
+        default: false,
+    },
     __v: { type: Number, select: false },
 }, {
     timestamps: true,

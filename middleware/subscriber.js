@@ -18,7 +18,7 @@ class Subscriber {
                 });
                 channel.consume(queueName, (msg) => {
                     console.log(`Message consumessss: ${msg.content.toString()}`);
-                    channel.ack(msg);
+                    // channel.ack(msg);
                     return callback(null, msg.content.toString());
                 });
             });

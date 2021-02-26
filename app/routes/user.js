@@ -24,4 +24,7 @@ module.exports = (app) => {
 
     // Reset password
     app.put("/resetpassword", helper.verifyToken, user.resetPassword);
+
+    //verify Email for registerd user
+    app.post("/verifyemail", user.verifyEmail);
 };
