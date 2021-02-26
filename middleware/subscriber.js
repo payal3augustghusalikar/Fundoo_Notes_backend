@@ -17,11 +17,8 @@ class Subscriber {
                     durable: false,
                 });
                 channel.consume(queueName, (msg) => {
-                    console.log("Message queueName :", queueName);
-                    console.log("Message msg :", msg);
                     console.log(`Message consumessss: ${msg.content.toString()}`);
-                    //  channel.ack(msg);
-                    console.log("after sending mail ", msg);
+                    channel.ack(msg);
                     return callback(null, msg.content.toString());
                 });
             });

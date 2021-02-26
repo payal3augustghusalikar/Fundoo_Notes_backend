@@ -21,7 +21,8 @@ class RedisCache {
      * @param {*} callback calls service class method and passed the data if found
      */
     redisGet = (userEmail, key, callback) => {
-        return client.get(`${key}${userEmail}`, (error, redisData) => {
+        const KEY = `${key}${userEmail}`;
+        return client.get(KEY, (error, redisData) => {
             return (
                 error || redisData == null ?
                 (logger.error("Error retrieving data from redis cache", +error),
@@ -43,7 +44,8 @@ class RedisCache {
      */
 
     setRedis = (data, userEmail, key) => {
-        return client.setex(`${key}${userEmail}`, 20000000, JSON.stringify(data));
+        const KEY = `${key}${userEmail}`;
+        return client.setex(KEY, 20000000, JSON.stringify(data));
     };
 }
 module.exports = new RedisCache();
