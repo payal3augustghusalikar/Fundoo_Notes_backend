@@ -102,7 +102,8 @@ class Helper {
                 }
                 let mailOptions = {
                     from: process.env.EMAIL_USER,
-                    to: process.env.EMAIL_RECEIVER,
+                    // to: process.env.EMAIL_RECEIVER,
+                    to: userInfo.emailId,
                     subject: "Reset Password",
                     html: ejs.render(data),
                 };

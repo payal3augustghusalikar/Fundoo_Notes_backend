@@ -13,7 +13,9 @@ const logger = require("../../../logger/logger.js");
 const jwt = require("jsonwebtoken");
 const redis = require("redis");
 const client = redis.createClient();
-var redisCache = require("../../middleware/redisCache.js");
+const redisCache = require("../../middleware/redisCache.js");
+const consume = require("../../middleware/subscriber.js");
+const publish = require("../../middleware/publisher.js");
 
 class userService {
     /**
@@ -34,7 +36,6 @@ class userService {
      * @param {*} callback is the callback for controller
      */
     login = (userLoginData, callback) => {
-        var start = new Date();
         const userEmail = userLoginData.emailId;
         const key = "login";
         redisCache.redisGet(userEmail, key, (error, data) => {
@@ -61,7 +62,7 @@ class userService {
                                     const token = helper.createToken(data[0]);
                                     data.token = token;
 
-                                    const redisData = redisCache.setRedis(data, userEmail, key);
+                                    redisCache.setRedis(data, userEmail, key);
 
                                     return callback(null, data);
                                 } else {
@@ -98,6 +99,20 @@ class userService {
                 const token = helper.createToken(data);
                 userInfo.token = token;
                 console.log(token);
+
+                publish.getMessage(userInfo, callback);
+                consume.consumeMessage((error, message) => {
+                    if (error)
+                        callBack(
+                            new Error("Some error occurred while consuming message"),
+                            null
+                        );
+                    else {
+                        console.log("userInfo ", userInfo);
+                        console.log("message ", message);
+                        userInfo.emailId = message;
+                    }
+                });
                 helper.emailSender(userInfo, (error, data) => {
                     console.log("userInfo" + userInfo);
                     if (error) {
@@ -112,7 +127,6 @@ class userService {
             }
         });
     };
-
     /**
      * @description Update user and return response to controller
      * @param {*} userInfo
