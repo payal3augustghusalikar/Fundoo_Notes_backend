@@ -16,8 +16,15 @@ const client = redis.createClient();
 const redisCache = require("../../middleware/redisCache.js");
 const consume = require("../../middleware/subscriber.js");
 const publish = require("../../middleware/publisher.js");
+//const EventEmitter = require("events");
+// const event = new EventEmitter();
+// var ee = require("event-emitter");
+
 const EventEmitter = require("events");
-const event = new EventEmitter();
+
+class MyEmitter extends EventEmitter {}
+
+const myEmitter = new MyEmitter();
 
 class userService {
     /**
@@ -151,46 +158,52 @@ class userService {
             } else {
                 const token = helper.createToken(data);
                 userInfo.token = token;
-
-                // // console.log(token);
+                console.log("userInfo");
+                console.log(userInfo);
                 // // event.emit("publish", userInfo);
                 // publish.getMessage(userInfo, callback);
 
                 // //  event.emit("publish", userInfo);
                 // //  consume.consumeMessage(userInfo, callback);
 
-                event.on("QueueEvent", publish.getMessage.bind(userInfo, callback));
+                // event.on(
+                //     "QueueEvent",
+                //     publish.getMessage.bind(null, (userInfo, callback))
+                // );
 
-                event.on(
-                    "QueueEvent",
-                    consume.consumeMessage.bind((error, message) => {
-                        if (error)
-                            callBack(
-                                new Error("Some error occurred while consuming message"),
+                // event.on(
+                //     "QueueEvent",
+                //     consume.consumeMessage.bind(null, (error, message) => {
+
+                myEmitter.emit("event1", userInfo, callback);
+                myEmitter.emit("event2", callback);
+
+                if (error)
+                    callBack(
+                        new Error("Some error occurred while consuming message"),
+                        null
+                    );
+                else {
+                    console.log("userInfo ", userInfo);
+                    console.log("message ", message);
+                    userInfo.emailId = message;
+                    //     }
+                    // });
+                    const subject = "Reset Password";
+                    helper.emailSender(userInfo, subject, (error, data) => {
+                        console.log("userInfo" + userInfo);
+                        if (error) {
+                            logger.error("Some error occurred while sending email");
+                            return callback(
+                                new Error("Some error occurred while sending email"),
                                 null
                             );
-                        else {
-                            console.log("userInfo ", userInfo);
-                            console.log("message ", message);
-                            userInfo.emailId = message;
-                            //     }
-                            // });
-                            const subject = "Reset Password";
-                            helper.emailSender(userInfo, subject, (error, data) => {
-                                console.log("userInfo" + userInfo);
-                                if (error) {
-                                    logger.error("Some error occurred while sending email");
-                                    return callback(
-                                        new Error("Some error occurred while sending email"),
-                                        null
-                                    );
-                                }
-                                return callback(null, data);
-                            });
                         }
-                    })
-                );
-                event.emit("QueueEvent");
+                        return callback(null, data);
+                    });
+                }
+
+                //event.emit("QueueEvent");
             }
         });
     };

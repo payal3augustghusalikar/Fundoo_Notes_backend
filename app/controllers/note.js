@@ -415,6 +415,49 @@ class NoteController {
             );
         }
     }
+
+    /**
+     * @message Create and save a new note
+     * @param res is used to send the response
+     */
+    addCollaborator = (req, res) => {
+        try {
+            const collaborator = {
+                noteID: req.params.noteId,
+                collaboratorId: req.body.userId,
+            };
+            const token = req.headers.authorization.split(" ")[1];
+            // const validation = ControllerDataValidation.validate(noteInfo);
+            // console.log(validation);
+            // return validation.error ?
+            //     res.status(400).send({
+            //         success: false,
+            //         message: "please enter valid details",
+            //     }) :
+            noteService.createCollaborator(collaborator, token, (error, data) => {
+                return error ?
+                    (logger.error("Some error occurred while creating collaborator"),
+                        res.send({
+                            success: false,
+                            status_code: status.Internal_Server_Error,
+                            message: "Some error occurred while creating collaborator",
+                        })) //                  logger.info("note added successfully !"),
+                    :
+                    res.send({
+                        success: true,
+                        status_code: status.Success,
+                        message: "collaborator added successfully !",
+                        data: data,
+                    });
+            });
+        } catch (error) {
+            res.send({
+                success: false,
+                status_code: status.Internal_Server_Error,
+                message: "Some error occurred while creating collaborator",
+            });
+        }
+    };
 }
 
 module.exports = new NoteController();

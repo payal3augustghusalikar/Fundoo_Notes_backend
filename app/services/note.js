@@ -108,5 +108,16 @@ class NoteService {
     removeNote = (noteID, callback) => {
         return Note.removeNote(noteID, callback);
     };
+
+    createCollaborator = (collaborator, callback) => {
+        Note.findCollaborator(collaborator, (error, data) => {
+            if (error) {
+                logger.error("Some error occurred");
+                return callback(new Error("Some error occurred"), null);
+            } else {
+                return callback(null, data);
+            }
+        });
+    };
 }
 module.exports = new NoteService();

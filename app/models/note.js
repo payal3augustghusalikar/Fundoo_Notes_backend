@@ -37,6 +37,11 @@ const NoteSchema = mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    collaborator: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+    }, ],
+
     __v: { type: Number, select: false },
 }, {
     timestamps: true,
@@ -160,6 +165,21 @@ class NoteModel {
             noteID, { isDeleted: true }, { new: true },
             callback
         );
+    };
+
+    findCollaborator = (collaborator, callback) => {
+        Note.findById(collaborator.noteID, (error, noteData) => {
+            if (error) callback(error, null);
+            else if (!noteData.userId.includes(noteInfo.userId)) {
+                return Note.findByIdAndUpdate(
+                    collaborator.userId, {
+                        collaborator: noteInfo.userId,
+                    }, { new: true },
+                    callback
+                );
+            }
+            callback(error, null);
+        });
     };
 }
 
