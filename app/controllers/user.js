@@ -258,7 +258,7 @@ class userController {
                         success: true,
                         status_code: status.Success,
                         message: "user found with id " + userInfo.emailId,
-                        data: data,
+                        // data: data,
                     })
                 );
             });
