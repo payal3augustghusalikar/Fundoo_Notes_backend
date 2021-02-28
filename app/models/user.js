@@ -121,6 +121,12 @@ class UserModel {
             }
         );
     };
+
+    findOneUser = (userInfo) => {
+        console.log("mdl", userInfo);
+        console.log("mdl", userInfo.emailId);
+        return User.findOne({ emailId: userInfo.emailId });
+    };
 }
 
 module.exports = new UserModel();
