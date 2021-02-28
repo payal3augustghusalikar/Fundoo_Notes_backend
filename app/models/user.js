@@ -19,7 +19,7 @@ const UserSchema = mongoose.Schema({
             min: 3,
             max: 36,
         },
-        test: /^[a-z0-9]+$/gi,
+        //test: /^[a-z0-9]+$/gi,
         test: vallidator.namePattern,
     },
     emailId: {
@@ -37,10 +37,11 @@ const UserSchema = mongoose.Schema({
         },
         test: vallidator.passwordPattern,
     },
-    name: {
+    isActivated: {
         type: Boolean,
         default: false,
     },
+
     __v: { type: Number, select: false },
 }, {
     timestamps: true,
@@ -94,14 +95,14 @@ class UserModel {
      * @param {*} callback is for service class
      */
     findOne = (userInfo, callback) => {
-        User.findOne(userInfo, (error, data) => {
+        User.findOne({ emailId: userInfo.emailId }, (error, data) => {
             if (error) {
                 logger.error("Some error occurred");
                 return callback(new Error("Some error occurred"), null);
             } else if (!data) {
-                logger.error("User not found with this email Id");
                 return callback(new Error("User not found with this email Id"), null);
             } else {
+                console.log("model ", data);
                 return callback(null, data);
             }
         });
@@ -126,6 +127,26 @@ class UserModel {
         console.log("mdl", userInfo);
         console.log("mdl", userInfo.emailId);
         return User.findOne({ emailId: userInfo.emailId });
+    };
+
+    /**
+     * @description takes th userInfo and update the user
+     * @param {*} userInfo
+     * @param {*} callback
+     */
+    activateOne = (userInfo, callback) => {
+        return User.findOne({ _id: userInfo.userId }, (error, data) => {
+            console.log("act : ", data);
+            console.log("act : ", data.isActivated);
+            if (data.isActivated == false) {
+                console.log("act : ");
+                User.findByIdAndUpdate(
+                    userInfo.userId, { isActivated: true }, { new: true },
+                    callback
+                );
+            }
+            return error;
+        });
     };
 }
 

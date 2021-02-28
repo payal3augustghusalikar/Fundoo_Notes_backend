@@ -246,10 +246,19 @@ class userController {
                     //         res.send({
                     //             success: false,
                     //             Status_code: status.Not_Found,
-                    //             message: "user not found",
-                    //             error,
+                    //             message: "user not found"+error
+                    //
                     //         })) :
-                    logger.info("user found with id " + userInfo.emailId),
+
+                    if (!data) {
+                        logger.warn("user not found with id : " + userInfo.emailId),
+                            res.send({
+                                success: false,
+                                Status_code: status.Not_Found,
+                                message: "user not found" + error,
+                            });
+                    } else
+                        logger.info("user found with id " + userInfo.emailId),
                         res.send({
                             success: true,
                             status_code: status.Success,
@@ -270,7 +279,7 @@ class userController {
                 //+ userInfo.emailId, +error);
                 res.send({
                     status_code: status.Internal_Server_Error,
-                    message: "user not found",
+                    message: "user not found" + error,
                 });
         }
     };
@@ -285,23 +294,24 @@ class userController {
     //         const userInfo = {
     //             emailId: req.body.emailId,
     //         };
-    //         userService.findOne(userInfo, (error, data) => {
+    //         userService.findOneEmail(userInfo, (error, data) => {
     //             return (
     //                 error ?
     //                 (logger.error(
-    //                         "Error retrieving user with id " + userInfo.emailId
+    //                         "Error retrieving user with id ",
+    //                         error + userInfo.emailId
     //                     ),
     //                     res.send({
     //                         success: false,
     //                         status_code: status.Internal_Server_Error,
-    //                         message: "Error retrieving user with id " + userInfo.emailId,
+    //                         message: "Error retrieving user with id " + error + userInfo.emailId,
     //                     })) :
     //                 !data ?
     //                 (logger.warn("user not found with id : " + userInfo.emailId),
     //                     res.send({
     //                         success: false,
     //                         status_code: status.Not_Found,
-    //                         message: "user not found with id : " + userInfo.emailId,
+    //                         message: "user not found with id : " + error + userInfo.emailId,
     //                     })) :
     //                 logger.info("user found with id " + userInfo.emailId),
     //                 res.send({
@@ -317,9 +327,68 @@ class userController {
     //         return res.send({
     //             success: false,
     //             status_code: status.Internal_Server_Error,
-    //             message: "error retrieving user with id " + req.params.emailId,
+    //             message: "error retrieving user with id " + error + req.params.emailId,
     //         });
     //     }
     // };
+
+    /**
+     * @message Update user by id
+     * @method update is service class method
+     * @param res is used to send the response
+     */
+    activateEmail = (req, res) => {
+        try {
+            //  const token = req.headers.authorization.split(" ")[1];
+            const activateData = {
+                token: req.headers.authorization.split(" ")[1],
+            };
+            userService
+                .activate(activateData)
+                .then((data) => {
+                    !data
+                        ?
+                        (logger.warn("user not found with id : "),
+                            res.send({
+                                success: false,
+                                status_code: status.Not_Found,
+                                message: "user not found",
+                            })) :
+                        logger.info("user activated successfully !"),
+                        res.send({
+                            success: true,
+                            status_code: status.Success,
+                            message: "user activated successfully !",
+                            data: data,
+                        });
+                    // this.findAll();
+                })
+                .catch((error) => {
+                    logger.error("Error activating user "),
+                        res.send({
+                            success: false,
+                            status_code: status.Unauthorized,
+                            message: "Error activated user",
+                            error,
+                        });
+                });
+        } catch (error) {
+            return (
+                error.kind === "ObjectId" ?
+                (logger.error("user not found with id "),
+                    res.send({
+                        success: false,
+                        status_code: status.Not_Found,
+                        message: "user not found ",
+                    })) :
+                logger.error("Error activated user"),
+                res.send({
+                    success: false,
+                    status_code: status.Internal_Server_Error,
+                    message: "Error activated user",
+                })
+            );
+        }
+    };
 }
 module.exports = new userController();

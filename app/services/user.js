@@ -223,50 +223,104 @@ class userService {
         });
     };
 
-    // findOne = (userInfo, callback) => {
-    //     // const message = publish.getMessage(userInfo, callback);
-    //     User.findOne(userInfo, (error, data) => {
-    //         if (error) {
-    //             logger.error("Some error occurred");
-    //             return callback(new Error("Some error occurred"), null);
-    //         } else if (!data) {
-    //             return callback(new Error("Some error occurred"), null);
-    //         } else {
-    //             logger.info("user found");
-    //             console.log("user found");
-    //             const token = helper.createToken(data);
-    //             userInfo.token = token;
-    //             console.log(token);
+    findOneEmail = (userInfo, callback) => {
+        // const message = publish.getMessage(userInfo, callback);
+        //     return User.findOne(userInfo, (error, data) => {
+        //         if (error) {
+        //             logger.error("Some error occurred");
+        //             return callback(new Error("Some error occurred"), null);
+        //         } else if (!data) {
+        //             return callback(new Error("Some error occurred"), null);
+        //         } else {
+        //             console.log("user found");
+        //             console.log("service ", data);
+        //             const token = helper.createToken(data);
+        //             userInfo.token = token;
+        //             console.log(token);
 
-    //             publish.getMessage(userInfo, callback);
-    //             consume.consumeMessage((error, message) => {
-    //                 if (error)
-    //                     callBack(
-    //                         new Error("Some error occurred while consuming message"),
-    //                         null
-    //                     );
-    //                 else {
-    //                     console.log("userInfo ", userInfo);
-    //                     console.log("message ", message);
-    //                     userInfo.emailId = message;
+        //             publish.getMessage(userInfo, callback);
+        //             consume.consumeMessage((error, message) => {
+        //                 if (error)
+        //                     callBack(
+        //                         new Error("Some error occurred while consuming message"),
+        //                         null
+        //                     );
+        //                 else {
+        //                     console.log("userInfo ", userInfo);
+        //                     console.log("message ", message);
+        //                     userInfo.emailId = message;
 
-    //                     const subject = "verify your EmailId";
-    //                     helper.emailSender(userInfo, subject, (error, data) => {
-    //                         console.log("userInfo" + userInfo);
-    //                         if (error) {
-    //                             logger.error("Some error occurred while sending email");
-    //                             return callback(
-    //                                 new Error("Some error occurred while sending email"),
-    //                                 null
-    //                             );
-    //                         }
-    //                         return callback(null, data);
-    //                     });
-    //                 }
-    //             });
-    //         }
-    //     });
-    // };
+        //                     const subject = "verify your EmailId";
+        //                     helper.emailSender(userInfo, subject, (error, data) => {
+        //                         console.log("userInfo" + userInfo);
+        //                         if (error) {
+        //                             logger.error("Some error occurred while sending email");
+        //                             return callback(
+        //                                 new Error("Some error occurred while sending email"),
+        //                                 null
+        //                             );
+        //                         }
+        //                         console.log("service mail data ", data);
+        //                         return callback(null, data);
+        //                     });
+        //                     //return callback(null, data);
+        //                 }
+        //             });
+        //             console.log("servic data ", data);
+        //             // return callback(null, data);
+        //         }
+        //     });
+        // };
+
+        return User.findOne(userInfo, (error, data) => {
+            if (error) {
+                logger.error("Some error occurred");
+                return callback(new Error("Some error occurred"), null);
+            } else if (!data) {
+                logger.error("User with this email Id dosent exist");
+                return callback(
+                    new Error("User with this email Id dosent exist"),
+                    null
+                );
+            } else {
+                const token = helper.createToken(data);
+                userInfo.token = token;
+
+                // console.log(token);
+                // event.emit("publish", userInfo);
+                publish.getMessage(userInfo, callback);
+
+                //  event.emit("publish", userInfo);
+                //  consume.consumeMessage(userInfo, callback);
+                return consume.consumeMessage((error, message) => {
+                    if (error)
+                        callBack(
+                            new Error("Some error occurred while consuming message"),
+                            null
+                        );
+                    else {
+                        console.log("userInfo ", userInfo);
+                        console.log("message ", message);
+                        userInfo.emailId = message;
+                        //     }
+                        // });
+                        const subject = "Reset Password";
+                        return helper.emailSender(userInfo, subject, (error, data) => {
+                            console.log("userInfo" + userInfo);
+                            if (error) {
+                                logger.error("Some error occurred while sending email");
+                                return callback(
+                                    new Error("Some error occurred while sending email"),
+                                    null
+                                );
+                            }
+                            return callback(null, data);
+                        });
+                    }
+                });
+            }
+        });
+    };
 
     // /**
     //  * @description Find Label by id and return response to controller
@@ -317,65 +371,99 @@ class userService {
     //         });
     // };
 
+    // /**
+    //  * @description Find Label by id and return response to controller
+    //  * @method findOne is used to retrieve Label by ID
+    //  * @param callback is the callback for controller
+    //  */
+    // findOneEmail = (userInfo) => {
+    //     return User.findOneUser(userInfo)
+    //         .then((data) => {
+    //             // !data
+    //             //     ?
+    //             //     logger.warn("user not found with id : " + userInfo.emailId) // res.send({
+    //             //     : ()
+    //             //     logger.info("user found with id " + userInfo.emailId),
+    //             //     logger.info("user found");
+    //             console.log("user found");
+    //             console.log(data);
+    //             const token = helper.createToken(data);
+    //             userInfo.token = token;
+    //             console.log(token);
+    //             //  publish.getMessage(userInfo);
+    //             //    consume
+    //             //     .consumeMessage()
+    //             //     .then((message) => {
+    //             console.log("userInfo ", userInfo),
+    //                 // console.log("message ", message),
+    //                 //  (userInfo.emailId = message),
+    //                 console.log("verify");
+    //             (subject = "verify your EmailId"),
+    //             helper.emailSender(userInfo, subject, (error, data) => {
+    //                 console.log("userInfo" + userInfo);
+    //                 if (error) {
+    //                     logger.error("Some error occurred while sending email");
+    //                     return callback(
+    //                         new Error("Some error occurred while sending email"),
+    //                         null
+    //                     );
+    //                 }
+    //                 return data;
+    //             });
+    //             // .emailSender(userInfo, subject)
+    //             // .then((data) => {
+    //             //     data
+    //             //         ?
+    //             //         (console.log("userInfo" + userInfo), data) :
+    //             //         logger.error("Some error occurred while sending email");
+    //             // })
+    //             // .catch((error) => {
+    //             //     logger.error("Error while sending email " + userInfo.emailId),
+    //             //         error;
+    //             // });
+    //             //  })
+    //             //  .catch((error) => {
+    //             //        logger.error("Error consuming message" + userInfo.emailId), error;
+    //             //   });
+    //         })
+    //         .catch((error) => {
+    //             logger.error("Error retrieving user with id " + userInfo.emailId),
+    //                 error;
+    //         });
+    // };
+
+    // findOneEmail = async(userInfo) => {
+    //     // const message = publish.getMessage(userInfo, callback);
+    //     const data = await User.findOneUser(userInfo)
+    //         // if (error) {
+    //         //     logger.error("Some error occurred");
+    //         //     return callback(new Error("Some error occurred"), null);
+    //         // } else if (!data) {
+    //         //     return callback(new Error("Some error occurred"), null);
+    //         // } else {
+    //     data.then(
+    //         console.log("user found"); console.log(data);
+    //         const token = await helper.createToken(data); userInfo.token = token; console.log(token);
+
+    //         const publish1 = await publish.getMessage(userInfo, callback);
+    //         const consume1 = await consume.consumeMessage(callback); console.log("consume1 ", consume1); console.log("userInfo ", userInfo); console.log("message ", message); userInfo.emailId = message;
+
+    //         const subject = "verify your EmailId"; helper.emailSender(userInfo, subject, callback);
+    //         return data;
+    //     )
+    // };
+
     /**
-     * @description Find Label by id and return response to controller
-     * @method findOne is used to retrieve Label by ID
+     * @description Update Label by id and return response to controller
+     * @method update is used to update Label by ID
      * @param callback is the callback for controller
      */
-    findOneEmail = (userInfo) => {
-        return User.findOneUser(userInfo)
-            .then((data) => {
-                // !data
-                //     ?
-                //     logger.warn("user not found with id : " + userInfo.emailId) // res.send({
-                //     : ()
-                //     logger.info("user found with id " + userInfo.emailId),
-                //     logger.info("user found");
-                console.log("user found");
-                console.log(data);
-                const token = helper.createToken(data);
-                userInfo.token = token;
-                console.log(token);
-                //  publish.getMessage(userInfo);
-                //    consume
-                //     .consumeMessage()
-                //     .then((message) => {
-                console.log("userInfo ", userInfo),
-                    // console.log("message ", message),
-                    //  (userInfo.emailId = message),
-                    console.log("verify");
-                (subject = "verify your EmailId"),
-                helper.emailSender(userInfo, subject, (error, data) => {
-                    console.log("userInfo" + userInfo);
-                    if (error) {
-                        logger.error("Some error occurred while sending email");
-                        return callback(
-                            new Error("Some error occurred while sending email"),
-                            null
-                        );
-                    }
-                    return data;
-                });
-                // .emailSender(userInfo, subject)
-                // .then((data) => {
-                //     data
-                //         ?
-                //         (console.log("userInfo" + userInfo), data) :
-                //         logger.error("Some error occurred while sending email");
-                // })
-                // .catch((error) => {
-                //     logger.error("Error while sending email " + userInfo.emailId),
-                //         error;
-                // });
-                //  })
-                //  .catch((error) => {
-                //        logger.error("Error consuming message" + userInfo.emailId), error;
-                //   });
-            })
-            .catch((error) => {
-                logger.error("Error retrieving user with id " + userInfo.emailId),
-                    error;
-            });
+    activate = async(activateData, callback) => {
+        const decode = await jwt.verify(activateData.token, process.env.SECRET_KEY);
+        let userId = decode.id;
+        console.log("id ", userId);
+        activateData.userId = userId;
+        return User.activateOne(activateData, callback);
     };
 }
 
