@@ -26,8 +26,5 @@ module.exports = (app) => {
     app.put("/resetpassword", helper.verifyToken, user.resetPassword);
 
     //verify Email for registerd user
-    app.post("/verifyemail", user.verifyEmail);
-
-    //verify Email for registerd user
     app.put("/activateemail", user.activateEmail);
 };

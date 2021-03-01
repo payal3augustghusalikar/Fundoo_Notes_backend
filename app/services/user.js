@@ -185,55 +185,6 @@ class userService {
         });
     };
 
-    findOneEmail = (userInfo, callback) => {
-        const message = publish.getMessage(userInfo, callback);
-        return User.findOne(userInfo, (error, data) => {
-            if (error) {
-                logger.error("Some error occurred");
-                return callback(new Error("Some error occurred"), null);
-            } else if (!data) {
-                return callback(new Error("Some error occurred"), null);
-            } else {
-                console.log("user found");
-                console.log("service ", data);
-                const token = helper.createToken(data);
-                userInfo.token = token;
-                console.log(token);
-
-                publish.getMessage(userInfo, callback);
-                consume.consumeMessage((error, message) => {
-                    if (error)
-                        callBack(
-                            new Error("Some error occurred while consuming message"),
-                            null
-                        );
-                    else {
-                        console.log("userInfo ", userInfo);
-                        console.log("message ", message);
-                        userInfo.emailId = message;
-
-                        const subject = "verify your EmailId";
-                        helper.emailSender(userInfo, subject, (error, data) => {
-                            console.log("userInfo" + userInfo);
-                            if (error) {
-                                logger.error("Some error occurred while sending email");
-                                return callback(
-                                    new Error("Some error occurred while sending email"),
-                                    null
-                                );
-                            }
-                            console.log("service mail data ", data);
-                            return callback(null, data);
-                        });
-                        // return callback(null, data);
-                    }
-                    return callback(null, data);
-                });
-                console.log("servic data ", data);
-            }
-        });
-    };
-
     /**
      * @description Update Label by id and return response to controller
      * @method update is used to update Label by ID

@@ -225,65 +225,6 @@ class userController {
     };
 
     /**
-     * @message Find user by id
-     * @method findOne is service class method
-     * @param response is used to send the response
-     */
-    verifyEmail = (req, res) => {
-        try {
-            const userInfo = {
-                emailId: req.body.emailId,
-            };
-            console.log(userInfo.emailId);
-            userService
-                .findOneEmail(userInfo)
-                .then((data) => {
-                    console.log("user", data);
-                    // !data
-                    //     ?
-                    //     (logger.warn("user not found with id : " + userInfo.emailId),
-                    //         res.send({
-                    //             success: false,
-                    //             Status_code: status.Not_Found,
-                    //             message: "user not found"+error
-                    //
-                    //         })) :
-
-                    if (!data) {
-                        logger.warn("user not found with id : " + userInfo.emailId),
-                            res.send({
-                                success: false,
-                                Status_code: status.Not_Found,
-                                message: "user not found" + error,
-                            });
-                    } else
-                        logger.info("user found with id " + userInfo.emailId),
-                        res.send({
-                            success: true,
-                            status_code: status.Success,
-                            message: "user found",
-                            data: data,
-                        });
-                })
-                .catch((error) => {
-                    logger.error("Error retrieving user with id " + userInfo.emailId),
-                        res.send({
-                            success: false,
-                            status_code: status.Internal_Server_Error,
-                            message: "user not found " + error.message,
-                        });
-                });
-        } catch (error) {
-            logger.error("could not found user with id", +error),
-                //+ userInfo.emailId, +error);
-                res.send({
-                    status_code: status.Internal_Server_Error,
-                    message: "user not found" + error,
-                });
-        }
-    };
-
-    /**
      * @message Update user by id
      * @method update is service class method
      * @param res is used to send the response

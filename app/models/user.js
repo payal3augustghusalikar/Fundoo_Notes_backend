@@ -19,7 +19,7 @@ const UserSchema = mongoose.Schema({
             min: 3,
             max: 36,
         },
-        //test: /^[a-z0-9]+$/gi,
+
         test: vallidator.namePattern,
     },
     emailId: {
@@ -121,12 +121,6 @@ class UserModel {
                 else return callback(null, data);
             }
         );
-    };
-
-    findOneUser = (userInfo) => {
-        console.log("mdl", userInfo);
-        console.log("mdl", userInfo.emailId);
-        return User.findOne({ emailId: userInfo.emailId });
     };
 
     /**

@@ -85,9 +85,9 @@ class Helper {
     emailSender = (userInfo, mailData, callback) => {
         let transporter = nodemailer.createTransport({
             service: "gmail",
-            //  PORT: process.env.PORT,
+            // PORT: process.env.PORT,
             PORT: config.port,
-            // secure: true,
+            secure: true,
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS,
