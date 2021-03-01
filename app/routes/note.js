@@ -20,18 +20,18 @@ module.exports = (app) => {
     // Retrieve a single note with noteId
     app.get("/notes/:noteId", helper.verifyToken, notes.findOne);
 
-    // //  add label to specific note
-    // app.put(
-    //     "/notes/addlabeltonote/:noteId",
-    //     helper.verifyToken,
-    //     notes.addLabelToNote
-    // );
+    //  add label to specific note
+    app.put(
+        "/notes/addlabeltonote/:noteId",
+        helper.verifyToken,
+        notes.addLabelToNote
+    );
 
-    // app.put(
-    //     "/notes/removelabelfromnote/:noteId",
-    //     helper.verifyToken,
-    //     notes.removelabelfromnote
-    // );
+    app.put(
+        "/notes/removelabelfromnote/:noteId",
+        helper.verifyToken,
+        notes.removelabelfromnote
+    );
 
     // // Update a note with noteId
     app.put("/notes/:noteId", helper.verifyToken, notes.update);
