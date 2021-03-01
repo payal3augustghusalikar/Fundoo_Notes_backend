@@ -191,11 +191,12 @@ class userService {
      * @param callback is the callback for controller
      */
     activate = async(activateData, callback) => {
-        const decode = await jwt.verify(activateData.token, process.env.SECRET_KEY);
+        const decode = jwt.verify(activateData.token, process.env.SECRET_KEY);
         let userId = decode.id;
         console.log("id ", userId);
         activateData.userId = userId;
-        return User.activateOne(activateData, callback);
+        const data = await User.activateOne(activateData, callback);
+        return data;
     };
 }
 

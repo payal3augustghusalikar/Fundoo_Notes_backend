@@ -134,12 +134,11 @@ class UserModel {
             console.log("act : ", data.isActivated);
             if (data.isActivated == false) {
                 console.log("act : ");
-                User.findByIdAndUpdate(
-                    userInfo.userId, { isActivated: true }, { new: true },
+                return User.findByIdAndUpdate(
+                    userInfo.userId, { $set: { isActivated: true } }, { new: true },
                     callback
                 );
             }
-            return error;
         });
     };
 

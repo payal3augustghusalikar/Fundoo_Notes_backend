@@ -448,6 +448,13 @@ class NoteController {
             noteService
                 .createCollaborator(collaborator)
                 .then((data) => {
+                    if (!data) {
+                        res.send({
+                            success: false,
+                            status_code: status.Not_Found,
+                            message: "note not found with id : " + req.params.noteId + error,
+                        });
+                    }
                     res.send({
                         success: true,
                         status: status.Success,

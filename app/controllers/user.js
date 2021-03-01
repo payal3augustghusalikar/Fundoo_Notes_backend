@@ -231,37 +231,35 @@ class userController {
      */
     activateEmail = (req, res) => {
         try {
-            //  const token = req.headers.authorization.split(" ")[1];
             const activateData = {
                 token: req.headers.authorization.split(" ")[1],
             };
             userService
                 .activate(activateData)
                 .then((data) => {
-                    !data
-                        ?
-                        (logger.warn("user not found with id : "),
+                    if (!data) {
+                        logger.warn("user not found with id : "),
                             res.send({
                                 success: false,
                                 status_code: status.Not_Found,
-                                message: "user not found",
-                            })) :
-                        logger.info("user activated successfully !"),
+                                message: "user not found" + error,
+                                data: data,
+                            });
+                    }
+                    logger.info("user activated successfully !"),
                         res.send({
                             success: true,
                             status_code: status.Success,
                             message: "user activated successfully !",
                             data: data,
                         });
-                    // this.findAll();
                 })
                 .catch((error) => {
                     logger.error("Error activating user "),
                         res.send({
                             success: false,
                             status_code: status.Unauthorized,
-                            message: "Error activated user",
-                            error,
+                            message: "Error activated user" + error,
                         });
                 });
         } catch (error) {
@@ -271,13 +269,13 @@ class userController {
                     res.send({
                         success: false,
                         status_code: status.Not_Found,
-                        message: "user not found ",
+                        message: "user not found " + error,
                     })) :
                 logger.error("Error activated user"),
                 res.send({
                     success: false,
                     status_code: status.Internal_Server_Error,
-                    message: "Error activated user",
+                    message: "Error activated user" + error,
                 })
             );
         }
