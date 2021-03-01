@@ -42,9 +42,11 @@ class userService {
                     console.log("userInfo ", userInfo);
                     console.log("message ", message);
                     userInfo.emailId = message;
-
-                    const subject = "verify your EmailId";
-                    helper.emailSender(userInfo, subject, (error, data) => {
+                    const mailData = {
+                        subject: "verify your EmailId",
+                        endPoint: "activateemail",
+                    };
+                    helper.emailSender(userInfo, mailData, (error, data) => {
                         console.log("userInfo" + userInfo);
                         if (error) {
                             logger.error("Some error occurred while sending email");
@@ -146,8 +148,12 @@ class userService {
                         console.log("userInfo ", userInfo);
                         console.log("message ", message);
                         userInfo.emailId = message;
-                        const subject = "Reset Password";
-                        helper.emailSender(userInfo, subject, (error, data) => {
+
+                        const mailData = {
+                            subject: "Reset Password",
+                            endPoint: "resetpassword",
+                        };
+                        helper.emailSender(userInfo, mailData, (error, data) => {
                             console.log("userInfo" + userInfo);
                             if (error) {
                                 logger.error("Some error occurred while sending email");

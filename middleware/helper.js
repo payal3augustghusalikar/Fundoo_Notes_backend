@@ -82,7 +82,7 @@ class Helper {
      * @param {*} userInfo
      * @param {*} callback
      */
-    emailSender = (userInfo, subject, callback) => {
+    emailSender = (userInfo, mailData, callback) => {
         let transporter = nodemailer.createTransport({
             service: "gmail",
             //  PORT: process.env.PORT,
@@ -93,9 +93,10 @@ class Helper {
                 pass: process.env.EMAIL_PASS,
             },
         });
+        const endPoint = `${mailData.endPoint}`;
         //     console.log("token in email : " + userInfo.token);
         ejs.renderFile(
-            "app/view/resetPassword.ejs", { link: process.env.URL + "/resetPassword/" + userInfo.token },
+            "app/view/resetPassword.ejs", { link: process.env.URL + `/${endPoint}/` + userInfo.token },
             (error, data) => {
                 if (error) {
                     return console.log(error);
@@ -104,7 +105,7 @@ class Helper {
                     from: process.env.EMAIL_USER,
                     // to: process.env.EMAIL_RECEIVER,
                     to: userInfo.emailId,
-                    subject: subject,
+                    subject: mailData.subject,
                     html: ejs.render(data),
                 };
                 transporter.sendMail(mailOptions, (error, data) => {
@@ -114,7 +115,6 @@ class Helper {
                         return callback(error, null);
                     } else logger.info("mail Sent");
                     console.log("mail sent: " + data);
-
                     return callback(null, data);
                 });
             }
