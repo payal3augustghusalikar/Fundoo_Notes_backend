@@ -129,22 +129,16 @@ class UserModel {
      * @param {*} callback
      */
     activateOne = (userInfo, callback) => {
-        return User.findOne({ _id: userInfo.userId }, (error, data) => {
-            console.log("act : ", data);
-            console.log("act : ", data.isActivated);
-            if (data.isActivated == false) {
-                console.log("act : ");
-                return User.findByIdAndUpdate(
-                    userInfo.userId, { $set: { isActivated: true } }, { new: true },
-                    callback
-                );
-            }
-        });
+        console.log("act : ");
+        return User.findByIdAndUpdate(
+            userInfo.userId, { $set: { isActivated: true } }, { new: true },
+            callback
+        );
     };
 
     findOneuserWithId = (collaboratorId, callback) => {
         console.log("model ", collaboratorId);
-        User.findById(collaboratorId, (error, data) => {
+        User.findById({ _id: collaboratorId }, (error, data) => {
             if (error) {
                 logger.error("Some error occurred");
                 console.log("model ", error);

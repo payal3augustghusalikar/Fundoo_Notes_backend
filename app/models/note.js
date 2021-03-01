@@ -175,32 +175,56 @@ class NoteModel {
         console.log(collaborator.collaboratorId);
         console.log(collaborator);
         const id = collaborator.collaboratorId;
-        User.findOneuserWithId(id, (error, data) => {
+        return User.findOneuserWithId(id, (error, data) => {
             if (error) {
                 logger.error("Some error occurred");
                 console.log("mdl e ", error);
                 return callback(new Error("Some error occurred"), null);
             } else if (data) {
-                console.log("user found");
-                return Note.findById(collaborator.noteId, (error, noteData) => {
+                console.log("user found with this id", data);
+                Note.findById(collaborator.noteId, (error, noteData) => {
+                    console.log("mdl noteData ", noteData);
+                    console.log("mdl in db ", noteData.collaborator);
+                    console.log("mdl from user ", collaborator.collaboratorId);
                     if (error) callback(error, null);
-                    else if (!noteData.userId.includes(collaborator.collaboratorId)) {
-                        return Note.findByIdAndUpdate(
-                            collaborator.userId, {
-                                $push: {
-                                    collaborator: collaborator.collaboratorId,
-                                },
-                            }, { new: true },
-                            callback
-                        );
-                    }
-                    callback(error, null);
+                    // else if (!noteData.collaborator.includes(collaborator.collaboratorId)) {
+                    Note.findByIdAndUpdate(
+                        collaborator.noteId, {
+                            $push: {
+                                collaborator: collaborator.collaboratorId,
+                            },
+                        }, { new: true },
+                        (error, data) => {
+                            if (error) {
+                                logger.error("Some error occurred");
+                                return callback(new Error("Some error occurred"), null);
+                            } else {
+                                console.log("user ", data);
+                                return callback(null, data);
+                            }
+                        }
+                    );
+                    //  }
+
+                    // return callback(data, null);
                 });
             }
         });
     };
 
-    removeLabel = (noteInfo, callback) => {
+    // else if (!noteData.labelId.includes(noteInfo.labelId)) {
+    //     return Note.findByIdAndUpdate(
+    //         noteInfo.noteID, {
+    //             $push: {
+    //                 labelId: noteInfo.labelId,
+    //             },
+    //         }, { new: true },
+    //         callback
+    //     );
+    // }
+    // callback(error, null);
+
+    removeCollaborator = (noteInfo, callback) => {
         return Note.findByIdAndUpdate(
             noteInfo.noteID, {
                 $pull: { collaborator: noteInfo.collaboratorId },

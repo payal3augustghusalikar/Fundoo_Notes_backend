@@ -109,9 +109,11 @@ class NoteService {
         return Note.removeNote(noteID, callback);
     };
 
-    createCollaborator = (collaborator, callback) => {
+    createCollaborator = async(collaborator, callback) => {
         console.log("ser");
-        return Note.findCollaborator(collaborator, callback);
+        const data = await Note.findCollaborator(collaborator, callback);
+        console.log("service return data:", data);
+        return data;
     };
 
     /**
@@ -119,7 +121,7 @@ class NoteService {
      * @method delete calls model class method
      */
     removeCollaborator = (collaboratorData, callback) => {
-        return noteModel.removeCollaborator(collaboratorData, callback);
+        return Note.removeCollaborator(collaboratorData, callback);
     };
 }
 
