@@ -26,7 +26,42 @@ class userService {
     register = (userInfo, callback) => {
         User.save(userInfo, (error, data) => {
             if (error) return callback(error, null);
-            else return callback(null, data);
+            else console.log("user found");
+            console.log("service ", data);
+            const token = helper.createToken(data);
+            userInfo.token = token;
+            console.log(token);
+            publish.getMessage(userInfo, callback);
+            consume.consumeMessage((error, message) => {
+                if (error)
+                    callBack(
+                        new Error("Some error occurred while consuming message"),
+                        null
+                    );
+                else {
+                    console.log("userInfo ", userInfo);
+                    console.log("message ", message);
+                    userInfo.emailId = message;
+
+                    const subject = "verify your EmailId";
+                    helper.emailSender(userInfo, subject, (error, data) => {
+                        console.log("userInfo" + userInfo);
+                        if (error) {
+                            logger.error("Some error occurred while sending email");
+                            return callback(
+                                new Error("Some error occurred while sending email"),
+                                null
+                            );
+                        }
+                        console.log("service mail data ", data);
+                        return callback(null, data);
+                    });
+                    // return callback(null, data);
+                }
+                return callback(null, data);
+            });
+            console.log("servic data ", data);
+            //return callback(null, data);
         });
     };
 
