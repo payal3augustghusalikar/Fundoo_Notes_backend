@@ -53,4 +53,11 @@ module.exports = (app) => {
         helper.verifyToken,
         notes.addCollaborator
     );
+
+    // remove a new collaborator
+    app.put(
+        "/removecollaborator/:noteId",
+        helper.verifyToken,
+        notes.removeCollaborator
+    );
 };

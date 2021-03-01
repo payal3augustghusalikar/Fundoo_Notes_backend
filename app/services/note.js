@@ -121,5 +121,14 @@ class NoteService {
         // }
         //  });
     };
+
+    /**
+     * @description delete  collaborator
+     * @method delete calls model class method
+     */
+    removeCollaborator = (collaboratorData, callback) => {
+        return noteModel.removeCollaborator(collaboratorData, callback);
+    };
 }
+
 module.exports = new NoteService();

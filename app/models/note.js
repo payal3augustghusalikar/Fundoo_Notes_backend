@@ -200,25 +200,14 @@ class NoteModel {
         });
     };
 
-    //     return User.findOne({ _id: collaboratorData.noteCreatorId }).then(
-    //         (data) => {
-    //             if (data) {
-    //                 logger.info("User found");
-    //                 return Note.find({
-    //                     _id: collaboratorData.noteId,
-    //                     collaborator: collaboratorData.userId,
-    //                 }).then((note) => {
-    //                     if (note.length == 0) {
-    //                         logger.info("Note found creating collaborator");
-    //                         return Note.findByIdAndUpdate(
-    //                             collaboratorData.noteId, { $push: { collaborator: collaboratorData.userId } }, { new: true }
-    //                         ).then(data);
-    //                     }
-    //                 });
-    //             }
-    //         }
-    //     );
-    // };
+    removeLabel = (noteInfo, callback) => {
+        return Note.findByIdAndUpdate(
+            noteInfo.noteID, {
+                $pull: { collaborator: noteInfo.collaboratorId },
+            }, { new: true },
+            callback
+        );
+    };
 }
 
 module.exports = new NoteModel();
