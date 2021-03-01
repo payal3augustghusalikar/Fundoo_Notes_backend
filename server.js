@@ -44,6 +44,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 require("./app/routes/note.js")(app);
 
 // Require User routes
+
 require("./app/routes/user.js")(app);
 
 // Require label routes

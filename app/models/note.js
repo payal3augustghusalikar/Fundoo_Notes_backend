@@ -9,7 +9,8 @@
 const mongoose = require("mongoose");
 const logger = require("../../logger/logger.js");
 const Label = require("../models/label.js");
-
+const User = require("../models/user.js");
+//const User = mongoose.model("User", UserSchema);
 const NoteSchema = mongoose.Schema({
     title: {
         type: String,
@@ -130,7 +131,9 @@ class NoteModel {
             else if (!noteData.labelId.includes(noteInfo.labelId)) {
                 return Note.findByIdAndUpdate(
                     noteInfo.noteID, {
-                        labelId: noteInfo.labelId,
+                        $push: {
+                            labelId: noteInfo.labelId,
+                        },
                     }, { new: true },
                     callback
                 );
@@ -168,19 +171,54 @@ class NoteModel {
     };
 
     findCollaborator = (collaborator, callback) => {
-        Note.findById(collaborator.noteID, (error, noteData) => {
-            if (error) callback(error, null);
-            else if (!noteData.userId.includes(noteInfo.userId)) {
-                return Note.findByIdAndUpdate(
-                    collaborator.userId, {
-                        collaborator: noteInfo.userId,
-                    }, { new: true },
-                    callback
-                );
+        console.log("mdl");
+        console.log(collaborator.collaboratorId);
+        console.log(collaborator);
+        const id = collaborator.collaboratorId;
+        User.findOneuserWithId(id, (error, data) => {
+            if (error) {
+                logger.error("Some error occurred");
+                console.log("mdl e ", error);
+                return callback(new Error("Some error occurred"), null);
+            } else if (data) {
+                console.log("user found");
+                return Note.findById(collaborator.noteId, (error, noteData) => {
+                    if (error) callback(error, null);
+                    else if (!noteData.userId.includes(collaborator.collaboratorId)) {
+                        return Note.findByIdAndUpdate(
+                            collaborator.userId, {
+                                $push: {
+                                    collaborator: collaborator.collaboratorId,
+                                },
+                            }, { new: true },
+                            callback
+                        );
+                    }
+                    callback(error, null);
+                });
             }
-            callback(error, null);
         });
     };
+
+    //     return User.findOne({ _id: collaboratorData.noteCreatorId }).then(
+    //         (data) => {
+    //             if (data) {
+    //                 logger.info("User found");
+    //                 return Note.find({
+    //                     _id: collaboratorData.noteId,
+    //                     collaborator: collaboratorData.userId,
+    //                 }).then((note) => {
+    //                     if (note.length == 0) {
+    //                         logger.info("Note found creating collaborator");
+    //                         return Note.findByIdAndUpdate(
+    //                             collaboratorData.noteId, { $push: { collaborator: collaboratorData.userId } }, { new: true }
+    //                         ).then(data);
+    //                     }
+    //                 });
+    //             }
+    //         }
+    //     );
+    // };
 }
 
 module.exports = new NoteModel();

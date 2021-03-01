@@ -2,6 +2,7 @@ const noteService = require("../services/note.js");
 const Joi = require("joi");
 const logger = require("../../logger/logger.js");
 const status = require("../../middleware/staticFile.json");
+const { Console } = require("winston/lib/winston/transports");
 
 const ControllerDataValidation = Joi.object({
     title: Joi.string()
@@ -231,43 +232,48 @@ class NoteController {
     }
 
     /**
-     * @message add label note by id
+     * @message add collaborator note by id
      * @method update is service class method
      * @param res is used to send the response
      */
-    addLabelToNote = (req, res) => {
+    addcollaboratorToNote = (req, res) => {
         console.log("controller");
         try {
-            const noteInfoWithLabelId = {
+            const noteInfoWithcollaboratorId = {
                 noteID: req.params.noteId,
-                labelId: req.body.labelId,
+                collaboratorId: req.body.collaboratorId,
             };
-            noteService.addLabelToNotes(noteInfoWithLabelId, (error, data) => {
-                return (
-                    error ?
-                    (logger.error(
-                            "Error updating note with id : " + req.params.noteId + error
-                        ),
+            noteService.addcollaboratorToNotes(
+                noteInfoWithcollaboratorId,
+                (error, data) => {
+                    return (
+                        error ?
+                        (logger.error(
+                                "Error updating note with id : " + req.params.noteId + error
+                            ),
+                            res.send({
+                                success: false,
+                                status_code: status.Internal_Server_Error,
+                                message: "Error updating note with id : " +
+                                    req.params.noteId +
+                                    error,
+                            })) :
+                        !data ?
+                        (logger.warn("note not found with id : " + req.params.noteId),
+                            res.send({
+                                success: false,
+                                status_code: status.Not_Found,
+                                message: "note not found with id : " + req.params.noteId + error,
+                            })) :
+                        logger.info("collaborator added to note successfully !"),
                         res.send({
-                            success: false,
-                            status_code: status.Internal_Server_Error,
-                            message: "Error updating note with id : " + req.params.noteId + error,
-                        })) :
-                    !data ?
-                    (logger.warn("note not found with id : " + req.params.noteId),
-                        res.send({
-                            success: false,
-                            status_code: status.Not_Found,
-                            message: "note not found with id : " + req.params.noteId + error,
-                        })) :
-                    logger.info("Label added to note successfully !"),
-                    res.send({
-                        success: true,
-                        message: "Label added to note successfully ! !" + error,
-                        data: data,
-                    })
-                );
-            });
+                            success: true,
+                            message: "collaborator added to note successfully ! !" + error,
+                            data: data,
+                        })
+                    );
+                }
+            );
         } catch (error) {
             return (
                 error.kind === "ObjectId" ?
@@ -296,41 +302,51 @@ class NoteController {
      * @method delete is service class method
      * @param response is used to send the response
      */
-    removelabelfromnote(req, res) {
+    removecollaboratorfromnote(req, res) {
         try {
-            const noteInfoWithLabelId = {
+            const noteInfoWithcollaboratorId = {
                 noteID: req.params.noteId,
-                labelId: req.body.labelId,
+                collaboratorId: req.body.collaboratorId,
             };
-            noteService.removeLabel(noteInfoWithLabelId, (error, data) => {
-                return (
-                    error ?
-                    (logger.warn("Label not found with id " + req.params.labelId),
+            noteService.removecollaborator(
+                noteInfoWithcollaboratorId,
+                (error, data) => {
+                    return (
+                        error ?
+                        (logger.warn(
+                                "collaborator not found with id " + req.params.collaboratorId
+                            ),
+                            res.send({
+                                status_code: status.Not_Found,
+                                message: "collaborator not found with id " +
+                                    req.params.collaboratorId,
+                            })) :
+                        logger.info("collaborator deleted successfully!"),
                         res.send({
-                            status_code: status.Not_Found,
-                            message: "Label not found with id " + req.params.labelId,
-                        })) :
-                    logger.info("Label deleted successfully!"),
-                    res.send({
-                        status_code: status.Success,
-                        message: "Label deleted successfully!",
-                    })
-                );
-            });
+                            status_code: status.Success,
+                            message: "collaborator deleted successfully!",
+                        })
+                    );
+                }
+            );
         } catch (error) {
             return (
                 error.kind === "ObjectId" || error.title === "NotFound" ?
-                (logger.error("could not found note with id" + req.params.labelId),
+                (logger.error(
+                        "could not found note with id" + req.params.collaboratorId
+                    ),
                     res.send({
                         status_code: status.Not_Found,
-                        message: "note not found with id " + req.params.labelId,
+                        message: "note not found with id " + req.params.collaboratorId,
                     })) :
                 logger.error(
-                    "Could not delete Label with id " + req.params.labelId
+                    "Could not delete collaborator with id " +
+                    req.params.collaboratorId
                 ),
                 res.send({
                     status_code: status.Internal_Server_Error,
-                    message: "Could not delete Label with id " + req.params.labelId,
+                    message: "Could not delete collaborator with id " +
+                        req.params.collaboratorId,
                 })
             );
         }
@@ -421,43 +437,78 @@ class NoteController {
      * @param res is used to send the response
      */
     addCollaborator = (req, res) => {
+        console.log("ctrl");
         try {
             const collaborator = {
-                noteID: req.params.noteId,
-                collaboratorId: req.body.userId,
+                noteId: req.params.noteId,
+                collaboratorId: req.body.collaboratorId,
             };
+            console.log(collaborator.collaboratorId);
             const token = req.headers.authorization.split(" ")[1];
-            // const validation = ControllerDataValidation.validate(noteInfo);
-            // console.log(validation);
-            // return validation.error ?
-            //     res.status(400).send({
-            //         success: false,
-            //         message: "please enter valid details",
-            //     }) :
-            noteService.createCollaborator(collaborator, token, (error, data) => {
-                return error ?
-                    (logger.error("Some error occurred while creating collaborator"),
-                        res.send({
-                            success: false,
-                            status_code: status.Internal_Server_Error,
-                            message: "Some error occurred while creating collaborator",
-                        })) //                  logger.info("note added successfully !"),
-                    :
+            noteService
+                .createCollaborator(collaborator)
+                .then((data) => {
                     res.send({
                         success: true,
-                        status_code: status.Success,
+                        status: status.Success,
                         message: "collaborator added successfully !",
                         data: data,
                     });
-            });
+                })
+                .catch((error) => {
+                    res.send({
+                        success: false,
+                        status: status.Internal_Server_Error,
+                        message: "Some error occurred while creating collaborator" + error,
+                    });
+                });
         } catch (error) {
-            res.send({
-                success: false,
-                status_code: status.Internal_Server_Error,
-                message: "Some error occurred while creating collaborator",
-            });
+            logger.error("Some error occurred while creating collaborator"),
+                res.send({
+                    success: false,
+                    status: status.Internal_Server_Error,
+                    message: "Some error occurred while creating collaborator" + error,
+                });
         }
     };
+
+    //     try {
+    //         const collaborator = {
+    //             noteID: req.params.noteId,
+    //             collaboratorId: req.body.userId,
+    //         };
+    //         const token = req.headers.authorization.split(" ")[1];
+    //         // const validation = ControllerDataValidation.validate(noteInfo);
+    //         // console.log(validation);
+    //         // return validation.error ?
+    //         //     res.status(400).send({
+    //         //         success: false,
+    //         //         message: "please enter valid details",
+    //         //     }) :
+    //         noteService.createCollaborator(collaborator, token, (error, data) => {
+    //             return error ?
+    //                 (logger.error("Some error occurred while creating collaborator"),
+    //                     res.send({
+    //                         success: false,
+    //                         status_code: status.Internal_Server_Error,
+    //                         message: "Some error occurred while creating collaborator",
+    //                     })) //                  logger.info("note added successfully !"),
+    //                 :
+    //                 res.send({
+    //                     success: true,
+    //                     status_code: status.Success,
+    //                     message: "collaborator added successfully !",
+    //                     data: data,
+    //                 });
+    //         });
+    //     } catch (error) {
+    //         res.send({
+    //             success: false,
+    //             status_code: status.Internal_Server_Error,
+    //             message: "Some error occurred while creating collaborator",
+    //         });
+    //     }
+    // };
 }
 
 module.exports = new NoteController();

@@ -110,14 +110,16 @@ class NoteService {
     };
 
     createCollaborator = (collaborator, callback) => {
-        Note.findCollaborator(collaborator, (error, data) => {
-            if (error) {
-                logger.error("Some error occurred");
-                return callback(new Error("Some error occurred"), null);
-            } else {
-                return callback(null, data);
-            }
-        });
+        console.log("ser");
+        return Note.findCollaborator(collaborator, callback);
+        //  (error, data) => {
+        // if (error) {
+        //     logger.error("Some error occurred");
+        //     return callback(new Error("Some error occurred"), null);
+        // } else {
+        //     return callback(null, data);
+        // }
+        //  });
     };
 }
 module.exports = new NoteService();

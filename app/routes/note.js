@@ -3,7 +3,7 @@
  * @file         route.js
  * @description  provide the routes for user as well note operations
  * @author       Payal Ghusalikar <payal.ghusalikar9@gmail.com>
- * @since        27/01/2021  
+ * @since        27/01/2021
 -----------------------------------------------------------------------------------------------*/
 
 var helper = require("../../middleware/helper.js");
@@ -20,24 +20,24 @@ module.exports = (app) => {
     // Retrieve a single note with noteId
     app.get("/notes/:noteId", helper.verifyToken, notes.findOne);
 
-    // add label to specific note
-    app.put(
-        "/notes/addlabeltonote/:noteId",
-        helper.verifyToken,
-        notes.addLabelToNote
-    );
+    // //  add label to specific note
+    // app.put(
+    //     "/notes/addlabeltonote/:noteId",
+    //     helper.verifyToken,
+    //     notes.addLabelToNote
+    // );
 
-    app.put(
-        "/notes/removelabelfromnote/:noteId",
-        helper.verifyToken,
-        notes.removelabelfromnote
-    );
+    // app.put(
+    //     "/notes/removelabelfromnote/:noteId",
+    //     helper.verifyToken,
+    //     notes.removelabelfromnote
+    // );
 
-    // Update a note with noteId
+    // // Update a note with noteId
     app.put("/notes/:noteId", helper.verifyToken, notes.update);
 
-    // Delete a note with noteId
-    // app.delete("/notes/:noteId", helper.verifyToken, notes.delete);
+    // // Delete a note with noteId
+    // // app.delete("/notes/:noteId", helper.verifyToken, notes.delete);
 
     app.put("/notes/delete/:noteId", helper.verifyToken, notes.deleteNote);
 
@@ -45,5 +45,12 @@ module.exports = (app) => {
         "/notes/deleteforever/:noteId",
         helper.verifyToken,
         notes.deleteForever
+    );
+
+    // add a new collaborator
+    app.put(
+        "/addcollaborator/:noteId",
+        helper.verifyToken,
+        notes.addCollaborator
     );
 };

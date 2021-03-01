@@ -164,7 +164,7 @@ class LabelController {
                             message: "label updated successfully !",
                             data: data,
                         });
-                    this.findAll();
+                    // this.findAll();
                 })
                 .catch((error) => {
                     logger.error("Error updating label with id : " + req.params.labelId),
