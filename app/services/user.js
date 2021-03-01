@@ -16,15 +16,6 @@ const client = redis.createClient();
 const redisCache = require("../../middleware/redisCache.js");
 const consume = require("../../middleware/subscriber.js");
 const publish = require("../../middleware/publisher.js");
-//const EventEmitter = require("events");
-// const event = new EventEmitter();
-// var ee = require("event-emitter");
-
-const EventEmitter = require("events");
-
-class MyEmitter extends EventEmitter {}
-
-const myEmitter = new MyEmitter();
 
 class userService {
     /**
@@ -35,7 +26,7 @@ class userService {
     register = (userInfo, callback) => {
         User.save(userInfo, (error, data) => {
             if (error) return callback(error, null);
-            return callback(null, data);
+            else return callback(null, data);
         });
     };
 
@@ -88,6 +79,7 @@ class userService {
             }
         });
     };
+
     /**
      * @description Update greeting by id and return response to controller
      * @param {*} userInfo
@@ -108,12 +100,7 @@ class userService {
                 const token = helper.createToken(data);
                 userInfo.token = token;
 
-                // console.log(token);
-                // event.emit("publish", userInfo);
                 publish.getMessage(userInfo, callback);
-
-                //  event.emit("publish", userInfo);
-                //  consume.consumeMessage(userInfo, callback);
                 consume.consumeMessage((error, message) => {
                     if (error)
                         callBack(
@@ -124,8 +111,6 @@ class userService {
                         console.log("userInfo ", userInfo);
                         console.log("message ", message);
                         userInfo.emailId = message;
-                        //     }
-                        // });
                         const subject = "Reset Password";
                         helper.emailSender(userInfo, subject, (error, data) => {
                             console.log("userInfo" + userInfo);
@@ -207,56 +192,6 @@ class userService {
             }
         });
     };
-
-    //     return User.findOne(userInfo, (error, data) => {
-    //         if (error) {
-    //             logger.error("Some error occurred");
-    //             return callback(new Error("Some error occurred"), null);
-    //         } else if (!data) {
-    //             logger.error("User with this email Id dosent exist");
-    //             return callback(
-    //                 new Error("User with this email Id dosent exist"),
-    //                 null
-    //             );
-    //         } else {
-    //             const token = helper.createToken(data);
-    //             userInfo.token = token;
-
-    //             // console.log(token);
-    //             // event.emit("publish", userInfo);
-    //             publish.getMessage(userInfo, callback);
-
-    //             //  event.emit("publish", userInfo);
-    //             //  consume.consumeMessage(userInfo, callback);
-    //             return consume.consumeMessage((error, message) => {
-    //                 if (error)
-    //                     callBack(
-    //                         new Error("Some error occurred while consuming message"),
-    //                         null
-    //                     );
-    //                 else {
-    //                     console.log("userInfo ", userInfo);
-    //                     console.log("message ", message);
-    //                     userInfo.emailId = message;
-    //                     //     }
-    //                     // });
-    //                     const subject = "Reset Password";
-    //                     return helper.emailSender(userInfo, subject, (error, data) => {
-    //                         console.log("userInfo" + userInfo);
-    //                         if (error) {
-    //                             logger.error("Some error occurred while sending email");
-    //                             return callback(
-    //                                 new Error("Some error occurred while sending email"),
-    //                                 null
-    //                             );
-    //                         }
-    //                         return callback(null, data);
-    //                     });
-    //                 }
-    //             });
-    //         }
-    //     });
-    // };
 
     /**
      * @description Update Label by id and return response to controller
