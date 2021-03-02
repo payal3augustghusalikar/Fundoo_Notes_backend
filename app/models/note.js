@@ -231,30 +231,31 @@ class NoteModel {
             console.log("mdl in db ", noteData.collaborator);
             console.log("mdl from user ", collaborator.collaboratorId);
             // if (error) callback(error, null);
-            // else if (!noteData.collaborator.includes(collaborator.collaboratorId)) {
-            return Note.findByIdAndUpdate(
-                collaborator.noteId, {
-                    $push: {
-                        collaborator: collaborator.collaboratorId,
-                    },
-                }, { new: true }
-                // callback
-                // (error, data) => {
-                //     if (error) {
-                //         logger.error("Some error occurred");
-                //         return callback(new Error("Some error occurred"), null);
-                //     } else {
-                //         console.log("user data afte adding in mdl ", data);
-                //         //return callback(null, data);
-                //         return data;
-                //     }
-                // }
-            );
-            //  }
+            if (!noteData.collaborator.includes(collaborator.collaboratorId)) {
+                return Note.findByIdAndUpdate(
+                    collaborator.noteId, {
+                        $push: {
+                            collaborator: collaborator.collaboratorId,
+                        },
+                    }, { new: true }
+                    // callback
+                    // (error, data) => {
+                    //     if (error) {
+                    //         logger.error("Some error occurred");
+                    //         return callback(new Error("Some error occurred"), null);
+                    //     } else {
+                    //         console.log("user data afte adding in mdl ", data);
+                    //         //return callback(null, data);
+                    //         return data;
+                    //     }
+                    // }
+                );
+                //  }
 
-            //         // return callback(data, null);
-            //     });
-            // }
+                //         // return callback(data, null);
+                //     });
+                // }
+            }
         });
     };
 
