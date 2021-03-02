@@ -22,8 +22,6 @@ class Helper {
      * @param {} data
      */
     createToken = (data) => {
-        console.log(data.emailId);
-        console.log("creating token");
         return jwt.sign({
                 emailId: data.emailId,
                 id: data._id,
@@ -32,7 +30,6 @@ class Helper {
                 expiresIn: "60d",
             }
         );
-        // console.log(token)
     };
 
     /**
@@ -46,13 +43,7 @@ class Helper {
             let token = req.headers.authorization.split(" ")[1];
             console.log(token);
             const decode = jwt.verify(token, process.env.SECRET_KEY);
-            console.log("decode for verify: " + decode);
             req.userData = decode;
-            let userId = decode.name;
-            console.log("user Id in verify token: ", userId);
-            console.log("decode for verify: " + decode);
-            console.log("");
-            console.log("token verified");
             next();
         } catch (error) {
             res.status(401).send({
@@ -69,9 +60,7 @@ class Helper {
     decodeToken = (noteInfo, token) => {
         let decode = jwt.verify(token, process.env.SECRET_KEY);
         let userId = decode.id;
-        //   console.log("user Id", userId);
         noteInfo.userId = userId;
-        //   console.log("user id for note: ", userId);
         return noteInfo;
     };
 
@@ -82,7 +71,6 @@ class Helper {
     getEmailFromToken = (token) => {
         let decode = jwt.verify(token, process.env.SECRET_KEY);
         let emailId = decode.emailId;
-        console.log("emailId Id for redis :", emailId);
         return emailId;
     };
 
@@ -94,7 +82,6 @@ class Helper {
     emailSender = (userInfo, mailData, callback) => {
         let transporter = nodemailer.createTransport({
             service: "gmail",
-            // PORT: process.env.PORT,
             PORT: config.port,
             secure: true,
             auth: {
@@ -103,7 +90,6 @@ class Helper {
             },
         });
         const endPoint = `${mailData.endPoint}`;
-        //     console.log("token in email : " + userInfo.token);
         ejs.renderFile(
             "app/view/resetPassword.ejs", { link: process.env.URL + `/${endPoint}/` + userInfo.token },
             (error, data) => {
@@ -112,7 +98,6 @@ class Helper {
                 }
                 let mailOptions = {
                     from: process.env.EMAIL_USER,
-                    // to: process.env.EMAIL_RECEIVER,
                     to: userInfo.emailId,
                     subject: mailData.subject,
                     html: ejs.render(data),

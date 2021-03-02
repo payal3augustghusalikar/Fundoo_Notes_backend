@@ -7,7 +7,6 @@
 -------------------------------------------------------------------------------------*/
 
 const Label = require("../models/label.js");
-
 const helper = require("../../middleware/helper.js");
 const redis = require("redis");
 const client = redis.createClient();
@@ -42,7 +41,6 @@ class LabelService {
                         return callback(new Error("Some error occurred"), null);
                     } else {
                         const redisData = redisCache.setRedis(data, userEmail, key);
-
                         return callback(null, data);
                     }
                 });

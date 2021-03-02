@@ -27,7 +27,6 @@ class userService {
         User.save(userInfo, (error, data) => {
             if (error) return callback(error, null);
             else console.log("user found");
-            console.log("service ", data);
             const token = helper.createToken(data);
             userInfo.token = token;
             console.log(token);
@@ -39,15 +38,12 @@ class userService {
                         null
                     );
                 else {
-                    console.log("userInfo ", userInfo);
-                    console.log("message ", message);
                     userInfo.emailId = message;
                     const mailData = {
                         subject: "verify your EmailId",
                         endPoint: "activateemail",
                     };
                     helper.emailSender(userInfo, mailData, (error, data) => {
-                        console.log("userInfo" + userInfo);
                         if (error) {
                             logger.error("Some error occurred while sending email");
                             return callback(
@@ -55,15 +51,12 @@ class userService {
                                 null
                             );
                         }
-                        console.log("service mail data ", data);
                         return callback(null, data);
                     });
                     // return callback(null, data);
                 }
                 return callback(null, data);
             });
-            console.log("servic data ", data);
-            //return callback(null, data);
         });
     };
 
@@ -146,16 +139,12 @@ class userService {
                             null
                         );
                     else {
-                        console.log("userInfo ", userInfo);
-                        console.log("message ", message);
                         userInfo.emailId = message;
-
                         const mailData = {
                             subject: "Reset Password",
                             endPoint: "resetpassword",
                         };
                         helper.emailSender(userInfo, mailData, (error, data) => {
-                            console.log("userInfo" + userInfo);
                             if (error) {
                                 logger.error("Some error occurred while sending email");
                                 return callback(
@@ -194,7 +183,7 @@ class userService {
     activate = async(activateData, callback) => {
         const decode = jwt.verify(activateData.token, process.env.SECRET_KEY);
         let userId = decode.id;
-        console.log("id ", userId);
+
         activateData.userId = userId;
         const data = await User.activateOne(activateData, callback);
         return data;

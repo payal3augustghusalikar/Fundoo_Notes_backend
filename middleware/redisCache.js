@@ -8,10 +8,7 @@
 
 const redis = require("redis");
 const client = redis.createClient();
-const config = require("../config").get();
 const logger = require("../../logger/logger.js");
-const helper = require("./helper.js");
-const status = require("../middleware/staticFile.json");
 
 client.on("connect", function() {
     console.log("Connected to Redis");
@@ -35,10 +32,7 @@ class RedisCache {
                 error || redisData == null ?
                 (logger.error("Error retrieving data from redis cache", +error),
                     callback(error, null)) :
-                logger.info(
-                    "data found in redis "
-                    // JSON.parse(redisData)
-                ),
+                logger.info("data found in redis "),
                 callback(null, JSON.parse(redisData))
             );
         });
@@ -50,7 +44,6 @@ class RedisCache {
      * @param {*} userEmail for unique identity
      * @param {*} key is for unique key to set spcific data
      */
-
     setRedis = (data, userEmail, key) => {
         const KEY = `${key}${userEmail}`;
         return client.setex(KEY, 20000000, JSON.stringify(data));

@@ -34,7 +34,6 @@ class NoteController {
             };
             const token = req.headers.authorization.split(" ")[1];
             const validation = ControllerDataValidation.validate(noteInfo);
-            console.log(validation);
             return validation.error ?
                 res.status(400).send({
                     success: false,
@@ -47,8 +46,7 @@ class NoteController {
                                 success: false,
                                 status_code: status.Internal_Server_Error,
                                 message: "Some error occurred while creating note",
-                            })) //                  logger.info("note added successfully !"),
-                        :
+                            })) :
                         res.send({
                             success: true,
                             status_code: status.Success,
@@ -83,8 +81,6 @@ class NoteController {
                             message: `note not found`,
                         })) :
                     (logger.info("Successfully retrieved notes !"),
-                        //  console.log("data in cntr :", data),
-                        console.log("Request took:", new Date() - start, "ms"),
                         res.send({
                             success: true,
                             status_code: status.Success,
@@ -92,9 +88,7 @@ class NoteController {
                             data: data,
                         }));
             });
-            console.log("Request took:", new Date() - start, "ms");
         } catch (error) {
-            //             logger.error("note not found");
             res.send({
                 success: false,
                 status_code: status.Internal_Server_Error,
@@ -177,8 +171,6 @@ class NoteController {
                         message: "note updated successfully !",
                         data: data,
                     })
-                    // console.log("calling find all"),
-                    // this.findAll()
                 );
             });
         } catch (error) {
@@ -243,7 +235,6 @@ class NoteController {
          * @param res is used to send the response
          */
     addLabelToNote = (req, res) => {
-        console.log("controller");
         try {
             const noteInfoWithLabelId = {
                 noteID: req.params.noteId,
@@ -429,14 +420,11 @@ class NoteController {
      * @param res is used to send the response
      */
     addCollaborator = (req, res) => {
-        console.log("ctrl");
         try {
             const collaborator = {
                 noteId: req.params.noteId,
                 collaboratorId: req.body.collaboratorId,
             };
-            console.log(collaborator.collaboratorId);
-            //  const token = req.headers.authorization.split(" ")[1];
             noteService
                 .createCollaborator(collaborator)
                 .then((data) => {
@@ -447,7 +435,6 @@ class NoteController {
                             message: "note not found with id : " + req.params.noteId + error,
                         });
                     }
-                    console.log("ctrl :", data);
                     res.send({
                         success: true,
                         status: status.Success,

@@ -191,15 +191,7 @@ class NoteModel {
      * @param {*} collaborator hofds noteid and collaboratorId
      */
     findCollaborator = (collaborator) => {
-        console.log("mdl");
-        console.log(collaborator.collaboratorId);
-        console.log(collaborator);
-        const id = collaborator.collaboratorId;
-
         return Note.findById(collaborator.noteId).then((noteData) => {
-            console.log("mdl noteData ", noteData);
-            console.log("mdl in db ", noteData.collaborator);
-            console.log("mdl from user ", collaborator.collaboratorId);
             if (!noteData.collaborator.includes(collaborator.collaboratorId)) {
                 return Note.findByIdAndUpdate(
                     collaborator.noteId, {

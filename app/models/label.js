@@ -44,7 +44,6 @@ class LabelModel {
      * @param {*} callback for service class method
      */
     findAll = (callback) => {
-        console.log("Model");
         return Label.find(callback);
     };
 

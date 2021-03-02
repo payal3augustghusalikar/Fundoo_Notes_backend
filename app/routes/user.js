@@ -8,8 +8,6 @@
 
 var helper = require("../../middleware/helper.js");
 
-var redisCache = require("../../middleware/redisCache.js");
-
 module.exports = (app) => {
     const user = require("../controllers/user.js");
 

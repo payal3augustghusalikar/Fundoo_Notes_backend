@@ -87,7 +87,6 @@ class userController {
                     password: password,
                 };
                 userService.login(userLoginInfo, (error, data) => {
-                    console.log("controller login data", data);
                     if (data.length < 1) {
                         logger.info("user not exist with emailid" + req.body.emailId);
                         return res.send({
@@ -102,7 +101,6 @@ class userController {
                         token: data.token,
                     });
                 });
-                console.log("Request took:", new Date() - start, "ms");
             }
         } catch (error) {
             logger.error("could not found user with emailid" + req.body.emailId);

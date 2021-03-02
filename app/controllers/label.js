@@ -78,8 +78,6 @@ class LabelController {
                             message: `note not found`,
                         })) :
                     (logger.info("Successfully retrieved notes !"),
-                        //  console.log("data in cntr :", data),
-                        console.log("Request took:", new Date() - start, "ms"),
                         res.send({
                             success: true,
                             status_code: status.Success,
@@ -87,7 +85,6 @@ class LabelController {
                             data: data,
                         }));
             });
-            console.log("Request took:", new Date() - start, "ms");
         } catch (error) {
             //             logger.error("note not found");
             res.send({

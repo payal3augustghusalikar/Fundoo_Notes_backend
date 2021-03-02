@@ -123,9 +123,7 @@ class NoteService {
      * @param {*} collaborator
      */
     createCollaborator = async(collaborator) => {
-        console.log("ser");
         const data = await Note.findCollaborator(collaborator);
-        console.log("service return data:", data);
         return data;
     };
 

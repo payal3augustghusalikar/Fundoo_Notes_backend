@@ -84,8 +84,7 @@ class UserModel {
     find = (userLoginData, callback) => {
         User.find({ emailId: userLoginData.emailId }, (error, data) => {
             if (error) return callback(error, null);
-            else console.log("model ", data);
-            return callback(null, data);
+            else return callback(null, data);
         });
     };
 
@@ -102,7 +101,6 @@ class UserModel {
             } else if (!data) {
                 return callback(new Error("User not found with this email Id"), null);
             } else {
-                console.log("model ", data);
                 return callback(null, data);
             }
         });
@@ -129,7 +127,6 @@ class UserModel {
      * @param {*} callback
      */
     activateOne = (userInfo, callback) => {
-        console.log("act : ");
         return User.findByIdAndUpdate(
             userInfo.userId, { $set: { isActivated: true } }, { new: true },
             callback
@@ -141,9 +138,7 @@ class UserModel {
      * @param {*} collaboratorId holds the user id
      */
     findOneuserWithId = (collaboratorId) => {
-        console.log("model ", collaboratorId);
         return User.findById({ _id: collaboratorId }).then((data) => {
-            console.log("model ", data);
             return data;
         });
     };

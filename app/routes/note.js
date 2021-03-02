@@ -37,9 +37,6 @@ module.exports = (app) => {
     // // Update a note with noteId
     app.put("/notes/:noteId", helper.verifyToken, notes.update);
 
-    // // Delete a note with noteId
-    // // app.delete("/notes/:noteId", helper.verifyToken, notes.delete);
-
     // delete note by setting isdeleted flag true
     app.put("/notes/delete/:noteId", helper.verifyToken, notes.deleteNote);
 
