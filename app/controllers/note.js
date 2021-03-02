@@ -474,7 +474,6 @@ class NoteController {
                 noteId: req.params.noteId,
                 collaboratorId: req.body.collaboratorId,
             };
-
             noteService
                 .removeCollaborator(collaboratorData)
                 .then((data) => {
@@ -482,6 +481,7 @@ class NoteController {
                         success: true,
                         status: status.Success,
                         message: "collaborator remove successfully !",
+                        data: data,
                     });
                 })
                 .catch((error) => {

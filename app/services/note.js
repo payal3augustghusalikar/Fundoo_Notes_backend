@@ -120,8 +120,9 @@ class NoteService {
      * @description delete  collaborator
      * @method delete calls model class method
      */
-    removeCollaborator = (collaboratorData, callback) => {
-        return Note.removeCollaborator(collaboratorData, callback);
+    removeCollaborator = async(collaboratorData, callback) => {
+        const data = await Note.removeCollaborator(collaboratorData, callback);
+        return data;
     };
 }
 

@@ -192,14 +192,25 @@ class NoteModel {
         });
     };
 
-    removeCollaborator = (noteInfo, callback) => {
+    removeCollaborator = (collaboratorData, callback) => {
+        logger.info("Note found");
         return Note.findByIdAndUpdate(
-            noteInfo.noteID, {
-                $pull: { collaborator: noteInfo.collaboratorId },
+            collaboratorData.noteId, {
+                $pull: { collaborator: collaboratorData.collaboratorId },
             }, { new: true },
             callback
         );
     };
+
+    // removeLabel = (noteInfo, callback) => {
+    //     logger.info("label found");
+    //     return Note.findByIdAndUpdate(
+    //         noteInfo.noteID, {
+    //             $pull: { labelId: noteInfo.labelId },
+    //         }, { new: true },
+    //         callback
+    //     );
+    // };
 }
 
 module.exports = new NoteModel();
