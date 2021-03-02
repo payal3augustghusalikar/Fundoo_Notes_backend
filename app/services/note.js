@@ -114,7 +114,6 @@ class NoteService {
         const data = await Note.findCollaborator(collaborator);
         console.log("service return data:", data);
         return data;
-        //  return Note.findCollaborator(collaborator);
     };
 
     /**
@@ -124,11 +123,6 @@ class NoteService {
     removeCollaborator = (collaboratorData, callback) => {
         return Note.removeCollaborator(collaboratorData, callback);
     };
-
-    // update = async(labelInfo, callback) => {
-    //     const data = await Label.update(labelInfo, callback);
-    //     return data;
-    // };
 }
 
 module.exports = new NoteService();
