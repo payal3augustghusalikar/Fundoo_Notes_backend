@@ -1,8 +1,13 @@
+/* @module        controller
+ * @file          note.js
+ * @description  controllers takes request and send the response   
+ * @author       Payal Ghusalikar <payal.ghusalikar9@gmail.com>
+*  @since         26/01/2021  
+-----------------------------------------------------------------------------------------------*/
 const noteService = require("../services/note.js");
 const Joi = require("joi");
 const logger = require("../../logger/logger.js");
 const status = require("../../middleware/staticFile.json");
-const { Console } = require("winston/lib/winston/transports");
 
 const ControllerDataValidation = Joi.object({
     title: Joi.string()
@@ -17,6 +22,7 @@ const ControllerDataValidation = Joi.object({
 
 class NoteController {
     /**
+     * @description create anew note
      * @message Create and save a new note
      * @param res is used to send the response
      */
@@ -60,6 +66,7 @@ class NoteController {
     };
 
     /**
+     * @description find all notes from db
      * @message Find all the note
      * @method findAll is service class method
      */
@@ -232,7 +239,7 @@ class NoteController {
         }
         /**
          * @message add label note by id
-         * @method update is service class method
+         * @method addLabelToNotes is service class method
          * @param res is used to send the response
          */
     addLabelToNote = (req, res) => {
@@ -292,8 +299,8 @@ class NoteController {
     };
 
     /**
-     * @message delete note with id
-     * @method delete is service class method
+     * @message delete label with id
+     * @method removeLabel is service class method
      * @param response is used to send the response
      */
     removelabelfromnote(req, res) {
@@ -377,8 +384,8 @@ class NoteController {
     }
 
     /**
-     * @message delete note with id
-     * @method delete is service class method
+     * @message delete note with id whitch is setting isDeleted value true
+     * @method removeNote is service class method
      * @param response is used to send the response
      */
     deleteNote(req, res) {
@@ -417,7 +424,8 @@ class NoteController {
     }
 
     /**
-     * @message Create and save a new note
+     * @description adds the new uer to notes
+     *@param req holds the id
      * @param res is used to send the response
      */
     addCollaborator = (req, res) => {
@@ -465,8 +473,10 @@ class NoteController {
     };
 
     /**
-     * @description delete colloaborator
-     * @method collaboratorService.deleteCollaborator is service class method
+     * @description delete colloaborator from note
+     * @method noteService.removeCollaborator is service class method
+     * @param req holds id
+     * @param res sends the responce
      */
     removeCollaborator = (req, res) => {
         try {

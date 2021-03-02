@@ -116,8 +116,8 @@ class userController {
 
     /**
      * @description takes email id and calls service class method
-     * @param {*} req
-     * @param {*} res
+     * @param {*} req holds emailId
+     * @param {*} res sends the responce
      */
     forgotPassword = (req, res) => {
         try {
@@ -161,8 +161,8 @@ class userController {
     /**
      * @description reset the user password
      * @description takes token and user data in req and calls serivce class method
-     * @param {*} req
-     * @param {*} res
+     * @param {*} req new password and confirmPassword
+     * @param {*} res sends the responce
      */
     resetPassword = (req, res) => {
         try {
@@ -227,6 +227,7 @@ class userController {
     /**
      * @message Update user by id
      * @method update is service class method
+     * @res holds token
      * @param res is used to send the response
      */
     activateEmail = (req, res) => {

@@ -92,6 +92,10 @@ class NoteService {
         return Note.addLabelToSingleNote(noteData, callback);
     };
 
+    /**
+     * @description remove label to note
+     * @method add calls model class method
+     */
     removeLabel = (noteData, callback) => {
         return Note.removeLabel(noteData, callback);
     };
@@ -105,10 +109,19 @@ class NoteService {
         return Note.deleteNoteById(noteID, callback);
     };
 
+    /**
+     * @description Delete Note by id and return response to controller
+     * @method deleteById is used to remove Note by ID
+     * @param callback is the callback for controller
+     */
     removeNote = (noteID, callback) => {
         return Note.removeNote(noteID, callback);
     };
 
+    /**
+     * @description adds new collaborator to note
+     * @param {*} collaborator
+     */
     createCollaborator = async(collaborator) => {
         console.log("ser");
         const data = await Note.findCollaborator(collaborator);

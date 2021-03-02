@@ -1,3 +1,11 @@
+/**
+ * @module       services
+ * @file         label.js
+ * @description  holds the methods calling from controller
+ * @author       Payal Ghusalikar <payal.ghusalikar9@gmail.com>
+*  @since        27/01/2021  
+-------------------------------------------------------------------------------------*/
+
 const Label = require("../models/label.js");
 
 const helper = require("../../middleware/helper.js");

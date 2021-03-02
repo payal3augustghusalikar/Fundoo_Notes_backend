@@ -27,6 +27,7 @@ module.exports = (app) => {
         notes.addLabelToNote
     );
 
+    //  remove label to specific note
     app.put(
         "/notes/removelabelfromnote/:noteId",
         helper.verifyToken,
@@ -39,8 +40,10 @@ module.exports = (app) => {
     // // Delete a note with noteId
     // // app.delete("/notes/:noteId", helper.verifyToken, notes.delete);
 
+    // delete note by setting isdeleted flag true
     app.put("/notes/delete/:noteId", helper.verifyToken, notes.deleteNote);
 
+    // delete note forever
     app.delete(
         "/notes/deleteforever/:noteId",
         helper.verifyToken,

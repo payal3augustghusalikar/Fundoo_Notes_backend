@@ -61,6 +61,11 @@ class Helper {
         }
     };
 
+    /**
+     * @description decode token to get userId
+     * @param {*} noteInfo
+     * @param {*} token
+     */
     decodeToken = (noteInfo, token) => {
         let decode = jwt.verify(token, process.env.SECRET_KEY);
         let userId = decode.id;
@@ -70,6 +75,10 @@ class Helper {
         return noteInfo;
     };
 
+    /**
+     * @description get emial from token
+     * @param {*} token
+     */
     getEmailFromToken = (token) => {
         let decode = jwt.verify(token, process.env.SECRET_KEY);
         let emailId = decode.emailId;
@@ -78,7 +87,7 @@ class Helper {
     };
 
     /**
-     * @description sends the email with reset link with token using nodemailer
+     * @description sends the email with  link with token using nodemailer for activate and reset password
      * @param {*} userInfo
      * @param {*} callback
      */

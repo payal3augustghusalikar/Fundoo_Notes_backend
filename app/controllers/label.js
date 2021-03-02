@@ -1,3 +1,10 @@
+/* @module        controller
+ * @file          label.js
+ * @description  controllers takes request and send the response   
+ * @author       Payal Ghusalikar <payal.ghusalikar9@gmail.com>
+*  @since         26/01/2021  
+-----------------------------------------------------------------------------------------------*/
+
 const labelServices = require("../services/label.js");
 const Joi = require("joi");
 const logger = require("../../logger/logger.js");
@@ -6,11 +13,11 @@ let vallidator = require("../../middleware/vallidation.js");
 
 class LabelController {
     /**
+     * @description create a lable for note
      * @message Create and save a new label
      * @param res is used to send the response
      * @param req is used to take user request
      */
-
     create = (req, res) => {
         try {
             const labelInfo = {
@@ -54,6 +61,7 @@ class LabelController {
     };
 
     /**
+     * @description find all labels from db
      * @message Find all the label
      * @method findAll is service class method
      */

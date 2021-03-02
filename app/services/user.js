@@ -118,7 +118,8 @@ class userService {
     };
 
     /**
-     * @description Update greeting by id and return response to controller
+     * @description Update user by id and return response to controller
+     * @description sends the reset mail too user with having token
      * @param {*} userInfo
      * @param {*} callback
      */
@@ -186,8 +187,8 @@ class userService {
     };
 
     /**
-     * @description Update Label by id and return response to controller
-     * @method update is used to update Label by ID
+     * @description Update user by id and return response to controller
+     * @method update is used to update user
      * @param callback is the callback for controller
      */
     activate = async(activateData, callback) => {

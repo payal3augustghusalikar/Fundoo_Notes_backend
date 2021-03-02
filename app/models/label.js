@@ -26,8 +26,9 @@ const Label = mongoose.model("Label", LabelSchema);
 
 class LabelModel {
     /**
-     * @param {*} labelInfo
-     * @param {*} callback
+     * @description create and save new label
+     * @param {*} labelInfo holds label data
+     * @param {*} callback is for service class method
      */
     create = async(labelInfo, callback) => {
         const label = new Label({
@@ -39,7 +40,8 @@ class LabelModel {
     };
 
     /**
-     * @param {*} callback
+     * @description find all labels from db
+     * @param {*} callback for service class method
      */
     findAll = (callback) => {
         console.log("Model");
@@ -47,6 +49,7 @@ class LabelModel {
     };
 
     /**
+     * @description find one label from db
      * @param {*} labelId
      * @param {*} callback
      */
@@ -55,6 +58,7 @@ class LabelModel {
     };
 
     /**
+     * @description update label with id
      * @param {*} labelInfo
      * @param {*} callback
      */
@@ -68,6 +72,7 @@ class LabelModel {
     };
 
     /**
+     * @description delete label by Id
      * @param {*} labelId
      * @param {*} callback
      */

@@ -136,6 +136,10 @@ class UserModel {
         );
     };
 
+    /**
+     * find the user using id
+     * @param {*} collaboratorId holds the user id
+     */
     findOneuserWithId = (collaboratorId) => {
         console.log("model ", collaboratorId);
         return User.findById({ _id: collaboratorId }).then((data) => {

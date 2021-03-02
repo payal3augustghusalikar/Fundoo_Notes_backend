@@ -1,3 +1,11 @@
+/**
+ * @module       Middleware
+ * @file         publisher.js
+ * @description  holds the getmessage method reusable methods calling from service class
+ * @author       Payal Ghusalikar <payal.ghusalikar9@gmail.com>
+*  @since        27/01/2021  
+-----------------------------------------------------------------------------------------------*/
+
 const amqp = require("amqplib/callback_api");
 class Publish {
     getMessage = (userInfo, callback) => {

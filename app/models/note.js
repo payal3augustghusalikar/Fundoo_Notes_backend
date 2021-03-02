@@ -51,7 +51,8 @@ const Note = mongoose.model("Note", NoteSchema);
 
 class NoteModel {
     /**
-     * @param {*} noteInfo
+     * @description crete new note
+     * @param {*} noteInfo holds data from user
      * @param {*} callback
      */
     create = (noteInfo, callback) => {
@@ -64,7 +65,7 @@ class NoteModel {
     };
 
     /**
-     *
+     * @description find all notes from db
      * @param {*} callback
      */
     findAll = (callback) => {
@@ -79,7 +80,7 @@ class NoteModel {
     };
 
     /**
-     *
+     *@description find single note from db using id
      * @param {*} noteID
      * @param {*} callback
      */
@@ -87,17 +88,17 @@ class NoteModel {
         Note.findById(noteID, callback);
     };
 
-    /**
-     *
-     * @param {*} labelId
-     * @param {*} callback
-     */
-    findNotesByLabel = (labelId, callback) => {
-        Note.findById(labelId, callback);
-    };
+    // /**
+    //  *@description find all note
+    //  * @param {*} labelId
+    //  * @param {*} callback
+    //  */
+    // findNotesByLabel = (labelId, callback) => {
+    //     Note.findById(labelId, callback);
+    // };
 
     /**
-     *
+     * @description update a note by Id
      * @param {*} noteInfo
      * @param {*} callback
      */
@@ -142,6 +143,11 @@ class NoteModel {
         });
     };
 
+    /**
+     * @description remove lable from single note
+     * @param {*} noteInfo holds labelid and noteId
+     * @param {*} callback returns error or data to service
+     */
     removeLabel = (noteInfo, callback) => {
         logger.info("label found");
         return Note.findByIdAndUpdate(
@@ -152,6 +158,11 @@ class NoteModel {
         );
     };
 
+    /**
+     * @description delte note forever from db by id
+     * @param {*} noteID
+     * @param {*} callback
+     */
     deleteNoteById = (noteID, callback) => {
         Note.findById(noteID, (error, data) => {
             if (error) return callback(error, null);
@@ -163,6 +174,11 @@ class NoteModel {
         });
     };
 
+    /**
+     * @description remove note temporary by setting isdeleted flag true
+     * @param {*} noteID
+     * @param {*} callback
+     */
     removeNote = (noteID, callback) => {
         Note.findByIdAndUpdate(
             noteID, { isDeleted: true }, { new: true },
@@ -170,6 +186,10 @@ class NoteModel {
         );
     };
 
+    /**
+     * @description update note by adding collaborator
+     * @param {*} collaborator hofds noteid and collaboratorId
+     */
     findCollaborator = (collaborator) => {
         console.log("mdl");
         console.log(collaborator.collaboratorId);
@@ -192,6 +212,10 @@ class NoteModel {
         });
     };
 
+    /**
+     * @description update note by removing collaborator
+     * @param {*} collaborator hofds noteid and collaboratorId
+     */
     removeCollaborator = (collaboratorData, callback) => {
         logger.info("Note found");
         return Note.findByIdAndUpdate(
@@ -201,16 +225,6 @@ class NoteModel {
             callback
         );
     };
-
-    // removeLabel = (noteInfo, callback) => {
-    //     logger.info("label found");
-    //     return Note.findByIdAndUpdate(
-    //         noteInfo.noteID, {
-    //             $pull: { labelId: noteInfo.labelId },
-    //         }, { new: true },
-    //         callback
-    //     );
-    // };
 }
 
 module.exports = new NoteModel();

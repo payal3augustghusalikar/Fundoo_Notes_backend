@@ -1,3 +1,11 @@
+/**
+ * @module       Middleware
+ * @file         redisCache.js
+ * @description  holds the redis get and set  reusable methods calling from service class
+ * @author       Payal Ghusalikar <payal.ghusalikar9@gmail.com>
+*  @since        27/01/2021  
+-----------------------------------------------------------------------------------------------*/
+
 const redis = require("redis");
 const client = redis.createClient();
 const config = require("../config").get();
