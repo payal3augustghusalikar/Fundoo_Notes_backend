@@ -95,7 +95,7 @@ class userService {
                                     const userId = data[0]._id;
                                     console.log("userId1", userId);
 
-                                    req.session.userIdforLogin = userId;
+                                    // req.session.userIdforLogin = userId;
                                     redisCache.setRedis(data, userEmail, key);
                                     return callback(null, data);
                                 } else {
@@ -173,6 +173,7 @@ class userService {
      * @param {*} callback
      */
     resetPassword = (userInfo, callback) => {
+        console.log("ser");
         let decode = jwt.verify(userInfo.token, process.env.SECRET_KEY);
         let userId = decode.id;
         userInfo.userId = userId;

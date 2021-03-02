@@ -72,36 +72,43 @@ class userController {
     login = (req, res) => {
         try {
             var start = new Date();
-            let confirmPassword = req.body.confirmPassword;
+            // let confirmPassword = req.body.confirmPassword;
             let password = req.body.password;
 
-            if (password !== confirmPassword) {
-                return res.send({
-                    success: false,
-                    status_code: status.Bad_Request,
-                    message: "Password not match",
-                });
-            } else {
-                const userLoginInfo = {
-                    emailId: req.body.emailId,
-                    password: password,
-                };
-                userService.login(userLoginInfo, (error, data) => {
-                    if (data.length < 1) {
-                        logger.info("user not exist with emailid" + req.body.emailId);
-                        return res.send({
-                            success: false,
-                            status_code: status.Not_Found,
-                            message: "Auth Failed",
-                        });
-                    }
+            // if (password !== confirmPassword) {
+            //     return res.send({
+            //         success: false,
+            //         status_code: status.Bad_Request,
+            //         message: "Password not match",
+            //     });
+            // } else {
+            const userLoginInfo = {
+                emailId: req.body.emailId,
+                password: password,
+            };
+            userService.login(userLoginInfo, (error, data) => {
+                if (!data) {
+                    logger.info("user not exist with emailid" + req.body.emailId);
                     return res.send({
-                        success: status.Success,
-                        message: "login successfull",
-                        token: data.token,
+                        success: false,
+                        status_code: status.Not_Found,
+                        message: "Auth Failed",
                     });
+                } else if (data.length < 1) {
+                    logger.info("user not exist with emailid" + req.body.emailId);
+                    return res.send({
+                        success: false,
+                        status_code: status.Not_Found,
+                        message: "Auth Failed",
+                    });
+                }
+                return res.send({
+                    success: status.Success,
+                    message: "login successfull",
+                    token: data.token,
                 });
-            }
+            });
+            ///  }
         } catch (error) {
             logger.error("could not found user with emailid" + req.body.emailId);
             return res.send({
@@ -164,7 +171,8 @@ class userController {
      */
     resetPassword = (req, res) => {
         try {
-            console.log("controller token ", helper.token);
+            console.log("ctrl");
+            // console.log("controller token ", helper.token);
             let newPassword = req.body.newPassword;
             let confirmPassword = req.body.confirmPassword;
             let token = req.headers.authorization.split(" ")[1];
@@ -180,37 +188,40 @@ class userController {
                     confirmPassword: confirmPassword,
                     token: token,
                 };
-                validationResult = vallidator.validate(resetPasswordData.newPassword);
-                return validationResult.error ?
-                    res.send({
-                        success: false,
-                        status_code: status.Bad_Request,
-                        message: validation.error.message,
-                    }) :
-                    userService.resetPassword(resetPasswordData, (error, data) => {
-                        if (error) {
-                            logger.error(error.message);
-                            return res.send({
-                                success: false,
-                                status_code: status.Internal_Server_Error,
-                                message: error.message,
-                            });
-                        } else if (!data) {
-                            logger.error("Authorization failed");
-                            return res.send({
-                                success: false,
-                                status_code: status.Internal_Server_Error,
-                                message: "Authorization failed  " + error.message,
-                            });
-                        } else {
-                            logger.info("Password has been changed !");
-                            return res.send({
-                                success: true,
-                                status_code: status.Success,
-                                message: "Password has been changed ",
-                            });
-                        }
-                    });
+                // const validationResult = vallidator.validate(
+                //     resetPasswordData.newPassword
+                // );
+                // validationResult.error ?
+                //     res.send({
+                //         success: false,
+                //         status_code: status.Bad_Request,
+                //         message: error,
+                //     }) :
+                console.log("ctrl");
+                userService.resetPassword(resetPasswordData, (error, data) => {
+                    if (error) {
+                        logger.error(error.message);
+                        return res.send({
+                            success: false,
+                            status_code: status.Internal_Server_Error,
+                            message: error.message,
+                        });
+                    } else if (!data) {
+                        logger.error("Authorization failed");
+                        return res.send({
+                            success: false,
+                            status_code: status.Internal_Server_Error,
+                            message: "Authorization failed  " + error.message,
+                        });
+                    } else {
+                        logger.info("Password has been changed !");
+                        return res.send({
+                            success: true,
+                            status_code: status.Success,
+                            message: "Password has been changed ",
+                        });
+                    }
+                });
             }
         } catch (error) {
             logger.error("Some error occurred !");

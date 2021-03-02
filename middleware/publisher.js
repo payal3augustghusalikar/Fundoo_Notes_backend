@@ -16,6 +16,7 @@ class Publish {
 
         amqp.connect("amqp://localhost", (error, connection) => {
             if (error) {
+                
                 //  logger.connect("Error while connecting to Rabbit Mq");
                 return callback(error, null);
             }
@@ -40,4 +41,3 @@ class Publish {
 }
 
 module.exports = new Publish();
-

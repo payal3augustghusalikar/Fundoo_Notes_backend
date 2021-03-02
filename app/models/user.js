@@ -8,6 +8,7 @@
 
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+//const bycrypt = require("bcrypt");
 const helper = require("../../middleware/helper.js");
 const logger = require("../../logger/logger.js");
 let vallidator = require("../../middleware/vallidation.js");
@@ -19,7 +20,6 @@ const UserSchema = mongoose.Schema({
             min: 3,
             max: 36,
         },
-
         test: vallidator.namePattern,
     },
     emailId: {
@@ -41,11 +41,10 @@ const UserSchema = mongoose.Schema({
         type: Boolean,
         default: false,
     },
-
-    __v: { type: Number, select: false },
 }, {
     timestamps: true,
 });
+UserSchema.set("versionKey", false);
 
 // encrypted the password before saving to database
 UserSchema.pre("save", async function(next) {
@@ -112,13 +111,27 @@ class UserModel {
      * @param {*} callback
      */
     update = (userInfo, callback) => {
-        User.findByIdAndUpdate(
-            userInfo.userId, { password: userInfo.newPassword }, { new: true },
-            (error, data) => {
-                if (error) return callback(error, null);
-                else return callback(null, data);
+        console.log("mdl");
+        const newPassword = userInfo.newPassword;
+        console.log(newPassword);
+        // newPassword = await bcrypt.hash(newPassword, 10);
+        console.log(newPassword);
+        // userInfo.confirmPassword = undefined;
+        bcrypt.hash(newPassword, 10, function(error, hash) {
+            if (error) {
+                error = "New password unable to hash";
+                callback(error, null);
+            } else {
+                console.log(hash);
+                User.findByIdAndUpdate(
+                    userInfo.userId, { $set: { password: hash } }, { new: true },
+                    (error, data) => {
+                        if (error) return callback(error, null);
+                        else return callback(null, data);
+                    }
+                );
             }
-        );
+        });
     };
 
     /**
