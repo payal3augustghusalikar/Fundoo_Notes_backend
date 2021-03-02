@@ -7,6 +7,7 @@
 -----------------------------------------------------------------------*/
 
 const express = require("express");
+var session = require("express-session");
 const bodyParser = require("body-parser");
 require("./config/mongoDB.js")();
 // create express app
@@ -32,6 +33,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
+
+app.set("trust proxy", 1); // trust first proxy
+app.use(
+    session({
+        secret: "sessionpassword",
+        resave: false,
+        saveUninitialized: true,
+        cookie: { secure: true },
+    })
+);
 
 // define a simple route and data in json format
 app.get("/", (req, res) => {

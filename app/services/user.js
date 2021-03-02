@@ -88,12 +88,15 @@ class userService {
                             (error, result) => {
                                 if (result) {
                                     logger.info("Authorization success");
-
+                                    // const userId = data[0]._id;
+                                    // console.log("userId1", userId);
                                     const token = helper.createToken(data[0]);
                                     data.token = token;
+                                    const userId = data[0]._id;
+                                    console.log("userId1", userId);
 
+                                    req.session.userIdforLogin = userId;
                                     redisCache.setRedis(data, userEmail, key);
-
                                     return callback(null, data);
                                 } else {
                                     logger.info("ERR:401-Please verify email before login");
@@ -130,7 +133,11 @@ class userService {
             } else {
                 const token = helper.createToken(data);
                 userInfo.token = token;
+                // publisher.on("getMessage", () => {
+                //     console.log("Someone bought a ticket!");
+                // });
 
+                // publisher.getMessage(userInfo, callback);
                 publish.getMessage(userInfo, callback);
                 consume.consumeMessage((error, message) => {
                     if (error)
@@ -183,7 +190,6 @@ class userService {
     activate = async(activateData, callback) => {
         const decode = jwt.verify(activateData.token, process.env.SECRET_KEY);
         let userId = decode.id;
-
         activateData.userId = userId;
         const data = await User.activateOne(activateData, callback);
         return data;
