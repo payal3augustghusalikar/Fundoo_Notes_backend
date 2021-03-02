@@ -27,8 +27,13 @@
                 "tags": [
                     "FundooNotes"
                 ],
-                "summary": "retrive all FundooNotes",
-                "description": "retrive all FundooNotes",
+                "summary": "retrive all notes",
+                "description": "retrive all notes",
+                "parameters": [{
+                    "name": "token",
+                    "in": "header",
+                    "description": "token"
+                }],
                 "responses": {
                     "200": {
                         "description": "Note found successfully"
@@ -645,7 +650,7 @@
             ],
             "properties": {
                 "token": {
-                    "in": "path",
+                    "in": "header",
                     "type": "string"
                 }
             }

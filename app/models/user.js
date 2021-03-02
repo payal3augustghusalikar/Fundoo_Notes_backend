@@ -136,19 +136,11 @@ class UserModel {
         );
     };
 
-    findOneuserWithId = (collaboratorId, callback) => {
+    findOneuserWithId = (collaboratorId) => {
         console.log("model ", collaboratorId);
-        User.findById({ _id: collaboratorId }, (error, data) => {
-            if (error) {
-                logger.error("Some error occurred");
-                console.log("model ", error);
-                return callback(new Error("Some error occurred"), null);
-            } else if (!data) {
-                return callback(new Error("User not found with this email Id"), null);
-            } else {
-                console.log("model ", data);
-                return callback(null, data);
-            }
+        return User.findById({ _id: collaboratorId }).then((data) => {
+            console.log("model ", data);
+            return data;
         });
     };
 }
