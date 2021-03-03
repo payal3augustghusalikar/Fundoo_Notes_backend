@@ -228,6 +228,79 @@ describe("notes API", () => {
         });
     });
 
+    describe.only("/PUT  /notes/addlabeltonote/:noteId", () => {
+        it("givennotes_WhenGivenProperNoteIdandLabelId_ShouldaddLabelNote", (done) => {
+            const noteId = greet.notes.noteToUpdate.noteId;
+            const labelId = greet.notes.addProperlabels.labelId;
+
+            chai
+                .request(server)
+                .put("/notes/addlabeltonote/" + noteId)
+                .set("Authorization", token)
+                .send(labelId)
+
+            .end((err, res) => {
+                res.should.have.status(200);
+                console.log("res Body:", res.body);
+                res.body.should.be.a("Object");
+                done();
+            });
+        });
+
+        it("givennotes_WhenGivenImProperNoteIdandLabelId_ShouldNotaddLabelNote", (done) => {
+            const noteId = greet.notes.noteToUpdate.noteId;
+            const labelId = greet.notes.addImproperlabels.labelId;
+
+            chai
+                .request(server)
+                .put("/notes/addlabeltonote/" + noteId)
+                // .put("/notes/removelabelfromnote/" + noteId)
+                .set("Authorization", token)
+                .send(labelId)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    console.log("res Body:", res.body);
+                    res.body.should.be.a("Object");
+                    done();
+                });
+        });
+    });
+
+    describe.only("/PUT  /notes/removelabelfromnote/:noteId", () => {
+        it("givennotes_WhenGivenProperNoteIdandLabelId_ShouldRemoveLabelFromNote", (done) => {
+            const noteId = greet.notes.noteToUpdate.noteId;
+            const labelId = greet.notes.removeProperlabels.labelId;
+            chai
+                .request(server)
+                .put("/notes/removelabelfromnote/" + noteId)
+                .set("Authorization", token)
+                .send(labelId)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    console.log("res Body:", res.body);
+                    res.body.should.be.a("Object");
+                    done();
+                });
+        });
+
+        it("givennotes_WhenGivenImProperNoteIdandLabelId_ShouldNotRemoveLabelNote", (done) => {
+            const noteId = greet.notes.noteToUpdate.noteId;
+            const labelId = greet.notes.removeImProperlabels.labelId;
+            chai
+                .request(server)
+                .put("/notes/removelabelfromnote/" + noteId)
+                // .put("/notes/removelabelfromnote/" + noteId)
+                .set("Authorization", token)
+                .send(labelId)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    console.log("res Body:", res.body);
+                    res.body.should.be.a("Object");
+                    done();
+                });
+        });
+    });
+
     describe("DELETE /notes/noteID", function() {
         it("givennotes_WhenGivenProperId_ShouldDelete_note", (done) => {
             const noteID = greet.notes.noteToDelete.noteId;

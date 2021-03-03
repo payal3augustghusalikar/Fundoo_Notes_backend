@@ -4,6 +4,21 @@
             "title": "pcompany",
             "description": "pHello"
         },
+        "addProperlabels": [{
+            "labelId": "602fe5c2ab2f532e30a6214c"
+        }],
+        "removeProperlabels": {
+            "labelId": "602ffc4f2d57d8173c1fff08"
+        },
+        "removeImProperlabels": {
+            "labelId": "602ffc4f2d57d8173c1fff08"
+        },
+        "addImproperlabels": [{
+            "labelId": "602fe5c2ab2f532e30a621"
+        }],
+        "noteForLabel": {
+            "noteId": "602fe7f7d22dba060c91bd96"
+        },
         "noteToUpdate": {
             "noteId": "602fe7f7d22dba060c91bd96",
             "title": "payalllchanged",
