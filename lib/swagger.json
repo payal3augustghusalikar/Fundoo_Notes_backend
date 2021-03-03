@@ -409,7 +409,7 @@
                 "deprecated": false
             }
         },
-        "/addlabeltonote/{id}": {
+        "/notes/addlabeltonote/{id}": {
             "parameters": [{
                 "name": "id",
                 "in": "path",
@@ -441,7 +441,7 @@
                 "deprecated": false
             }
         },
-        "/removelabelfromnote/{id}": {
+        "/notes/removelabelfromnote/{id}": {
             "parameters": [{
                 "name": "id",
                 "in": "path",

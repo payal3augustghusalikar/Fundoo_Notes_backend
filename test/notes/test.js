@@ -228,7 +228,7 @@ describe("notes API", () => {
         });
     });
 
-    describe.only("/PUT  /notes/addlabeltonote/:noteId", () => {
+    describe("/PUT  /notes/addlabeltonote/:noteId", () => {
         it("givennotes_WhenGivenProperNoteIdandLabelId_ShouldaddLabelNote", (done) => {
             const noteId = greet.notes.noteToUpdate.noteId;
             const labelId = greet.notes.addProperlabels.labelId;
@@ -266,7 +266,7 @@ describe("notes API", () => {
         });
     });
 
-    describe.only("/PUT  /notes/removelabelfromnote/:noteId", () => {
+    describe("/PUT  /notes/removelabelfromnote/:noteId", () => {
         it("givennotes_WhenGivenProperNoteIdandLabelId_ShouldRemoveLabelFromNote", (done) => {
             const noteId = greet.notes.noteToUpdate.noteId;
             const labelId = greet.notes.removeProperlabels.labelId;
@@ -293,7 +293,7 @@ describe("notes API", () => {
                 .set("Authorization", token)
                 .send(labelId)
                 .end((err, res) => {
-                    res.should.have.status(200);
+                    res.should.have.status(404);
                     console.log("res Body:", res.body);
                     res.body.should.be.a("Object");
                     done();
@@ -301,12 +301,156 @@ describe("notes API", () => {
         });
     });
 
-    describe("DELETE /notes/noteID", function() {
+    //-----------------------
+
+    describe.only("/PUT  /addcollaborator/:noteId", () => {
+        it("givennotes_WhenGivenProperNoteIdandcollaboratorId_ShouldaddcollaboratorNote", (done) => {
+            const noteId = greet.notes.noteToUpdate.noteId;
+            const collaboratorId = greet.notes.addPropercollaboratorId.collaboratorId;
+
+            chai
+                .request(server)
+                .put("/addcollaborator/" + noteId)
+                .set("Authorization", token)
+                .send(collaboratorId)
+
+            .end((err, res) => {
+                res.should.have.status(200);
+                console.log("res Body:", res.body);
+                res.body.should.be.a("Object");
+                done();
+            });
+        });
+
+        it("givennotes_WhenGivenImProperNoteIdandCollaboratorId_ShouldNotaddCollaboratorNote", (done) => {
+            const noteId = greet.notes.noteToUpdate.noteId;
+            const collaboratorId =
+                greet.notes.addImpropercollaboratorId.collaboratorId;
+
+            chai
+                .request(server)
+                .put("/addcollaborator/" + noteId)
+                // .put("/notes/removelabelfromnote/" + noteId)
+                .set("Authorization", token)
+                .send(collaboratorId)
+                .end((err, res) => {
+                    res.should.have.status(404);
+                    console.log("res Body:", res.body);
+                    res.body.should.be.a("Object");
+                    done();
+                });
+        });
+    });
+
+    describe.only("/PUT  /removecollaborator/:noteId", () => {
+        it("givennotes_WhenGivenProperNoteIdandCollaboratorId_ShouldRemoveCollaboratorFromNote", (done) => {
+            const noteId = greet.notes.noteToUpdate.noteId;
+            const collaboratorId =
+                greet.notes.removePropercollaboratorId.collaboratorId;
+            chai
+                .request(server)
+                .put("/removecollaborator/" + noteId)
+                .set("Authorization", token)
+                .send(collaboratorId)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    console.log("res Body:", res.body);
+                    res.body.should.be.a("Object");
+                    done();
+                });
+        });
+
+        it("givennotes_WhenGivenImProperNoteIdandCollaboratorId_ShouldnotRemoveCollaboratorFromNote", (done) => {
+            const noteId = greet.notes.noteToUpdate.noteId;
+            const collaboratorId =
+                greet.notes.removeImPropercollaboratorId.collaboratorId;
+            chai
+                .request(server)
+                .put("/notes/removecollaborator/" + noteId)
+                // .put("/notes/removelabelfromnote/" + noteId)
+                .set("Authorization", token)
+                .send(collaboratorId)
+                .end((err, res) => {
+                    res.should.have.status(404);
+                    console.log("res Body:", res.body);
+                    res.body.should.be.a("Object");
+                    done();
+                });
+        });
+    });
+
+    describe.only("/PUT  /removecollaborator/:noteId", () => {
+        it("givennotes_WhenGivenProperNoteIdandCollaboratorId_ShouldRemoveCollaboratorFromNote", (done) => {
+            const noteId = greet.notes.noteToUpdate.noteId;
+            const collaboratorId =
+                greet.notes.removePropercollaboratorId.collaboratorId;
+            chai
+                .request(server)
+                .put("/removecollaborator/" + noteId)
+                .set("Authorization", token)
+                .send(collaboratorId)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    console.log("res Body:", res.body);
+                    res.body.should.be.a("Object");
+                    done();
+                });
+        });
+
+        it("givennotes_WhenGivenImProperNoteIdandCollaboratorId_ShouldnotRemoveCollaboratorFromNote", (done) => {
+            const noteId = greet.notes.noteToUpdate.noteId;
+            const collaboratorId =
+                greet.notes.removeImPropercollaboratorId.collaboratorId;
+            chai
+                .request(server)
+                .put("/notes/removecollaborator/" + noteId)
+                .set("Authorization", token)
+                .send(collaboratorId)
+                .end((err, res) => {
+                    res.should.have.status(404);
+                    console.log("res Body:", res.body);
+                    res.body.should.be.a("Object");
+                    done();
+                });
+        });
+    });
+
+    describe.only("/PUT /notes/delete/:noteId", () => {
+        it("givennotes_WhenGivenProperNoteId_ShouldSetIsdeletedTrue", (done) => {
+            const noteId = greet.notes.noteToUpdate.noteId;
+            chai
+                .request(server)
+                .put("/notes/delete/" + noteId)
+                .set("Authorization", token)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    console.log("res Body:", res.body);
+                    res.body.should.be.a("Object");
+                    done();
+                });
+        });
+
+        it("givennotes_WhenGivenProperNoteId_ShouldNotSetIsdeletedTrue", (done) => {
+            const noteId = 322;
+            chai
+                .request(server)
+                .put("/notes/delete/" + noteId)
+                .set("Authorization", token)
+                .end((err, res) => {
+                    res.should.have.status(404);
+                    console.log("res Body:", res.body);
+                    res.body.should.be.a("Object");
+                    done();
+                });
+        });
+    });
+
+    describe.only("DELETE /notes/deleteforever/noteID", function() {
         it("givennotes_WhenGivenProperId_ShouldDelete_note", (done) => {
             const noteID = greet.notes.noteToDelete.noteId;
             chai
                 .request(server)
-                .delete("/notes/" + noteID)
+                .delete("/notes/deleteforever/" + noteID)
                 .set("Authorization", token)
                 .end((err, res) => {
                     res.should.have.status(200);
@@ -318,7 +462,7 @@ describe("notes API", () => {
             const noteID = 144;
             chai
                 .request(server)
-                .delete("/notes/" + noteID)
+                .delete("/notes/deleteforever/" + noteID)
                 .set("Authorization", token)
                 .end((err, res) => {
                     res.should.have.status(401);

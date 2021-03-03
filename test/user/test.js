@@ -268,4 +268,31 @@ describe("Resetpassword", () => {
                 done();
             });
     });
+
+    describe.only("activateemail", () => {
+        it("givenUser_whenGivenProperToken_shouldActivateEmail", (done) => {
+            let token = userData.user.properToken.token;
+            chai
+                .request(server)
+                .put("/activateemail")
+                .set("Authorization", token)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a("object");
+                    done();
+                });
+        });
+        it("givenUser_whenGivenProperToken_shouldNotActivateEmail", (done) => {
+            let token = userData.user.ImproperToken.token;
+            chai
+                .request(server)
+                .put("/activateemail")
+                .set("Authorization", token)
+                .end((err, res) => {
+                    res.should.have.status(401);
+                    res.body.should.be.a("object");
+                    done();
+                });
+        });
+    });
 });

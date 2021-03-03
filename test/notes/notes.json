@@ -16,6 +16,18 @@
         "addImproperlabels": [{
             "labelId": "602fe5c2ab2f532e30a621"
         }],
+        "addPropercollaboratorId": [{
+            "collaboratorId": "6013c8c6d5a65c2d789a2ae2"
+        }],
+        "removePropercollaboratorId": {
+            "collaboratorId": "6013cc3e1539c00b5433ecfc"
+        },
+        "removeImPropercollaboratorId": {
+            "collaboratorId": "602ffc4f2d57d8173c1ff"
+        },
+        "addImpropercollaboratorId": [{
+            "collaboratorId": "6013c8c6d5a65c2d789a2a"
+        }],
         "noteForLabel": {
             "noteId": "602fe7f7d22dba060c91bd96"
         },
