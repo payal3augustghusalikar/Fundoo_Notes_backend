@@ -23,11 +23,6 @@
     ],
     "paths": {
         "/notes/": {
-            "parameters": [{
-                "name": "token",
-                "in": "header",
-                "description": "token"
-            }],
             "get": {
                 "tags": [
                     "FundooNotes"
@@ -44,7 +39,11 @@
                     "500": {
                         "description": "could not find notes"
                     }
-                }
+                },
+                "security": [{
+                    "JWT": []
+                }],
+                "deprecated": false
             },
             "post": {
                 "tags": [
@@ -74,7 +73,11 @@
                     "400": {
                         "description": "Note cannot be empty"
                     }
-                }
+                },
+                "security": [{
+                    "JWT": []
+                }],
+                "deprecated": false
             }
         },
         "/notes/{id}": {
@@ -111,7 +114,11 @@
                     "500": {
                         "description": "could not find Notes"
                     }
-                }
+                },
+                "security": [{
+                    "JWT": []
+                }],
+                "deprecated": false
             },
             "delete": {
                 "tags": [
@@ -131,7 +138,11 @@
                     "500": {
                         "description": "could not delete Note"
                     }
-                }
+                },
+                "security": [{
+                    "JWT": []
+                }],
+                "deprecated": false
             },
             "get": {
                 "tags": [
@@ -142,7 +153,11 @@
                     "200": {
                         "description": "Note found successfully"
                     }
-                }
+                },
+                "security": [{
+                    "JWT": []
+                }],
+                "deprecated": false
             }
         },
         "/register/": {
@@ -222,11 +237,6 @@
             }
         },
         "/resetpassword": {
-            "parameters": [{
-                "name": "token",
-                "in": "header",
-                "description": "reset password"
-            }],
             "put": {
                 "tags": [
                     "FundooNotes"
@@ -253,7 +263,11 @@
                     "500": {
                         "description": "could not find user"
                     }
-                }
+                },
+                "security": [{
+                    "JWT": []
+                }],
+                "deprecated": false
             }
         },
         "/labels/": {
@@ -273,7 +287,11 @@
                     "500": {
                         "description": "could not find label"
                     }
-                }
+                },
+                "security": [{
+                    "JWT": []
+                }],
+                "deprecated": false
             },
             "post": {
                 "tags": [
@@ -303,7 +321,11 @@
                     "400": {
                         "description": "label cannot be empty"
                     }
-                }
+                },
+                "security": [{
+                    "JWT": []
+                }],
+                "deprecated": false
             }
         },
         "/labels/{id}": {
@@ -340,7 +362,11 @@
                     "500": {
                         "description": "could not find label"
                     }
-                }
+                },
+                "security": [{
+                    "JWT": []
+                }],
+                "deprecated": false
             },
             "delete": {
                 "tags": [
@@ -360,7 +386,11 @@
                     "500": {
                         "description": "could not delete label"
                     }
-                }
+                },
+                "security": [{
+                    "JWT": []
+                }],
+                "deprecated": false
             },
             "get": {
                 "tags": [
@@ -377,7 +407,11 @@
                     "200": {
                         "description": "label found successfully"
                     }
-                }
+                },
+                "security": [{
+                    "JWT": []
+                }],
+                "deprecated": false
             }
         },
         "/addlabeltonote/{id}": {
@@ -403,12 +437,13 @@
                 }],
                 "responses": {
                     "200": {
-                        "description": "Label is added to note",
-                        "schema": {
-                            "$ref": "#/definitions/addlabeltonote"
-                        }
+                        "description": "Label is added to note"
                     }
-                }
+                },
+                "security": [{
+                    "JWT": []
+                }],
+                "deprecated": false
             }
         },
         "/removelabelfromnote/{id}": {
@@ -434,12 +469,13 @@
                 }],
                 "responses": {
                     "200": {
-                        "description": "Label is removed from note",
-                        "schema": {
-                            "$ref": "#/definitions/labelsToNote"
-                        }
+                        "description": "Label is removed from note"
                     }
-                }
+                },
+                "security": [{
+                    "JWT": []
+                }],
+                "deprecated": false
             }
         },
         "/activateemail": {
@@ -448,16 +484,15 @@
                 "tags": [
                     "User"
                 ],
-                "parameters": [{
-                    "name": "token",
-                    "in": "header",
-                    "description": "token"
-                }],
                 "responses": {
                     "200": {
                         "description": "Account has been activated  !"
                     }
-                }
+                },
+                "security": [{
+                    "JWT": []
+                }],
+                "deprecated": false
             }
         },
         "/addcollaborator": {
@@ -478,7 +513,11 @@
                     "200": {
                         "description": "Successfully created collaborator"
                     }
-                }
+                },
+                "security": [{
+                    "JWT": []
+                }],
+                "deprecated": false
             }
         },
         "/removecollaborator": {
@@ -499,8 +538,19 @@
                     "200": {
                         "description": "Successfully remove collaborator"
                     }
-                }
+                },
+                "security": [{
+                    "JWT": []
+                }],
+                "deprecated": false
             }
+        }
+    },
+    "securityDefinitions": {
+        "JWT": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     },
     "definitions": {
@@ -552,7 +602,6 @@
         },
         "resetPassword": {
             "required": [
-                "token",
                 "newPassword",
                 "confirmPassword"
             ],
@@ -642,17 +691,6 @@
             ],
             "properties": {
                 "labelId": {
-                    "type": "string"
-                }
-            }
-        },
-        "activateAccount": {
-            "required": [
-                "token"
-            ],
-            "properties": {
-                "token": {
-                    "in": "header",
                     "type": "string"
                 }
             }
