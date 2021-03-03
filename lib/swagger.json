@@ -25,7 +25,7 @@
         "/notes/": {
             "get": {
                 "tags": [
-                    "FundooNotes"
+                    "Notes"
                 ],
                 "summary": "retrive all notes",
                 "description": "retrive all notes",
@@ -47,7 +47,7 @@
             },
             "post": {
                 "tags": [
-                    "FundooNotes"
+                    "Notes"
                 ],
                 "description": "create a new note",
                 "summary": "create a note",
@@ -90,7 +90,7 @@
             }],
             "put": {
                 "tags": [
-                    "FundooNotes"
+                    "Notes"
                 ],
                 "summary": "Update an existing Note",
                 "description": "find by ID and update",
@@ -122,9 +122,10 @@
             },
             "delete": {
                 "tags": [
-                    "FundooNotes"
+                    "Notes"
                 ],
                 "summary": "Delete a Note",
+                "name": "noteId",
                 "in": "path",
                 "description": "delete a Note by its ID",
                 "operationId": "deleteNote",
@@ -146,7 +147,7 @@
             },
             "get": {
                 "tags": [
-                    "FundooNotes"
+                    "Notes"
                 ],
                 "summary": "Get single Note",
                 "responses": {
@@ -163,7 +164,7 @@
         "/register/": {
             "post": {
                 "tags": [
-                    "FundooNotes"
+                    "User"
                 ],
                 "description": "create a new user",
                 "summary": "create a user",
@@ -193,19 +194,19 @@
             }
         },
         "/login/": {
-            "parameters": [{
-                "name": " UserLogin",
-                "in": "body",
-                "type": "string",
-                "required": true,
-                "schema": {
-                    "$ref": "#/definitions/UserLogin"
-                }
-            }],
             "post": {
                 "tags": [
-                    "FundooNotes"
+                    "User"
                 ],
+                "parameters": [{
+                    "name": " UserLogin",
+                    "in": "body",
+                    "type": "string",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/UserLogin"
+                    }
+                }],
                 "summary": "Get single user",
                 "responses": {
                     "200": {
@@ -226,7 +227,7 @@
             }],
             "post": {
                 "tags": [
-                    "FundooNotes"
+                    "User"
                 ],
                 "summary": "Get reset password mail",
                 "responses": {
@@ -239,7 +240,7 @@
         "/resetpassword": {
             "put": {
                 "tags": [
-                    "FundooNotes"
+                    "User"
                 ],
                 "summary": "reset password",
                 "description": "set new password",
@@ -273,7 +274,7 @@
         "/labels/": {
             "get": {
                 "tags": [
-                    "FundooNotes"
+                    "Labels"
                 ],
                 "summary": "retrive all label",
                 "description": "retrive all label",
@@ -295,7 +296,7 @@
             },
             "post": {
                 "tags": [
-                    "FundooNotes"
+                    "Labels"
                 ],
                 "description": "create a new label",
                 "summary": "create a label",
@@ -338,7 +339,7 @@
             }],
             "put": {
                 "tags": [
-                    "FundooNotes"
+                    "Labels"
                 ],
                 "summary": "Update an existing label",
                 "description": "find by ID and update",
@@ -370,7 +371,7 @@
             },
             "delete": {
                 "tags": [
-                    "FundooNotes"
+                    "Labels"
                 ],
                 "summary": "Delete a label",
                 "in": "path",
@@ -394,15 +395,9 @@
             },
             "get": {
                 "tags": [
-                    "FundooNotes"
+                    "Labels"
                 ],
                 "summary": "Get single label",
-                "parameters": [{
-                    "name": " id ",
-                    "in": "path",
-                    "type": "string",
-                    "required": true
-                }],
                 "responses": {
                     "200": {
                         "description": "label found successfully"
@@ -451,7 +446,7 @@
                 "name": "id",
                 "in": "path",
                 "required": true,
-                "description": "ID of the note to which label will be addide",
+                "description": "ID of the note to which label will be add",
                 "type": "string"
             }],
             "put": {
@@ -495,7 +490,14 @@
                 "deprecated": false
             }
         },
-        "/addcollaborator": {
+        "/addcollaborator/{id}": {
+            "parameters": [{
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "description": "ID of the note to which collaborator will be add",
+                "type": "string"
+            }],
             "put": {
                 "summary": "Create collaborator",
                 "tags": [
@@ -520,16 +522,23 @@
                 "deprecated": false
             }
         },
-        "/removecollaborator": {
+        "/removecollaborator/{id}": {
+            "parameters": [{
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "description": "ID of the note to which collaborator will be remove",
+                "type": "string"
+            }],
             "put": {
-                "summary": "Create collaborator",
+                "summary": "remove collaborator",
                 "tags": [
                     "Collaborator"
                 ],
                 "parameters": [{
                     "name": "removeCollaborator",
                     "in": "body",
-                    "description": "Creates collaborator",
+                    "description": "remove collaborator",
                     "schema": {
                         "$ref": "#/definitions/removeCollaborator"
                     }
@@ -632,10 +641,6 @@
                 }
             }
         },
-        "notes": {
-            "type": "array",
-            "$ref": "#/definitions/note"
-        },
         "updateNote": {
             "required": [
                 "title",
@@ -697,14 +702,9 @@
         },
         "addCollaborator": {
             "required": [
-                "noteId",
                 "collaboratorId"
             ],
             "properties": {
-                "noteId": {
-                    "in": "body",
-                    "type": "string"
-                },
                 "collaboratorId": {
                     "in": "body",
                     "type": "string"
@@ -713,14 +713,9 @@
         },
         "removeCollaborator": {
             "required": [
-                "noteId",
                 "collaboratorId"
             ],
             "properties": {
-                "noteId": {
-                    "in": "body",
-                    "type": "string"
-                },
                 "collaboratorId": {
                     "in": "body",
                     "type": "string"
