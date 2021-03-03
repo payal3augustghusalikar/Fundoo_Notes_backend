@@ -23,14 +23,13 @@ class Subscriber {
                     if (error) {
                         return callback(error, null);
                     }
-                    let queueName = "EmailInQueues1";
+                    let queueName = "getEmail";
                     channel.assertQueue(queueName, {
                         durable: false,
                     });
                     channel.consume(queueName, (msg) => {
-                        console.log("mess");
                         console.log(`Message consumes: ${msg.content.toString()}`);
-                        channel.ack(msg);
+                        //  channel.ack(msg);
                         return callback(null, msg.content.toString());
                     });
                 });

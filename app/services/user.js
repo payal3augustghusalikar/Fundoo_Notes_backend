@@ -95,7 +95,7 @@ class userService {
                                     const userId = data[0]._id;
                                     console.log("userId1", userId);
 
-                                    // req.session.userIdforLogin = userId;
+                                    req.session.userIdforLogin = userId;
                                     redisCache.setRedis(data, userEmail, key);
                                     return callback(null, data);
                                 } else {

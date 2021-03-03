@@ -16,6 +16,8 @@ const app = express();
 require("./config").set(process.env.NODE_ENV, app);
 const config = require("./config").get();
 const logger = require("../../logger/logger.js");
+const uuid = require("uuid").v4;
+const cookieParser = require("cookie-parser");
 
 require("dotenv").config();
 
@@ -33,10 +35,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 app.set("trust proxy", 1); // trust first proxy
 app.use(
     session({
+        genid: function(req) {
+            return uuid(); // use UUIDs for session IDs
+        },
         secret: "sessionpassword",
         resave: false,
         saveUninitialized: true,

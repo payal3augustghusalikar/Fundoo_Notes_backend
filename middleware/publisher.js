@@ -16,7 +16,6 @@ class Publish {
 
         amqp.connect("amqp://localhost", (error, connection) => {
             if (error) {
-                
                 //  logger.connect("Error while connecting to Rabbit Mq");
                 return callback(error, null);
             }
@@ -25,7 +24,7 @@ class Publish {
                     //  logger.error("Error while creating chnannel");
                     return callback(error, null);
                 }
-                let queueName = "EmailInQueues1";
+                let queueName = "getEmail";
                 let message = userInfo.emailId;
                 channel.assertQueue(queueName, {
                     durable: false,

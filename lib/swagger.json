@@ -23,17 +23,17 @@
     ],
     "paths": {
         "/notes/": {
+            "parameters": [{
+                "name": "token",
+                "in": "header",
+                "description": "token"
+            }],
             "get": {
                 "tags": [
                     "FundooNotes"
                 ],
                 "summary": "retrive all notes",
                 "description": "retrive all notes",
-                "parameters": [{
-                    "name": "token",
-                    "in": "header",
-                    "description": "token"
-                }],
                 "responses": {
                     "200": {
                         "description": "Note found successfully"
@@ -62,14 +62,14 @@
                     "name": " Note ",
                     "in": "body",
                     "type": "string",
-                    "required": true
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/Note"
+                    }
                 }],
                 "responses": {
                     "200": {
-                        "description": "Note created successfully",
-                        "schema": {
-                            "$ref": "#/definitions/Note"
-                        }
+                        "description": "Note created successfully"
                     },
                     "400": {
                         "description": "Note cannot be empty"
@@ -96,14 +96,14 @@
                     "name": " Note ",
                     "in": "body",
                     "type": "string",
-                    "required": true
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/updateNote"
+                    }
                 }],
                 "responses": {
                     "200": {
-                        "description": "Note updated successfully",
-                        "schema": {
-                            "$ref": "#/definitions/Note"
-                        }
+                        "description": "Note updated successfully"
                     },
                     "404": {
                         "description": "Note not found "
@@ -159,15 +159,17 @@
                     "application/json"
                 ],
                 "parameters": [{
-                    "name": " User",
+                    "name": " registration",
                     "in": "body",
                     "type": "string",
-                    "required": true
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/registration"
+                    }
                 }],
                 "responses": {
                     "200": {
-                        "description": "user created successfully",
-                        "$ref": "#/definitions/registration"
+                        "description": "user created successfully"
                     },
                     "400": {
                         "description": "user information cannot be empty"
@@ -177,10 +179,13 @@
         },
         "/login/": {
             "parameters": [{
-                "name": " User",
+                "name": " UserLogin",
                 "in": "body",
                 "type": "string",
-                "required": true
+                "required": true,
+                "schema": {
+                    "$ref": "#/definitions/UserLogin"
+                }
             }],
             "post": {
                 "tags": [
@@ -189,18 +194,20 @@
                 "summary": "Get single user",
                 "responses": {
                     "200": {
-                        "description": "user login successfully",
-                        "$ref": "#/definitions/UserLogin"
+                        "description": "user login successfully"
                     }
                 }
             }
         },
         "/forgotpassword/": {
             "parameters": [{
-                "name": " User",
+                "name": " forgotPassword",
                 "in": "body",
                 "type": "string",
-                "required": true
+                "required": true,
+                "schema": {
+                    "$ref": "#/definitions/forgotPassword"
+                }
             }],
             "post": {
                 "tags": [
@@ -209,8 +216,7 @@
                 "summary": "Get reset password mail",
                 "responses": {
                     "200": {
-                        "description": "reset mail sent successfully",
-                        "$ref": "#/definitions/ForgotPassword"
+                        "description": "reset mail sent successfully"
                     }
                 }
             }
@@ -229,15 +235,17 @@
                 "description": "set new password",
                 "operationId": "updatePassword",
                 "parameters": [{
-                    "name": " new password ",
+                    "name": "resetPassword ",
                     "in": "body",
                     "type": "string",
-                    "required": true
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/resetPassword"
+                    }
                 }],
                 "responses": {
                     "200": {
-                        "description": "Password updated successfully",
-                        "$ref": "#/definitions/ResetPassword"
+                        "description": "Password updated successfully"
                     },
                     "404": {
                         "description": "Password not found "
@@ -283,14 +291,14 @@
                     "name": " label ",
                     "in": "body",
                     "type": "string",
-                    "required": true
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/label"
+                    }
                 }],
                 "responses": {
                     "200": {
-                        "description": "label created successfully",
-                        "schema": {
-                            "$ref": "#/definitions/label"
-                        }
+                        "description": "label created successfully"
                     },
                     "400": {
                         "description": "label cannot be empty"
@@ -317,7 +325,10 @@
                     "name": " label ",
                     "in": "body",
                     "type": "string",
-                    "required": true
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/label"
+                    }
                 }],
                 "responses": {
                     "200": {
@@ -357,8 +368,8 @@
                 ],
                 "summary": "Get single label",
                 "parameters": [{
-                    "name": " label ",
-                    "in": "body",
+                    "name": " id ",
+                    "in": "path",
                     "type": "string",
                     "required": true
                 }],
@@ -383,7 +394,7 @@
                 ],
                 "summary": "Add Labels to Note",
                 "parameters": [{
-                    "name": "LabelId",
+                    "name": "addlabeltonote",
                     "in": "body",
                     "description": "Adding Labels to Note",
                     "schema": {
@@ -414,7 +425,7 @@
                 ],
                 "summary": "Remove Label from Note",
                 "parameters": [{
-                    "name": "labelId",
+                    "name": "removelabelfromnote",
                     "in": "body",
                     "description": "Removing Label from Note",
                     "schema": {
@@ -444,22 +455,19 @@
                 }],
                 "responses": {
                     "200": {
-                        "description": "Account has been activated  !",
-                        "schema": {
-                            "$ref": "#/definitions/activateemail"
-                        }
+                        "description": "Account has been activated  !"
                     }
                 }
             }
         },
         "/addcollaborator": {
-            "post": {
+            "put": {
                 "summary": "Create collaborator",
                 "tags": [
                     "Collaborator"
                 ],
                 "parameters": [{
-                    "name": "Collaborator",
+                    "name": "addCollaborator",
                     "in": "body",
                     "description": "Creates collaborator",
                     "schema": {
@@ -468,34 +476,28 @@
                 }],
                 "responses": {
                     "200": {
-                        "description": "Successfully created collaborator",
-                        "schema": {
-                            "$ref": "#/definitions/note"
-                        }
+                        "description": "Successfully created collaborator"
                     }
                 }
             }
         },
         "/removecollaborator": {
             "put": {
+                "summary": "Create collaborator",
                 "tags": [
                     "Collaborator"
                 ],
-                "summary": "Delete collaborator with given ID",
                 "parameters": [{
-                    "name": "collaborator",
+                    "name": "removeCollaborator",
                     "in": "body",
-                    "description": "Remove collaborator",
+                    "description": "Creates collaborator",
                     "schema": {
-                        "$ref": "#/definitions/removecollaborator"
+                        "$ref": "#/definitions/removeCollaborator"
                     }
                 }],
                 "responses": {
                     "200": {
-                        "description": "Successfully removed collaborator from note",
-                        "schema": {
-                            "$ref": "#/definitions/note"
-                        }
+                        "description": "Successfully remove collaborator"
                     }
                 }
             }
@@ -524,7 +526,7 @@
                 }
             }
         },
-        "login": {
+        "UserLogin": {
             "required": [
                 "emailId",
                 "password"
@@ -565,7 +567,7 @@
                 }
             }
         },
-        "note": {
+        "Note": {
             "required": [
                 "title",
                 "description"
@@ -665,7 +667,7 @@
                     "in": "body",
                     "type": "string"
                 },
-                "userId": {
+                "collaboratorId": {
                     "in": "body",
                     "type": "string"
                 }
