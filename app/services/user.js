@@ -53,7 +53,6 @@ class userService {
                         }
                         return callback(null, data);
                     });
-                    // return callback(null, data);
                 }
                 return callback(null, data);
             });
@@ -66,8 +65,6 @@ class userService {
      * @param {*} callback is the callback for controller
      */
     login = (userLoginData, callback) => {
-        //console.log("session: " + JSON.stringify(req.session));
-
         const userEmail = userLoginData.emailId;
         const key = "login";
         redisCache.redisGet(userEmail, key, (error, data) => {
@@ -119,59 +116,6 @@ class userService {
      * @param {*} userInfo
      * @param {*} callback
      */
-    // forgotPassword = (userInfo, callback) => {
-    //     User.findOne(userInfo, (error, data) => {
-    //         if (error) {
-    //             logger.error("Some error occurred");
-    //             return callback(new Error("Some error occurred"), null);
-    //         } else if (!data) {
-    //             logger.error("User with this email Id dosent exist");
-    //             return callback(
-    //                 new Error("User with this email Id dosent exist"),
-    //                 null
-    //             );
-    //         } else {
-    //             const token = helper.createToken(data);
-    //             userInfo.token = token;
-    //             // publisher.on("getMessage", () => {
-    //             //     console.log("Someone bought a ticket!");
-    //             // });
-
-    //             // publisher.getMessage(userInfo, callback);
-    //             publish.getMessage(userInfo, callback);
-    //             const mailData = {
-    //                 subject: "Reset Password",
-    //                 endPoint: "resetpassword",
-    //             };
-    //             consume.consumeMessage(mailData, (error, message) => {
-    //                 if (error)
-    //                     callBack(
-    //                         new Error("Some error occurred while consuming message"),
-    //                         null
-    //                     );
-    //                 else {
-    //                     userInfo.emailId = message;
-    //                     // const mailData = {
-    //                     //     subject: "Reset Password",
-    //                     //     endPoint: "resetpassword",
-    //                     // };
-    //                     // helper.emailSender(userInfo, mailData, (error, data) => {
-    //                     //     if (error) {
-    //                     //         logger.error("Some error occurred while sending email");
-    //                     //         return callback(
-    //                     //             new Error("Some error occurred while sending email"),
-    //                     //             null
-    //                     //         );
-    //                     //     }
-    //                     //     return callback(null, data);
-    //                     // });
-    //                     return callback(null, data);
-    //                 }
-    //             });
-    //         }
-    //     });
-    // };
-
     forgotPassword = (userInfo, callback) => {
         User.findOne(userInfo, (error, data) => {
             if (error) {
@@ -186,11 +130,6 @@ class userService {
             } else {
                 const token = helper.createToken(data);
                 userInfo.token = token;
-                // publisher.on("getMessage", () => {
-                //     console.log("Someone bought a ticket!");
-                // });
-
-                // publisher.getMessage(userInfo, callback);
                 publish.getMessage(userInfo, callback);
                 const mailData = {
                     subject: "Reset Password",
@@ -202,23 +141,7 @@ class userService {
                             new Error("Some error occurred while consuming message"),
                             null
                         );
-                    else {
-                        // userInfo.emailId = message;
-                        // const mailData = {
-                        //     subject: "Reset Password",
-                        //     endPoint: "resetpassword",
-                        // };
-                        // helper.emailSender(userInfo, mailData, (error, data) => {
-                        //     if (error) {
-                        //         logger.error("Some error occurred while sending email");
-                        //         return callback(
-                        //             new Error("Some error occurred while sending email"),
-                        //             null
-                        //         );
-                        //     }
-                        //     return callback(null, data);
-                        // });
-                    }
+                    return callback(null, data);
                 });
             }
         });
