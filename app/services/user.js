@@ -41,35 +41,19 @@ class userService {
                 const token = helper.createToken(data);
                 userInfo.token = token;
                 emmiter.emit("publish", userInfo, callback);
-
-                // publish.getMessage(userInfo, callback);
                 const mailData = {
                     subject: "verify your EmailId",
                     endPoint: "activateemail",
                 };
-                //  consume.consumeMessage(token, mailData, (error, message) => {
                 emmiter.emit("consume", token, mailData, (error, message) => {
                     if (error)
-                        callBack(
+                        callback(
                             new Error("Some error occurred while consuming message"),
                             null
                         );
                     return callback(null, data);
                 });
-                //  userInfo.emailId = message;
-
-                // helper.emailSender(userInfo, mailData, (error, data) => {
-                //     if (error) {
-                //         logger.error("Some error occurred while sending email");
-                //         return callback(
-                //             new Error("Some error occurred while sending email"),
-                //             null
-                //         );
-                //     }
-                // return callback(null, data);
-                // });
             }
-            //  return callback(null, data);
         });
     };
 
@@ -145,16 +129,13 @@ class userService {
                 const token = helper.createToken(data);
                 userInfo.token = token;
                 emmiter.emit("publish", userInfo, callback);
-
-                // publish.getMessage(userInfo, callback);
                 const mailData = {
                     subject: "Reset Password",
                     endPoint: "resetpassword",
                 };
-                //  consume.consumeMessage(token, mailData, (error, message) => {
                 emmiter.emit("consume", token, mailData, (error, message) => {
                     if (error)
-                        callBack(
+                        callback(
                             new Error("Some error occurred while consuming message"),
                             null
                         );
