@@ -10,6 +10,7 @@ const amqp = require("amqplib/callback_api");
 const EventEmitter = require("events");
 const event = new EventEmitter();
 var ee = require("event-emitter");
+//const helper = require("../../middleware/helper.js");
 
 class Subscriber {
     consumeMessage = (callback) => {
@@ -29,7 +30,7 @@ class Subscriber {
                     });
                     channel.consume(queueName, (msg) => {
                         console.log(`Message consumes: ${msg.content.toString()}`);
-                        //  channel.ack(msg);
+                        channel.ack(msg);
                         return callback(null, msg.content.toString());
                     });
                 });

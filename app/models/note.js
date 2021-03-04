@@ -42,11 +42,10 @@ const NoteSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
     }, ],
-
-    __v: { type: Number, select: false },
 }, {
     timestamps: true,
 });
+NoteSchema.set("versionKey", false);
 const Note = mongoose.model("Note", NoteSchema);
 
 class NoteModel {

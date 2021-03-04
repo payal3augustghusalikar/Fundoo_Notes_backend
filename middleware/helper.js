@@ -40,7 +40,7 @@ class Helper {
      */
     verifyToken = (req, res, next) => {
         try {
-            //  if (req.session.userIdforLogin) {
+            // if (req.session.token) {
             let token = req.headers.authorization.split(" ")[1];
             console.log(token);
             const decode = jwt.verify(token, process.env.SECRET_KEY);
@@ -50,6 +50,36 @@ class Helper {
             //     console.log("session not found");
             //     res.redirect("/login");
             // }
+        } catch (error) {
+            res.status(401).send({
+                error: "unauthorized",
+            });
+        }
+    };
+
+    /**
+     * @description verify the token to authorized user
+     * @param {*} req
+     * @param {*} res
+     * @param {*} next
+     */
+    verifyUser = (req, res, next) => {
+        try {
+            console.log("session: " + JSON.stringify(req.session));
+            console.log("sessionid: " + req.session.id);
+            console.log(req.session.token);
+
+            if (req.session.token) {
+                let token = req.headers.authorization.split(" ")[1];
+                console.log(token);
+
+                const decode = jwt.verify(token, process.env.SECRET_KEY);
+                req.userData = decode;
+                next();
+            } else {
+                console.log("session not found");
+                res.redirect("/login");
+            }
         } catch (error) {
             res.status(401).send({
                 error: "unauthorized",

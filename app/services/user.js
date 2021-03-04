@@ -66,6 +66,8 @@ class userService {
      * @param {*} callback is the callback for controller
      */
     login = (userLoginData, callback) => {
+        //console.log("session: " + JSON.stringify(req.session));
+
         const userEmail = userLoginData.emailId;
         const key = "login";
         redisCache.redisGet(userEmail, key, (error, data) => {
@@ -84,18 +86,16 @@ class userService {
                     } else if (data) {
                         bcrypt.compare(
                             userLoginData.password,
+
                             data[0].password,
                             (error, result) => {
                                 if (result) {
                                     logger.info("Authorization success");
-                                    // const userId = data[0]._id;
-                                    // console.log("userId1", userId);
                                     const token = helper.createToken(data[0]);
                                     data.token = token;
                                     const userId = data[0]._id;
                                     console.log("userId1", userId);
 
-                                    req.session.userIdforLogin = userId;
                                     redisCache.setRedis(data, userEmail, key);
                                     return callback(null, data);
                                 } else {

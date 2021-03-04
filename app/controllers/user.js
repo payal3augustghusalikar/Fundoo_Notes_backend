@@ -71,17 +71,9 @@ class userController {
      */
     login = (req, res) => {
         try {
-            var start = new Date();
-            // let confirmPassword = req.body.confirmPassword;
+            console.log("session: " + JSON.stringify(req.session));
+            console.log("sessionid: " + req.session.id);
             let password = req.body.password;
-
-            // if (password !== confirmPassword) {
-            //     return res.send({
-            //         success: false,
-            //         status_code: status.Bad_Request,
-            //         message: "Password not match",
-            //     });
-            // } else {
             const userLoginInfo = {
                 emailId: req.body.emailId,
                 password: password,
@@ -96,25 +88,31 @@ class userController {
                     });
                 } else if (data.length < 1) {
                     logger.info("user not exist with emailid" + req.body.emailId);
+
                     return res.send({
                         success: false,
                         status_code: status.Not_Found,
                         message: "Auth Failed",
                     });
                 }
+                console.log(req.session.isAuth);
+                req.session.isAuth = true;
+                req.session.token = data.token;
+                console.log(req.session.token);
+                console.log("session: " + JSON.stringify(req.session.checkToken));
                 return res.send({
                     success: status.Success,
                     message: "login successfull",
                     token: data.token,
                 });
             });
-            ///  }
         } catch (error) {
             logger.error("could not found user with emailid" + req.body.emailId);
+            console.log(error);
             return res.send({
                 success: false,
                 status_code: status.Internal_Server_Error,
-                message: "error retrieving user with emailid " + req.body.emailId,
+                message: "error retrieving user with emailid " + req.body.emailId + error,
             });
         }
     };

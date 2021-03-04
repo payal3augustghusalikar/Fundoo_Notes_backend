@@ -18,10 +18,10 @@ const LabelSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
     },
-    __v: { type: Number, select: false },
 }, {
     timestamps: true,
 });
+LabelSchema.set("versionKey", false);
 const Label = mongoose.model("Label", LabelSchema);
 
 class LabelModel {

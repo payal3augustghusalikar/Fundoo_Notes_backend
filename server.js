@@ -12,7 +12,7 @@ const bodyParser = require("body-parser");
 require("./config/mongoDB.js")();
 // create express app
 const app = express();
-
+const mongoDbSession = require("connect-mongodb-session")(session);
 require("./config").set(process.env.NODE_ENV, app);
 const config = require("./config").get();
 const logger = require("../../logger/logger.js");
@@ -20,6 +20,11 @@ const uuid = require("uuid").v4;
 const cookieParser = require("cookie-parser");
 
 require("dotenv").config();
+const connectStore = new mongoDbSession({
+    url: process.env.MONGODB_URL,
+    databaseName: "fundooNotes",
+    collection: "sessions",
+});
 
 /**
  * @description require swagger-ui and swagger.json
@@ -46,7 +51,8 @@ app.use(
         secret: "sessionpassword",
         resave: false,
         saveUninitialized: true,
-        cookie: { secure: true },
+        // store: connectStore,
+        cookie: { maxAge: 1000 * 60 * 60 * 24 * 7, secure: true },
     })
 );
 
