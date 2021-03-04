@@ -152,27 +152,37 @@ class NoteController {
                 description: req.body.description,
                 noteID: req.params.noteId,
             };
-            noteService.update(noteInfo, (error, data) => {
-                return (
-                    error ?
-                    (logger.error("Error updating note with id : " + noteID),
+            const noteData = {
+                title: noteInfo.title,
+                description: noteInfo.description,
+            };
+            const validation = ControllerDataValidation.validate(noteData);
+            return validation.error ?
+                res.status(400).send({
+                    success: false,
+                    message: "please enter valid details " + validation.error,
+                }) :
+                noteService.update(noteInfo, (error, data) => {
+                    return (
+                        error ?
+                        (logger.error("Error updating note with id : " + noteID),
+                            res.send({
+                                status_code: status.Internal_Server_Error,
+                                message: "Error updating note with id : " + noteID,
+                            })) :
+                        !data ?
+                        (logger.warn("note not found with id : " + noteID),
+                            res.send({
+                                status_code: status.Not_Found,
+                                message: "note not found with id : " + noteID,
+                            })) :
+                        logger.info("note updated successfully !"),
                         res.send({
-                            status_code: status.Internal_Server_Error,
-                            message: "Error updating note with id : " + noteID,
-                        })) :
-                    !data ?
-                    (logger.warn("note not found with id : " + noteID),
-                        res.send({
-                            status_code: status.Not_Found,
-                            message: "note not found with id : " + noteID,
-                        })) :
-                    logger.info("note updated successfully !"),
-                    res.send({
-                        message: "note updated successfully !",
-                        data: data,
-                    })
-                );
-            });
+                            message: "note updated successfully !",
+                            data: data,
+                        })
+                    );
+                });
         } catch (error) {
             return (
                 err.kind === "ObjectId" ?

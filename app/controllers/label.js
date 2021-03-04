@@ -10,6 +10,12 @@ const Joi = require("joi");
 const logger = require("../../logger/logger.js");
 const status = require("../../middleware/staticFile.json");
 let vallidator = require("../../middleware/vallidation.js");
+let vallidator1 = require("../../middleware/vallidation1.js");
+const namePattern = Joi.string()
+    .regex(/^[a-zA-Z ]+$/)
+    .min(3)
+    .max(16)
+    .required();
 
 class LabelController {
     /**
@@ -24,12 +30,13 @@ class LabelController {
                 name: req.body.name,
             };
             const token = req.headers.authorization.split(" ")[1];
-            const validation = vallidator.validate(labelInfo);
+            const validation = namePattern.validate(labelInfo.name);
+            console.log(validation);
             return validation.error ?
                 res.send({
                     success: false,
                     status: status.Bad_Request,
-                    message: "please enter valid details",
+                    message: "please enter valid details" + validation.error,
                 }) :
                 labelServices
                 .create(labelInfo, token)
@@ -151,12 +158,22 @@ class LabelController {
                 name: req.body.name,
                 labelID: req.params.labelId,
             };
-            labelServices
+            const validation = namePattern.validate(labelInfo.name);
+            console.log(validation);
+            return validation.error ?
+                res.send({
+                    success: false,
+                    status: status.Bad_Request,
+                    message: "please enter valid details" + validation.error,
+                }) :
+                labelServices
                 .update(labelInfo)
                 .then((data) => {
                     !data
                         ?
-                        (logger.warn("label not found with id : " + req.params.labelId),
+                        (logger.warn(
+                                "label not found with id : " + req.params.labelId
+                            ),
                             res.send({
                                 success: false,
                                 status_code: status.Not_Found,
@@ -172,7 +189,9 @@ class LabelController {
                     // this.findAll();
                 })
                 .catch((error) => {
-                    logger.error("Error updating label with id : " + req.params.labelId),
+                    logger.error(
+                            "Error updating label with id : " + req.params.labelId
+                        ),
                         res.send({
                             success: false,
                             status_code: status.Unauthorized,

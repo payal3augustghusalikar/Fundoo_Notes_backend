@@ -99,7 +99,7 @@ class userController {
                 req.session.isAuth = true;
                 req.session.token = data.token;
                 console.log(req.session.token);
-                console.log("session: " + JSON.stringify(req.session.checkToken));
+                console.log("session: " + JSON.stringify(req.session.token));
                 return res.send({
                     success: status.Success,
                     message: "login successfull",
@@ -186,47 +186,46 @@ class userController {
                     confirmPassword: confirmPassword,
                     token: token,
                 };
-                // const validationResult = vallidator.validate(
-                //     resetPasswordData.newPassword
-                // );
+                // const validationResult = vallidator.validate(resetPasswordData);
+                // console.log(validationResult);
                 // validationResult.error ?
                 //     res.send({
                 //         success: false,
                 //         status_code: status.Bad_Request,
                 //         message: error,
                 //     }) :
-                console.log("ctrl");
-                userService.resetPassword(resetPasswordData, (error, data) => {
-                    if (error) {
-                        logger.error(error.message);
-                        return res.send({
-                            success: false,
-                            status_code: status.Internal_Server_Error,
-                            message: error.message,
-                        });
-                    } else if (!data) {
-                        logger.error("Authorization failed");
-                        return res.send({
-                            success: false,
-                            status_code: status.Internal_Server_Error,
-                            message: "Authorization failed  " + error.message,
-                        });
-                    } else {
-                        logger.info("Password has been changed !");
-                        return res.send({
-                            success: true,
-                            status_code: status.Success,
-                            message: "Password has been changed ",
-                        });
-                    }
-                });
+                console.log("ctrl"),
+                    userService.resetPassword(resetPasswordData, (error, data) => {
+                        if (error) {
+                            logger.error(error.message);
+                            return res.send({
+                                success: false,
+                                status_code: status.Internal_Server_Error,
+                                message: error.message,
+                            });
+                        } else if (!data) {
+                            logger.error("Authorization failed");
+                            return res.send({
+                                success: false,
+                                status_code: status.Internal_Server_Error,
+                                message: "Authorization failed  " + error.message,
+                            });
+                        } else {
+                            logger.info("Password has been changed !");
+                            return res.send({
+                                success: true,
+                                status_code: status.Success,
+                                message: "Password has been changed ",
+                            });
+                        }
+                    });
             }
         } catch (error) {
             logger.error("Some error occurred !");
             return res.send({
                 success: false,
                 status_code: status.Internal_Server_Error,
-                message: "Some error occurred !" + error.message,
+                message: "Some error occurred !" + error,
             });
         }
     };
