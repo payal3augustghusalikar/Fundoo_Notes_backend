@@ -37,7 +37,7 @@ class NoteService {
             if (data) {
                 return callback(null, data);
             } else if (!data) {
-                Note.findAll((error, data) => {
+                return Note.findAll((error, data) => {
                     if (error) {
                         logger.error("Some error occurred");
                         return callback(new Error("Some error occurred"), null);

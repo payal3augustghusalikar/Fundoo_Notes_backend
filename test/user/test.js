@@ -268,31 +268,34 @@ describe("Resetpassword", () => {
                 done();
             });
     });
+});
 
-    describe.only("activateemail", () => {
-        it("givenUser_whenGivenProperToken_shouldActivateEmail", (done) => {
-            let token = userData.user.properToken.token;
-            chai
-                .request(server)
-                .put("/activateemail")
-                .set("Authorization", token)
-                .end((err, res) => {
-                    res.should.have.status(200);
-                    res.body.should.be.a("object");
-                    done();
-                });
-        });
-        it("givenUser_whenGivenProperToken_shouldNotActivateEmail", (done) => {
-            let token = userData.user.ImproperToken.token;
-            chai
-                .request(server)
-                .put("/activateemail")
-                .set("Authorization", token)
-                .end((err, res) => {
-                    res.should.have.status(401);
-                    res.body.should.be.a("object");
-                    done();
-                });
-        });
+describe.only("activateemail", () => {
+    it("givenUser_whenGivenProperToken_shouldActivateEmail", (done) => {
+        // let token = userData.user.properToken.token;
+        let token =
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbElkIjoiZ2h1c2FsaWthcnBheWFsQGdtYWlsLmNvbSIsImlkIjoiNjAxOGRiOWM3MzU1YTkyM2I4OGFmM2UwIiwiaWF0IjoxNjE0ODcxODg5LCJleHAiOjE2MjAwNTU4ODl9.gqfVbu8VeLRYZlrWDjwCaA1pihl5TwYQ0i_EfaGRBgc";
+        chai
+            .request(server)
+            .put("/activateemail")
+            .set("Authorization", token)
+            .end((err, res) => {
+                console.log(res.body);
+                res.should.have.status(200);
+                res.body.should.be.a("object");
+                done();
+            });
+    });
+    it("givenUser_whenGivenImProperToken_shouldNotActivateEmail", (done) => {
+        let token = userData.user.ImproperToken.token;
+        chai
+            .request(server)
+            .put("/activateemail")
+            .set("Authorization", token)
+            .end((err, res) => {
+                res.should.have.status(401);
+                res.body.should.be.a("object");
+                done();
+            });
     });
 });

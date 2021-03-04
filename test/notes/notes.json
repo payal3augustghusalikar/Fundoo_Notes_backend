@@ -26,7 +26,8 @@
             "collaboratorId": "602ffc4f2d57d8173c1ff"
         },
         "addImpropercollaboratorId": [{
-            "collaboratorId": "6013c8c6d5a65c2d789a2a"
+            "collaboratorId": "6013c8c6d5a65c2d789a2a",
+            "noteId": "602fe7f7d22dba060c9"
         }],
         "noteForLabel": {
             "noteId": "602fe7f7d22dba060c91bd96"

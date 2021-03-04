@@ -87,15 +87,6 @@ class NoteModel {
         Note.findById(noteID, callback);
     };
 
-    // /**
-    //  *@description find all note
-    //  * @param {*} labelId
-    //  * @param {*} callback
-    //  */
-    // findNotesByLabel = (labelId, callback) => {
-    //     Note.findById(labelId, callback);
-    // };
-
     /**
      * @description update a note by Id
      * @param {*} noteInfo
@@ -138,7 +129,7 @@ class NoteModel {
                     callback
                 );
             }
-            callback(error, null);
+            // return callback(error, null);
         });
     };
 
@@ -163,7 +154,7 @@ class NoteModel {
      * @param {*} callback
      */
     deleteNoteById = (noteID, callback) => {
-        Note.findById(noteID, (error, data) => {
+        return Note.findById(noteID, (error, data) => {
             if (error) return callback(error, null);
             else {
                 logger.info("Note found");
@@ -179,7 +170,7 @@ class NoteModel {
      * @param {*} callback
      */
     removeNote = (noteID, callback) => {
-        Note.findByIdAndUpdate(
+        return Note.findByIdAndUpdate(
             noteID, { isDeleted: true }, { new: true },
             callback
         );
