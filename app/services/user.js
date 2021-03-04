@@ -36,36 +36,40 @@ class userService {
     register = (userInfo, callback) => {
         User.save(userInfo, (error, data) => {
             if (error) return callback(error, null);
-            else console.log("user found");
-            const token = helper.createToken(data);
-            userInfo.token = token;
-            console.log(token);
-            publish.getMessage(userInfo, callback);
-            consume.consumeMessage((error, message) => {
-                if (error)
-                    callBack(
-                        new Error("Some error occurred while consuming message"),
-                        null
-                    );
-                else {
-                    userInfo.emailId = message;
-                    const mailData = {
-                        subject: "verify your EmailId",
-                        endPoint: "activateemail",
-                    };
-                    helper.emailSender(userInfo, mailData, (error, data) => {
-                        if (error) {
-                            logger.error("Some error occurred while sending email");
-                            return callback(
-                                new Error("Some error occurred while sending email"),
-                                null
-                            );
-                        }
-                        return callback(null, data);
-                    });
-                }
-                return callback(null, data);
-            });
+            else {
+                console.log("user found");
+                const token = helper.createToken(data);
+                userInfo.token = token;
+                emmiter.emit("publish", userInfo, callback);
+
+                // publish.getMessage(userInfo, callback);
+                const mailData = {
+                    subject: "verify your EmailId",
+                    endPoint: "activateemail",
+                };
+                //  consume.consumeMessage(token, mailData, (error, message) => {
+                emmiter.emit("consume", token, mailData, (error, message) => {
+                    if (error)
+                        callBack(
+                            new Error("Some error occurred while consuming message"),
+                            null
+                        );
+                    return callback(null, data);
+                });
+                //  userInfo.emailId = message;
+
+                // helper.emailSender(userInfo, mailData, (error, data) => {
+                //     if (error) {
+                //         logger.error("Some error occurred while sending email");
+                //         return callback(
+                //             new Error("Some error occurred while sending email"),
+                //             null
+                //         );
+                //     }
+                // return callback(null, data);
+                // });
+            }
+            //  return callback(null, data);
         });
     };
 
