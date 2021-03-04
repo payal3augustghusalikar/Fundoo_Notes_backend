@@ -10,7 +10,7 @@ const Joi = require("joi");
 const logger = require("../../logger/logger.js");
 const status = require("../../middleware/staticFile.json");
 let vallidator = require("../../middleware/vallidation.js");
-let vallidator1 = require("../../middleware/vallidation1.js");
+
 const namePattern = Joi.string()
     .regex(/^[a-zA-Z ]+$/)
     .min(3)

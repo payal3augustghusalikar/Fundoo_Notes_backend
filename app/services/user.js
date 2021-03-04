@@ -16,6 +16,16 @@ const client = redis.createClient();
 const redisCache = require("../../middleware/redisCache.js");
 const consume = require("../../middleware/subscriber.js");
 const publish = require("../../middleware/publisher.js");
+const EventEmitter = require("events");
+const emmiter = new EventEmitter();
+
+emmiter.on("publish", (userInfo, callback) => {
+    publish.getMessage(userInfo, callback);
+});
+
+emmiter.on("consume", (token, mailData, callback) => {
+    consume.consumeMessage(token, mailData, callback);
+});
 
 class userService {
     /**
@@ -130,12 +140,15 @@ class userService {
             } else {
                 const token = helper.createToken(data);
                 userInfo.token = token;
-                publish.getMessage(userInfo, callback);
+                emmiter.emit("publish", userInfo, callback);
+
+                // publish.getMessage(userInfo, callback);
                 const mailData = {
                     subject: "Reset Password",
                     endPoint: "resetpassword",
                 };
-                consume.consumeMessage(token, mailData, (error, message) => {
+                //  consume.consumeMessage(token, mailData, (error, message) => {
+                emmiter.emit("consume", token, mailData, (error, message) => {
                     if (error)
                         callBack(
                             new Error("Some error occurred while consuming message"),
