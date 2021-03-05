@@ -24,7 +24,8 @@ const namePattern = Joi.string()
     .required();
 
 module.exports = Joi.object().keys({
-    name: namePattern,
+    firstName: namePattern,
+    lastName: namePattern,
     emailId: emailIdPattern,
     password: passwordPattern,
 });

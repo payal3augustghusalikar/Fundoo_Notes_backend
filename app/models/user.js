@@ -13,7 +13,16 @@ const helper = require("../../middleware/helper.js");
 const logger = require("../../logger/logger.js");
 let vallidator = require("../../middleware/vallidation.js");
 const UserSchema = mongoose.Schema({
-    name: {
+    firstName: {
+        type: String,
+        required: true,
+        length: {
+            min: 3,
+            max: 36,
+        },
+        test: vallidator.namePattern,
+    },
+    lastName: {
         type: String,
         required: true,
         length: {
@@ -65,7 +74,8 @@ class UserModel {
      */
     save = (userInfo, callback) => {
         const user = new User({
-            name: userInfo.name,
+            firstName: userInfo.firstName,
+            lastName: userInfo.lastName,
             emailId: userInfo.emailId,
             password: userInfo.password,
         });

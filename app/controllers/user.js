@@ -28,7 +28,8 @@ class userController {
                 });
             } else {
                 const userInfo = {
-                    name: req.body.name,
+                    firstName: req.body.firstName,
+                    lastName: req.body.lastName,
                     emailId: req.body.emailId,
                     password: password,
                 };
