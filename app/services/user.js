@@ -45,7 +45,7 @@ class userService {
                     subject: "verify your EmailId",
                     endPoint: "activateemail",
                 };
-                emmiter.emit("consume", token, mailData, (error, message) => {
+                return emmiter.emit("consume", token, mailData, (error, message) => {
                     if (error)
                         callback(
                             new Error("Some error occurred while consuming message"),
@@ -115,7 +115,7 @@ class userService {
      * @param {*} callback
      */
     forgotPassword = (userInfo, callback) => {
-        User.findOne(userInfo, (error, data) => {
+        return User.findOne(userInfo, (error, data) => {
             if (error) {
                 logger.error("Some error occurred");
                 return callback(new Error("Some error occurred"), null);
@@ -133,12 +133,13 @@ class userService {
                     subject: "Reset Password",
                     endPoint: "resetpassword",
                 };
-                emmiter.emit("consume", token, mailData, (error, message) => {
+                return emmiter.emit("consume", token, mailData, (error, message) => {
                     if (error)
                         callback(
                             new Error("Some error occurred while consuming message"),
                             null
                         );
+                    console.log("message return", message);
                     return callback(null, data);
                 });
             }

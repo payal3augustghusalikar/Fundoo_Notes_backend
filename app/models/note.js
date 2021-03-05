@@ -144,6 +144,7 @@ class NoteModel {
             noteInfo.noteID, {
                 $pull: { labelId: noteInfo.labelId },
             }, { new: true },
+
             callback
         );
     };

@@ -144,7 +144,8 @@ class userController {
                     });
                 } else {
                     logger.info("Email has been sent !");
-                    return res.send({
+                    console.log("getting responce in ctrl");
+                    res.send({
                         success: true,
                         status_code: status.Success,
                         message: "Email has been sent !",

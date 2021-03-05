@@ -1,3 +1,67 @@
+// /**
+//  * @module       Middleware
+//  * @file         subscriber.js
+//  * @description  holds the consumeMessage methods calling from service class
+//  * @author       Payal Ghusalikar <payal.ghusalikar9@gmail.com>
+// *  @since        27/01/2021
+// -----------------------------------------------------------------------------------------------*/
+
+// const amqp = require("amqplib/callback_api");
+// const EventEmitter = require("events");
+// const event = new EventEmitter();
+// var ee = require("event-emitter");
+// const helper = require("../middleware/helper.js");
+
+// class Subscriber {
+//     consumeMessage = (token, maildata, callback) => {
+//         try {
+//             console.log("inside subsciriber");
+//             return amqp.connect("amqp://localhost", (error, connection) => {
+//                 if (error) {
+//                     return callback(error, null);
+//                 }
+//                 console.log("inside subsciriber0");
+//                 return connection.createChannel((error, channel) => {
+//                     if (error) {
+//                         return callback(error, null);
+//                     }
+//                     console.log("inside subsciriber1");
+//                     let queueName = "EmailInQueues1";
+//                     channel.assertQueue(queueName, {
+//                         durable: false,
+//                     });
+//                     console.log("inside subsciriber2");
+//                     channel.consume(queueName, (msg) => {
+//                         console.log("mess");
+//                         console.log(`Message consumes: ${msg.content.toString()}`);
+//                         const message = `${msg.content.toString()}`;
+
+//                         const userInfo = {
+//                             token: token,
+//                             emailId: message,
+//                         };
+//                         console.log("maildata ", maildata);
+//                         channel.ack(msg);
+//                         return helper.emailSender(userInfo, maildata, (error, data) => {
+//                             if (error) {
+//                                 return callback(
+//                                     new Error("Some error occurred while sending email"),
+//                                     null
+//                                 );
+//                             }
+//                             console.log("send email return", data);
+//                             return callback(null, data);
+//                         });
+//                     });
+//                 });
+//             });
+//         } catch (error) {
+//             console.log("error", error);
+//         }
+//     };
+// }
+// module.exports = new Subscriber();
+
 /**
  * @module       Middleware
  * @file         subscriber.js
@@ -42,7 +106,7 @@ class Subscriber {
                             emailId: message,
                         };
                         console.log("maildata ", maildata);
-                        channel.ack(msg);
+                        // channel.ack(msg);
                         helper.emailSender(userInfo, maildata, (error, data) => {
                             if (error) {
                                 return callback(
@@ -52,6 +116,7 @@ class Subscriber {
                             }
                             return callback(null, data);
                         });
+                        channel.ack(msg);
                         return callback(null, msg.content.toString());
                     });
                 });

@@ -130,22 +130,24 @@ class Helper {
             (error, data) => {
                 if (error) {
                     return console.log(error);
+                } else {
+                    let mailOptions = {
+                        from: process.env.EMAIL_USER,
+                        to: userInfo.emailId,
+                        subject: mailData.subject,
+                        html: ejs.render(data),
+                    };
+                    transporter.sendMail(mailOptions, (error, data) => {
+                        if (error) {
+                            logger.info(error);
+
+                            console.log("mail not sent: " + error.message);
+                            return callback(error, null);
+                        } else logger.info("mail Sent");
+                        console.log("mail sent: " + data);
+                        return callback(null, data);
+                    });
                 }
-                let mailOptions = {
-                    from: process.env.EMAIL_USER,
-                    to: userInfo.emailId,
-                    subject: mailData.subject,
-                    html: ejs.render(data),
-                };
-                transporter.sendMail(mailOptions, (error, data) => {
-                    if (error) {
-                        logger.info(error);
-                        console.log("mail not sent: " + error.message);
-                        return callback(error, null);
-                    } else logger.info("mail Sent");
-                    console.log("mail sent: " + data);
-                    return callback(null, data);
-                });
             }
         );
     };
