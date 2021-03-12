@@ -11,6 +11,8 @@ var session = require("express-session");
 const bodyParser = require("body-parser");
 require("./config/mongoDB.js")();
 // create express app
+
+
 const app = express();
 require("./config").set(process.env.NODE_ENV, app);
 const config = require("./config").get();
@@ -18,6 +20,9 @@ const logger = require("../../logger/logger.js");
 const uuid = require("uuid").v4;
 const cookieParser = require("cookie-parser");
 
+const cors = require('cors');
+
+app.use(cors())
 require("dotenv").config();
 
 /**

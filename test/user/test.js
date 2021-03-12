@@ -237,6 +237,8 @@ describe("Resetpassword", () => {
                 done();
             });
     });
+
+
     it("givenUser_whenGivenPasswordConfirmPasswordNotSame_shouldNotResetPassword", (done) => {
         let userInfo = userData.user.resetPasswordAndCPassNotSame;
         let token = userData.user.properToken.token;

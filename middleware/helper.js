@@ -126,7 +126,7 @@ class Helper {
         });
         const endPoint = `${mailData.endPoint}`;
         ejs.renderFile(
-            "app/view/resetPassword.ejs", { link: process.env.URL + `/${endPoint}/` + userInfo.token },
+            "app/view/resetPassword.ejs", { link: process.env.MAIL_URL + `/${endPoint}/` + userInfo.token },
             (error, data) => {
                 if (error) {
                     return console.log(error);

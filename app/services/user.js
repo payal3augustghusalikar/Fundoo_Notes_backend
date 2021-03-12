@@ -78,7 +78,15 @@ class userService {
                             new Error("ERR:500-Some error occured while logging in"),
                             null
                         );
+                    } else if ((data.length < 1)) {
+                        console.log("data is null: ", data)
+                        return callback(
+                            new Error("ERR:500-Some error occured while logging in"),
+                            null)
+
+
                     } else if (data) {
+                        console.log("data is : ", data)
                         bcrypt.compare(
                             userLoginData.password,
 
