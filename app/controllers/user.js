@@ -90,14 +90,12 @@ class userController {
                 } else if (data.length < 1) {
                     logger.info("user not exist with emailid" + req.body.emailId)
 
-
                     return res.send({
                         success: false,
                         status_code: status.Not_Found,
                         message: "Auth Failed",
                     });
                 }
-
                 console.log(req.session.isAuth);
                 req.session.isAuth = true;
                 req.session.token = data.token;
@@ -293,4 +291,6 @@ class userController {
         }
     };
 }
+
+
 module.exports = new userController();

@@ -143,7 +143,7 @@ class userService {
                 };
                 return emmiter.emit("consume", token, mailData, (error, message) => {
                     if (error)
-                        callback(
+                        return callback(
                             new Error("Some error occurred while consuming message"),
                             null
                         );

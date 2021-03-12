@@ -113,8 +113,7 @@ class LabelController {
             labelServices
                 .findOne(labelID)
                 .then((data) => {
-                    !data
-                        ?
+                    return !data ?
                         (logger.warn("label not found with id : " + labelID),
                             res.send({
                                 success: false,
@@ -130,15 +129,17 @@ class LabelController {
                         });
                 })
                 .catch((error) => {
-                    logger.error("Error retrieving label with id " + labelID),
-                        res.send({
-                            success: false,
-                            status_code: status.Internal_Server_Error,
-                            message: "label not found",
-                        });
+
+
+                    return res.send({
+                        success: false,
+                        status_code: status.Internal_Server_Error,
+                        message: "label not found",
+                    });
                 });
         } catch (error) {
             logger.error("could not found label with id" + labelID, +error);
+
             res.send({
                 success: false,
                 status_code: status.Internal_Server_Error,
