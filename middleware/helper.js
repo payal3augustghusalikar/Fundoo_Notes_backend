@@ -42,7 +42,7 @@ class Helper {
         try {
             // if (req.session.token) {
             let token = req.headers.authorization.split(" ")[1];
-            console.log(token);
+            console.log("token1 is : ", token);
             const decode = jwt.verify(token, process.env.SECRET_KEY);
             req.userData = decode;
             next();

@@ -65,7 +65,7 @@ class userService {
     login = (userLoginData, callback) => {
         const userEmail = userLoginData.emailId;
         const key = "login";
-        redisCache.redisGet(userEmail, key, (error, data) => {
+        return redisCache.redisGet(userEmail, key, (error, data) => {
             if (data) {
                 const token = helper.createToken(data[0]);
                 data.token = token;
@@ -83,38 +83,195 @@ class userService {
                         return callback(
                             new Error("ERR:500-Some error occured while logging in"),
                             null)
-
-
                     } else if (data) {
-                        console.log("data is : ", data)
+                        console.log("data is 1: ", data);
+                        console.log("data pass: ", data[0].password);
                         bcrypt.compare(
-                            userLoginData.password,
+                                userLoginData.password,
+                                data[0].password,
+                                (error, result) => {
+                                    if (result) {
+                                        logger.info("Authorization success");
+                                        const token = helper.createToken(data[0]);
+                                        console.log("token is 1: ", token);
+                                        data.token = token;
+                                        const userId = data[0]._id;
+                                        console.log("userId1", userId);
 
-                            data[0].password,
-                            (error, result) => {
-                                if (result) {
-                                    logger.info("Authorization success");
-                                    const token = helper.createToken(data[0]);
-                                    data.token = token;
-                                    const userId = data[0]._id;
-                                    console.log("userId1", userId);
+                                        redisCache.setRedis(data, userEmail, key);
+                                        return callback(null, data);
 
-                                    redisCache.setRedis(data, userEmail, key);
-                                    return callback(null, data);
-                                } else {
-                                    logger.info("ERR:401-Please verify email before login");
-                                    return callback(
-                                        new Error("ERR:401-Please verify email before login"),
-                                        null
-                                    );
+                                    } else {
+                                        logger.info("ERR:401-Please verify email before login");
+                                        return callback(
+                                            new Error("ERR:401-Please verify email before login"),
+                                            null
+                                        );
+                                    }
                                 }
-                            }
-                        );
+                            )
+                            // return callback(null, data);
                     }
                 });
             }
         });
     };
+
+
+
+
+    // // /**
+    // //  * @description takes userInfo and calls model class method
+    // //  * @param {*} userLoginInfo
+    // //  * @param {*} callback is the callback for controller
+    // //  */
+    // // login = (userLoginData, callback) => {
+    // //     const userEmail = userLoginData.emailId;
+    // //     const key = "login";
+    // //     console.log("redis")
+    // //     return redisCache.redisGet(userEmail, key, (error, data) => {
+    // //         if (data) {
+    // //             console.log("data from redis", data)
+    // //             const token = helper.createToken(data[0]);
+    // //             data.token = token;
+    // //             return callback(null, data);
+    // //         } else if (!data) {
+    // //             console.log("no data")
+    // //             return User.find(userLoginData, (error, data) => {
+    // //                 if (error) {
+    // //                     logger.error("ERR:500-Some error occured while logging in");
+    // //                     return callback(
+    // //                         new Error("ERR:500-Some error occured while logging in"),
+    // //                         null
+    // //                     );
+    // //                 } else if (data) {
+    // //                     console.log("data b", data)
+    // //                     bcrypt.compare(
+    // //                         userLoginData.password,
+    // //                         data[0].password,
+    // //                         (error, result) => {
+    // //                             if (result) {
+    // //                                 logger.info("Authorization success");
+    // //                                 const token = helper.createToken(data[0]);
+    // //                                 data.token = token;
+    // //                                 const userId = data[0]._id;
+    // //                                 console.log("userId1", userId);
+
+    // //                                 redisCache.setRedis(data, userEmail, key);
+    // //                                 return callback(null, data);
+    // //                             } else {
+    // //                                 logger.info("ERR:401-Please verify email before login");
+    // //                                 return callback(
+    // //                                     new Error("ERR:401-Please verify email before login"),
+    // //                                     null
+    // //                                 );
+    // //                             }
+    // //                         }
+    // //                     );
+    // //                 }
+    // //             });
+    // //         }
+    // //     });
+    // // };
+
+    // // /**
+    // //  * @description takes userInfo and calls model class method
+    // //  * @param {*} userLoginInfo
+    // //  * @param {*} callback is the callback for controller
+    // //  */
+    // // login = (userLoginData, callback) => {
+    // //     const userEmail = userLoginData.emailId;
+    // //     const key = "login";
+    // //     redisCache.redisGet(userEmail, key, (error, data) => {
+    // //         if (data) {
+    // //             const token = helper.createToken(data[0]);
+    // //             data.token = token;
+    // //             return callback(null, data);
+    // //         } else if (!data) {
+    // //             User.find(userLoginData, (error, data) => {
+    // //                 if (error) {
+    // //                     logger.error("ERR:500-Some error occured while logging in");
+    // //                     return callback(
+    // //                         new Error("ERR:500-Some error occured while logging in"),
+    // //                         null
+    // //                     );
+    // //                 } else if (data) {
+    // //                     bcrypt.compare(
+    // //                         userLoginData.password,
+    // //                         data[0].password,
+    // //                         (error, result) => {
+    // //                             if (result) {
+    // //                                 logger.info("Authorization success");
+    // //                                 const token = helper.createToken(data[0]);
+    // //                                 data.token = token;
+    // //                                 const userId = data[0]._id;
+    // //                                 console.log("userId1", userId);
+    // //                                 redisCache.setRedis(data, userEmail, key);
+    // //                                 return callback(null, data);
+    // //                             } else {
+    // //                                 logger.info("ERR:401-Please verify email before login");
+    // //                                 return callback(
+    // //                                     new Error("ERR:401-Please verify email before login"),
+    // //                                     null
+    // //                                 );
+    // //                             }
+    // //                         }
+    // //                     );
+    // //                 }
+    // //             });
+    // //         }
+    // //     });
+    // // };
+
+
+    // /**
+    //  * @description takes userInfo and calls model class method
+    //  * @param {*} userLoginInfo
+    //  * @param {*} callback is the callback for controller
+    //  */
+    // login = (userLoginData, callback) => {
+    //     const userEmail = userLoginData.emailId;
+    //     const key = "login";
+    //     redisCache.redisGet(userEmail, key, (error, data) => {
+    //         if (data) {
+    //             const token = helper.createToken(data[0]);
+    //             data.token = token;
+    //             return callback(null, data);
+    //         } else if (!data) {
+    //             return User.find(userLoginData, (error, data) => {
+    //                 if (error) {
+    //                     logger.error("ERR:500-Some error occured while logging in");
+    //                     return callback(
+    //                         new Error("ERR:500-Some error occured while logging in"),
+    //                         null
+    //                     );
+    //                 } else if (data) {
+    //                     bcrypt.compare(
+    //                         userLoginData.password,
+    //                         data[0].password,
+    //                         (error, result) => {
+    //                             if (result) {
+    //                                 logger.info("Authorization success");
+    //                                 const token = helper.createToken(data[0]);
+    //                                 data.token = token;
+    //                                 const userId = data[0]._id;
+    //                                 console.log("userId1", userId);
+    //                                 redisCache.setRedis(data, userEmail, key);
+    //                                 return callback(null, data);
+    //                             } else {
+    //                                 logger.info("ERR:401-Please verify email before login");
+    //                                 return callback(
+    //                                     new Error("ERR:401-Please verify email before login"),
+    //                                     null
+    //                                 );
+    //                             }
+    //                         }
+    //                     );
+    //                 }
+    //             });
+    //         }
+    //     });
+    // };
 
     /**
      * @description Update user by id and return response to controller
@@ -147,7 +304,7 @@ class userService {
                             new Error("Some error occurred while consuming message"),
                             null
                         );
-                    console.log("message return", message);
+                    console.log("message return1", message);
                     return callback(null, data);
                 });
             }
@@ -169,6 +326,7 @@ class userService {
             else return callback(null, data);
         });
     };
+
 
     /**
      * @description Update user by id and return response to controller

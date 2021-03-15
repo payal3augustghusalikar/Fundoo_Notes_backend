@@ -156,6 +156,7 @@ class UserModel {
         );
     };
 
+
     /**
      * find the user using id
      * @param {*} collaboratorId holds the user id

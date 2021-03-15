@@ -65,6 +65,7 @@ class userController {
         }
     };
 
+
     /**
      * @description Find user by id
      * @method login is service class method
@@ -79,6 +80,7 @@ class userController {
                 emailId: req.body.emailId,
                 password: password,
             };
+
             userService.login(userLoginInfo, (error, data) => {
                 if (!data) {
                     logger.info("user not exist with emailid" + req.body.emailId);
@@ -119,6 +121,63 @@ class userController {
         }
     };
 
+
+
+    // /**
+    //  * @description Find user by id
+    //  * @method login is service class method
+    //  * @param response is used to send the response
+    //  */
+    // login = (req, res) => {
+    //     try {
+    //         console.log("session: " + JSON.stringify(req.session));
+    //         console.log("sessionid: " + req.session.id);
+    //         let password = req.body.password;
+    //         const userLoginInfo = {
+    //             emailId: req.body.emailId,
+    //             password: password,
+    //         };
+    //         console.log("login ")
+    //         userService.login(userLoginInfo, (error, data) => {
+    //             if (!data) {
+    //                 logger.info("user not exist with emailid" + req.body.emailId);
+    //                 return res.send({
+    //                     success: false,
+    //                     status_code: status.Not_Found,
+    //                     message: "Auth Failed",
+    //                 });
+    //             } else if (data.length < 1) {
+    //                 logger.info("user not exist with emailid" + req.body.emailId);
+
+    //                 return res.send({
+    //                     success: false,
+    //                     status_code: status.Not_Found,
+    //                     message: "Auth Failed",
+    //                 });
+    //             }
+    //             console.log(req.session.isAuth);
+    //             req.session.isAuth = true;
+    //             req.session.token = data.token;
+    //             console.log(req.session.token);
+    //             console.log("session: " + JSON.stringify(req.session.token));
+    //             return res.send({
+    //                 success: status.Success,
+    //                 message: "login successfull",
+    //                 token: data.token,
+    //             });
+    //         });
+    //     } catch (error) {
+    //         logger.error("could not found user with emailid" + req.body.emailId);
+    //         console.log(error);
+    //         return res.send({
+    //             success: false,
+    //             status_code: status.Internal_Server_Error,
+    //             message: "error retrieving user with emailid " + req.body.emailId + error,
+    //         });
+    //     }
+    // };
+
+
     /**
      * @description takes email id and calls service class method
      * @param {*} req holds emailId
@@ -147,7 +206,7 @@ class userController {
                 } else {
                     logger.info("Email has been sent !");
                     console.log("getting responce in ctrl");
-                    res.send({
+                    return res.send({
                         success: true,
                         status_code: status.Success,
                         message: "Email has been sent !",
@@ -173,12 +232,11 @@ class userController {
     resetPassword = (req, res) => {
         try {
             console.log("ctrl");
-            // console.log("controller token ", helper.token);
             let newPassword = req.body.newPassword;
             let confirmPassword = req.body.confirmPassword;
             let token = req.headers.authorization.split(" ")[1];
             if (newPassword !== confirmPassword) {
-                res.send({
+                return res.send({
                     success: false,
                     status_code: status.Bad_Request,
                     message: "Password not match",
@@ -215,6 +273,7 @@ class userController {
                             });
                         } else {
                             logger.info("Password has been changed !");
+                            console.log
                             return res.send({
                                 success: true,
                                 status_code: status.Success,

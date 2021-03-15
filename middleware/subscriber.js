@@ -117,7 +117,7 @@ class Subscriber {
                             return callback(null, data);
                         });
                         channel.ack(msg);
-                        return callback(null, msg.content.toString());
+                        //return callback(null, msg.content.toString());
                     });
                 });
             });
