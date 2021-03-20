@@ -47,12 +47,15 @@ class NoteController {
                                 status_code: status.Internal_Server_Error,
                                 message: "Some error occurred while creating note",
                             })) :
+
                         res.send({
                             success: true,
                             status_code: status.Success,
                             message: "note added successfully !",
                             data: data,
+
                         });
+
 
                 });
 
@@ -83,6 +86,7 @@ class NoteController {
                             message: `note not found`,
                         })) :
                     (logger.info("Successfully retrieved notes !"),
+                        console.log(data),
                         res.send({
                             success: true,
                             status_code: status.Success,

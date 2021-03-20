@@ -12,6 +12,8 @@ const logger = require("../../logger/logger.js");
 const redis = require("redis");
 const client = redis.createClient();
 var redisCache = require("../../middleware/redisCache.js");
+const key = "note";
+
 
 class NoteService {
     /**
@@ -22,8 +24,28 @@ class NoteService {
     create = (noteInfo, token, callback) => {
         // create a Note
         noteInfo = helper.decodeToken(noteInfo, token);
-        return Note.create(noteInfo, callback);
+        const userEmail = helper.getEmailFromToken(token);
+        return Note.create(noteInfo, (error, data) => {
+            if (error) {
+                logger.error("Some error occurred");
+                return callback(new Error("Some error occurred"), null);
+            } else {
+                Note.findAll((error, AllData) => {
+                    if (error) {
+                        logger.error("Some error occurred");
+                        return callback(new Error("Some error occurred"), null);
+                    } else {
+                        redisCache.setRedis(AllData, userEmail, key);
+                        return callback(null, data);
+                    }
+                });
+
+            }
+        });
     };
+
+
+
 
     /**
      * @description Find all the Notes and return response to controller
@@ -31,7 +53,6 @@ class NoteService {
      * @param callback is the callback for controller
      */
     findAll = (token, callback) => {
-        const key = "note";
         const userEmail = helper.getEmailFromToken(token);
         redisCache.redisGet(userEmail, key, (error, data) => {
             if (data) {

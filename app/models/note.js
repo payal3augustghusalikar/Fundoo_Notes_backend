@@ -66,7 +66,15 @@ class NoteModel {
             description: noteInfo.description,
             userId: noteInfo.userId,
         });
-        note.save(callback);
+        note.save((error, data) => {
+            if (error) {
+                logger.error("Some error occurred");
+                return callback(new Error("Some error occurred"), null);
+            } else {
+
+                return callback(null, data);
+            }
+        })
     };
 
     /**
