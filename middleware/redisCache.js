@@ -30,9 +30,9 @@ class RedisCache {
         return client.get(KEY, (error, redisData) => {
             return (
                 error || redisData == null ?
-                (logger.error("Error retrieving data from redis cache", +error),
-                    callback(error, null)) :
-                logger.info("data found in redis "),
+                // (logger.error("Error retrieving data from redis cache", +error),
+                callback(error, null) :
+                // logger.info("data found in redis "),
                 callback(null, JSON.parse(redisData))
             );
         });

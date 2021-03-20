@@ -53,9 +53,11 @@ class NoteController {
                             message: "note added successfully !",
                             data: data,
                         });
+
                 });
+
         } catch (error) {
-            res.send({
+            return res.send({
                 success: false,
                 status_code: status.Internal_Server_Error,
                 message: "Some error occurred while creating note",

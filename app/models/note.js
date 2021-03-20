@@ -34,6 +34,12 @@ const NoteSchema = mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    color: {
+        type: String,
+    },
+    reminder: {
+        type: String,
+    },
     isDeleted: {
         type: Boolean,
         default: false,
@@ -144,7 +150,6 @@ class NoteModel {
             noteInfo.noteID, {
                 $pull: { labelId: noteInfo.labelId },
             }, { new: true },
-
             callback
         );
     };
