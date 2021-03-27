@@ -40,6 +40,11 @@ module.exports = (app) => {
     // delete note by setting isdeleted flag true
     app.put("/notes/delete/:noteId", helper.verifyToken, notes.deleteNote);
 
+
+
+    // restore note by setting isdeleted flag false
+    app.put("/notes/restore/:noteId", helper.verifyToken, notes.restoreNote);
+
     // delete note forever
     app.delete(
         "/notes/deleteforever/:noteId",

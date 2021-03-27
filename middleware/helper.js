@@ -15,7 +15,12 @@ const ejs = require("ejs");
 const app = express();
 require("../config").set(process.env.NODE_ENV, app);
 const config = require("../config").get();
+//const Note = require("../models/note.js");
+var redisCache = require("../middleware/redisCache.js");
+//const Note = require("./../../models/note.js");
+const Note = require("../app/models/note.js");
 
+const tokenForRedis = null;
 class Helper {
     /**
      * @description create the token
@@ -40,9 +45,10 @@ class Helper {
      */
     verifyToken = (req, res, next) => {
         try {
+
             // if (req.session.token) {
             let token = req.headers.authorization.split(" ")[1];
-            console.log("token1 is : ", token);
+            console.log("token is  : ", token);
             const decode = jwt.verify(token, process.env.SECRET_KEY);
             req.userData = decode;
             next();
@@ -103,11 +109,38 @@ class Helper {
      * @description get emial from token
      * @param {*} token
      */
+
     getEmailFromToken = (token) => {
         let decode = jwt.verify(token, process.env.SECRET_KEY);
         let emailId = decode.emailId;
         return emailId;
     };
+
+
+
+    updateRedisData(token, key) {
+        try {
+            console.log("key", key)
+
+            console.log("token1 is : ", token);
+            const userEmail = this.getEmailFromToken(token);
+            console.log("userEmail : ", userEmail);
+            return Note.findAll((error, data) => {
+                if (error) {
+                    logger.error("Some error occurred");
+                    return callback(new Error("Some error occurred"), null);
+                } else {
+                    console.log("setting new data to redis", data)
+                    redisCache.setRedis(data, userEmail, key);
+                    // return callback(null, data);
+                }
+            });
+        } catch (error) {
+            console.log("error", error)
+        } //const token = req.headers.authorization.split(" ")[1];
+
+
+    }
 
     /**
      * @description sends the email with  link with token using nodemailer for activate and reset password

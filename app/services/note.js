@@ -92,59 +92,147 @@ class NoteService {
      * @method update is used to update Note by ID
      * @param callback is the callback for controller
      */
-    update = (noteInfo, callback) => {
-        return Note.update(noteInfo, callback);
+    update = (noteInfo, token, callback) => {
+        console.log("inside update")
+        const userEmail = helper.getEmailFromToken(token);
+        return Note.update(noteInfo, (error, data) => {
+            if (error) {
+                logger.error("Some error occurred");
+                return callback(new Error("Some error occurred"), null);
+            } else {
+                // console.log("data", data)
+                return Note.findAll((error, AllData) => {
+                    if (error) {
+                        logger.error("Some error occurred");
+                        return callback(new Error("Some error occurred"), null);
+                    } else {
+
+                        redisCache.setRedis(AllData, userEmail, key);
+                        return callback(null, data);
+                    }
+                });
+
+            }
+        });
     };
 
-    /**
-     * @description Delete Note by id and return response to controller
-     * @method deleteById is used to remove Note by ID
-     * @param callback is the callback for controller
-     */
-    delete = (noteID, callback) => {
-        return Note.deleteById(noteID, callback);
-    };
+
+
+
+    // /**
+    //  * @description hard Delete Note by id and return response to controller
+    //  * @method deleteById is used to remove Note by ID
+    //  * @param callback is the callback for controller
+    //  */
+    // delete = (noteID, callback) => {
+    //     console.log("delete ser")
+    //     return Note.deleteById(noteID, callback);
+    // };
+
+
+
+
 
     /**
      * @description add label to note
      * @method add calls model class method
      */
-    addLabelToNotes = (noteData, callback) => {
-        return Note.addLabelToSingleNote(noteData, callback);
+    addLabelToNotes = (noteData, token, callback) => {
+        return Note.addLabelToSingleNote(noteData, (error, result) => {
+            if (error) {
+                logger.error("Some error occurred");
+                return callback(new Error("Some error occurred"), null);
+            } else {
+                console.log("key in ser", key)
+                helper.updateRedisData(token, key)
+                return callback(null, result);
+            }
+        })
     };
 
     /**
      * @description remove label to note
      * @method add calls model class method
      */
-    removeLabel = (noteData, callback) => {
-        return Note.removeLabel(noteData, callback);
+    removeLabel = (noteData, token, callback) => {
+        return Note.removeLabel(noteData, (error, result) => {
+            if (error) {
+                logger.error("Some error occurred");
+                return callback(new Error("Some error occurred"), null);
+            } else {
+                console.log("key in ser", key)
+                helper.updateRedisData(token, key)
+                return callback(null, result);
+            }
+        })
     };
+
+    /**
+     * @description Delete Note by id and return response to controller(harddelete)
+     * @method deleteById is used to remove Note by ID
+     * @param callback is the callback for controller
+     */
+    deleteNote = (noteID, token, callback) => {
+        console.log("delete ser")
+        return Note.deleteNoteById(noteID, (error, result) => {
+            if (error) {
+                logger.error("Some error occurred");
+                return callback(new Error("Some error occurred"), null);
+            } else {
+                console.log("key in ser", key)
+                helper.updateRedisData(token, key)
+                console.log("resultser", result)
+                return callback(null, result);
+            }
+        })
+    };
+
+    /**
+     * @description Delete Note by id and return response to controller (softdelete)
+     * @method deleteById is used to remove Note by ID
+     * @param callback is the callback for controller
+     */
+
+    removeNote = (noteID, token, callback) => {
+        return Note.removeNote(noteID, (error, result) => {
+            if (error) {
+                logger.error("Some error occurred");
+                return callback(new Error("Some error occurred"), null);
+            } else {
+                console.log("key in ser", key)
+                helper.updateRedisData(token, key)
+                return callback(null, result);
+            }
+        })
+    }
+
+
 
     /**
      * @description Delete Note by id and return response to controller
      * @method deleteById is used to remove Note by ID
      * @param callback is the callback for controller
      */
-    deleteNote = (noteID, callback) => {
-        return Note.deleteNoteById(noteID, callback);
-    };
-
-    /**
-     * @description Delete Note by id and return response to controller
-     * @method deleteById is used to remove Note by ID
-     * @param callback is the callback for controller
-     */
-    removeNote = (noteID, callback) => {
-        return Note.removeNote(noteID, callback);
-    };
+    restore = (noteID, token, callback) => {
+        return Note.restore(noteID, (error, result) => {
+            if (error) {
+                logger.error("Some error occurred");
+                return callback(new Error("Some error occurred"), null);
+            } else {
+                console.log("key in ser", key)
+                helper.updateRedisData(token, key)
+                return callback(null, result);
+            }
+        })
+    }
 
     /**
      * @description adds new collaborator to note
      * @param {*} collaborator
      */
-    createCollaborator = async(collaborator) => {
+    createCollaborator = async(collaborator, token) => {
         const data = await Note.findCollaborator(collaborator);
+        helper.updateRedisData(token, key)
         return data;
     };
 
@@ -152,9 +240,18 @@ class NoteService {
      * @description delete  collaborator
      * @method delete calls model class method
      */
-    removeCollaborator = async(collaboratorData, callback) => {
-        const data = await Note.removeCollaborator(collaboratorData, callback);
-        return data;
+    removeCollaborator = (collaboratorData, token, callback) => {
+        return Note.removeCollaborator(collaboratorData, (error, result) => {
+            if (error) {
+                logger.error("Some error occurred");
+                return callback(new Error("Some error occurred"), null);
+            } else {
+                console.log("key in ser", key)
+                helper.updateRedisData(token, key)
+                return callback(null, result);
+            }
+        })
+
     };
 }
 

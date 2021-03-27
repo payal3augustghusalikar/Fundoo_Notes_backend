@@ -107,7 +107,8 @@ class NoteModel {
      * @param {*} callback
      */
     update = (noteInfo, callback) => {
-        Note.findByIdAndUpdate(
+        console.log(" noteInfo.noteID", noteInfo.noteID)
+        return Note.findByIdAndUpdate(
             noteInfo.noteID, {
                 title: noteInfo.title,
                 description: noteInfo.description,
@@ -116,14 +117,15 @@ class NoteModel {
         );
     };
 
-    /**
-     * @description delete the id from databse and returns the result to service
-     * @param {*} noteID coming from service class
-     * @param {*} callback callback for service class
-     */
-    deleteById = (noteID, callback) => {
-        Note.findByIdAndRemove(noteID, callback);
-    };
+    // /**
+    //  * @description harddelete the note by id from databse and returns the result to service
+    //  * @param {*} noteID coming from service class
+    //  * @param {*} callback callback for service class
+    //  */
+    // deleteById = (noteID, callback) => {
+    //     console.log("delete mdl")
+    //     Note.findByIdAndRemove(noteID, callback);
+    // };
 
     /**
      * @description add lable to single note
@@ -163,23 +165,24 @@ class NoteModel {
     };
 
     /**
-     * @description delte note forever from db by id
+     * @description delte note forever from db by id(harddelete)
      * @param {*} noteID
      * @param {*} callback
      */
     deleteNoteById = (noteID, callback) => {
+        console.log("delete mdl")
         return Note.findById(noteID, (error, data) => {
             if (error) return callback(error, null);
             else {
-                logger.info("Note found");
+                console.log("Note found");
                 Note.findByIdAndRemove(noteID, callback);
-                return callback(null, data);
+                // return callback(null, data);
             }
         });
     };
 
     /**
-     * @description remove note temporary by setting isdeleted flag true
+     * @description remove note temporary by setting isdeleted flag true(softdelete)
      * @param {*} noteID
      * @param {*} callback
      */
@@ -189,6 +192,20 @@ class NoteModel {
             callback
         );
     };
+
+    /**
+     * @description remove note temporary by setting isdeleted flag true
+     * @param {*} noteID
+     * @param {*} callback
+     */
+    restore = (noteID, callback) => {
+        return Note.findByIdAndUpdate(
+            noteID, { isDeleted: false }, { new: true },
+            callback
+        );
+    };
+
+
 
     /**
      * @description update note by adding collaborator

@@ -86,7 +86,7 @@ class NoteController {
                             message: `note not found`,
                         })) :
                     (logger.info("Successfully retrieved notes !"),
-                        console.log(data),
+                        console.log("data"),
                         res.send({
                             success: true,
                             status_code: status.Success,
@@ -139,7 +139,7 @@ class NoteController {
         } catch (error) {
             logger.error("could not found note with id" + req.params.noteID);
             return res.send({
-                success: false,
+
                 status_code: status.Internal_Server_Error,
                 message: "error retrieving note with id " + req.params.noteID,
             });
@@ -152,12 +152,15 @@ class NoteController {
      * @param res is used to send the response
      */
     update = (req, res) => {
+        console.log("update")
         try {
             const noteInfo = {
                 title: req.body.title,
                 description: req.body.description,
                 noteID: req.params.noteId,
             };
+            const token = req.headers.authorization.split(" ")[1];
+            console.log("req.params.noteId", req.params.noteId)
             const noteData = {
                 title: noteInfo.title,
                 description: noteInfo.description,
@@ -168,22 +171,24 @@ class NoteController {
                     success: false,
                     message: "please enter valid details " + validation.error,
                 }) :
-                noteService.update(noteInfo, (error, data) => {
+                noteService.update(noteInfo, token, (error, data) => {
                     return (
                         error ?
-                        (logger.error("Error updating note with id : " + noteID),
+                        (logger.error("Error updating note with id : " + req.params.noteId),
                             res.send({
                                 status_code: status.Internal_Server_Error,
-                                message: "Error updating note with id : " + noteID,
+                                message: "Error updating note with id : " + req.params.noteId,
                             })) :
                         !data ?
-                        (logger.warn("note not found with id : " + noteID),
+                        (logger.warn("note not found with id : " + req.params.noteId),
                             res.send({
                                 status_code: status.Not_Found,
-                                message: "note not found with id : " + noteID,
+                                message: "note not found with id : " + req.params.noteId,
                             })) :
                         logger.info("note updated successfully !"),
+                        console.log("data : ", data),
                         res.send({
+                            status_code: status.Success,
                             message: "note updated successfully !",
                             data: data,
                         })
@@ -191,72 +196,125 @@ class NoteController {
                 });
         } catch (error) {
             return (
-                err.kind === "ObjectId" ?
-                (logger.error("note not found with id " + noteID),
+                error.kind === "ObjectId" ?
+                (logger.error("note not found with id " + req.params.noteId),
                     res.send({
                         status_code: status.Not_Found,
-                        message: "note not found with id " + noteID,
+                        message: "note not found with id " + req.params.noteId,
                     })) :
-                logger.error("Error updating note with id " + noteID),
+                logger.error("Error updating note with id " + req.params.noteId),
                 res.send({
                     status_code: status.Internal_Server_Error,
-                    message: "Error updating note with id " + noteID,
+                    message: "Error updating note with id " + req.params.noteId,
                 })
             );
         }
     };
 
+    // /**
+    //  * @message softdelete note with id by setting isdeleted value true
+    //  * @method delete is service class method
+    //  * @param response is used to send the response
+    //  */
+    // delete(req, res) {
+    //     console.log("delete ctrl")
+    //     try {
+    //         const noteID = req.params.noteId;
+    //         return noteService.delete(noteID, (error, data) => {
+    //             return (
+    //                 error ?
+    //                 (logger.warn("note not found with id " + noteID),
+    //                     res.send({
+    //                         status_code: status.Not_Found,
+    //                         message: "note not found with id " + noteID,
+    //                     })) :
+    //                 logger.info("note deleted successfully!"),
+    //                 res.send({
+    //                     status_code: status.Success,
+    //                     message: "note deleted successfully!",
+    //                 })
+    //             );
+    //         });
+    //     } catch (error) {
+    //         return (
+    //             error.kind === "ObjectId" || error.title === "NotFound" ?
+    //             (logger.error("could not found note with id" + noteID),
+    //                 res.send({
+    //                     status_code: status.Not_Found,
+    //                     message: "note not found with id " + noteID,
+    //                 })) :
+    //             logger.error("Could not delete note with id " + noteID),
+    //             res.send({
+    //                 status_code: status.Internal_Server_Error,
+    //                 message: "Could not delete note with id " + noteID,
+    //             })
+    //         );
+    //     }
+    // }
+
+
     /**
-     * @message delete note with id
+     * @message restoreNote  with id
      * @method delete is service class method
      * @param response is used to send the response
      */
-    delete(req, res) {
-            try {
-                const noteID = req.params.noteId;
-                noteService.delete(noteID, (error, data) => {
-                    return (
-                        error ?
-                        (logger.warn("note not found with id " + noteID),
-                            res.send({
-                                status_code: status.Not_Found,
-                                message: "note not found with id " + noteID,
-                            })) :
-                        logger.info("note deleted successfully!"),
-                        res.send({
-                            status_code: status.Success,
-                            message: "note deleted successfully!",
-                        })
-                    );
-                });
-            } catch (error) {
+    restoreNote(req, res) {
+
+        try {
+            const noteID = req.params.noteId;
+            const token = req.headers.authorization.split(" ")[1];
+            return noteService.restore(noteID, token, (error, data) => {
                 return (
-                    error.kind === "ObjectId" || error.title === "NotFound" ?
-                    (logger.error("could not found note with id" + noteID),
+                    error ?
+                    (logger.warn("note not found with id " + noteID),
                         res.send({
                             status_code: status.Not_Found,
                             message: "note not found with id " + noteID,
                         })) :
-                    logger.error("Could not delete note with id " + noteID),
+                    logger.info("note restore successfully!"),
                     res.send({
-                        status_code: status.Internal_Server_Error,
-                        message: "Could not delete note with id " + noteID,
+                        status_code: status.Success,
+                        message: "note restore successfully!",
                     })
                 );
-            }
+            });
+        } catch (error) {
+            return (
+                error.kind === "ObjectId" || error.title === "NotFound" ?
+                (logger.error("could not found note with id" + noteID),
+                    res.send({
+                        status_code: status.Not_Found,
+                        message: "note not found with id " + noteID,
+                    })) :
+                logger.error("Could not restore note with id " + noteID),
+                res.send({
+                    status_code: status.Internal_Server_Error,
+                    message: "Could not restore note with id " + noteID,
+                })
+            );
         }
-        /**
-         * @message add label note by id
-         * @method addLabelToNotes is service class method
-         * @param res is used to send the response
-         */
+    }
+
+
+
+
+
+
+
+
+    /**
+     * @message add label note by id
+     * @method addLabelToNotes is service class method
+     * @param res is used to send the response
+     */
     addLabelToNote = (req, res) => {
         try {
+            const token = req.headers.authorization.split(" ")[1];
             const noteInfoWithLabelId = {
                 noteID: req.params.noteId,
                 labelId: req.body.labelId,
             };
-            noteService.addLabelToNotes(noteInfoWithLabelId, (error, data) => {
+            noteService.addLabelToNotes(noteInfoWithLabelId, token, (error, data) => {
                 return (
                     error ?
                     (logger.error(
@@ -312,11 +370,12 @@ class NoteController {
      */
     removelabelfromnote(req, res) {
         try {
+            const token = req.headers.authorization.split(" ")[1];
             const noteInfoWithLabelId = {
                 noteID: req.params.noteId,
                 labelId: req.body.labelId,
             };
-            noteService.removeLabel(noteInfoWithLabelId, (error, data) => {
+            noteService.removeLabel(noteInfoWithLabelId, token, (error, data) => {
                 return (
                     error ?
                     (logger.warn("Label not found with id " + req.params.labelId),
@@ -357,21 +416,25 @@ class NoteController {
      */
     deleteForever(req, res) {
         try {
+            console.log("delete ctrl")
+            const token = req.headers.authorization.split(" ")[1];
             const noteID = req.params.noteId;
-            noteService.deleteNote(noteID, (error, data) => {
-                return (
-                    error ?
-                    (logger.warn("note not found with id " + noteID),
-                        res.send({
-                            status_code: status.Not_Found,
-                            message: "note not found with id " + noteID,
-                        })) :
-                    logger.info("note permentely deleted successfully!"),
-                    res.send({
-                        status_code: status.Success,
-                        message: "note permentely deleted successfully!",
+            return noteService.deleteNote(noteID, token, (error, data) => {
+                if (error)
+
+                //(logger.warn("note not found with id " + noteID),
+                    return res.send({
+                        status_code: status.Not_Found,
+                        message: "note not found with id " + noteID,
                     })
-                );
+                    //  ) 
+                else
+                //  logger.info("note permentely deleted successfully!"),
+                    return res.send({
+                    status_code: status.Success,
+                    message: "note permentely deleted successfully!",
+                })
+
             });
         } catch (error) {
             return (
@@ -391,14 +454,16 @@ class NoteController {
     }
 
     /**
-     * @message delete note with id whitch is setting isDeleted value true
+     * @message delete note with id whitch is setting isDeleted value true(softdelete)
      * @method removeNote is service class method
      * @param response is used to send the response
      */
     deleteNote(req, res) {
         try {
+
             const noteID = req.params.noteId;
-            noteService.removeNote(noteID, (error, data) => {
+            const token = req.headers.authorization.split(" ")[1];
+            return noteService.removeNote(noteID, token, (error, data) => {
                 return (
                     error ?
                     (logger.warn("note not found with id " + noteID),
@@ -437,12 +502,13 @@ class NoteController {
      */
     addCollaborator = (req, res) => {
         try {
+            const token = req.headers.authorization.split(" ")[1];
             const collaborator = {
                 noteId: req.params.noteId,
                 collaboratorId: req.body.collaboratorId,
             };
             noteService
-                .createCollaborator(collaborator)
+                .createCollaborator(collaborator, token)
                 .then((data) => {
                     if (!data) {
                         res.send({
@@ -483,12 +549,13 @@ class NoteController {
      */
     removeCollaborator = (req, res) => {
         try {
+            const token = req.headers.authorization.split(" ")[1];
             const collaboratorData = {
                 noteId: req.params.noteId,
                 collaboratorId: req.body.collaboratorId,
             };
             noteService
-                .removeCollaborator(collaboratorData)
+                .removeCollaborator(collaboratorData, token)
                 .then((data) => {
                     res.send({
                         success: true,

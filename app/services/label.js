@@ -47,7 +47,6 @@ class LabelService {
      * @param callback is the callback for controller
      */
     findAll = (token, callback) => {
-
         const userEmail = helper.getEmailFromToken(token);
         redisCache.redisGet(userEmail, key, (error, data) => {
             if (data) {
@@ -81,6 +80,7 @@ class LabelService {
      * @param callback is the callback for controller
      */
     update = async(labelInfo, callback) => {
+        const userEmail = helper.getEmailFromToken(token);
         const data = await Label.update(labelInfo, callback);
         return data;
     };
