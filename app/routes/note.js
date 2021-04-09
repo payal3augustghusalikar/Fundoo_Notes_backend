@@ -40,7 +40,12 @@ module.exports = (app) => {
     // delete note by setting isdeleted flag true
     app.put("/notes/delete/:noteId", helper.verifyToken, notes.deleteNote);
 
+    // archive note by setting isarchived flag true
+    app.put("/notes/archive/:noteId", helper.verifyToken, notes.archiveNote);
 
+
+    // archive note by setting isarchived flag false
+    app.put("/notes/unarchive/:noteId", helper.verifyToken, notes.unArchiveNote);
 
     // restore note by setting isdeleted flag false
     app.put("/notes/restore/:noteId", helper.verifyToken, notes.restoreNote);

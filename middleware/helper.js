@@ -117,7 +117,6 @@ class Helper {
     };
 
 
-
     updateRedisData(token, key) {
         try {
             console.log("key", key)

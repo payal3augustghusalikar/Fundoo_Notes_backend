@@ -207,6 +207,42 @@ class NoteService {
     }
 
 
+    /**
+     * @description archive Note by id and return response to controller 
+     * @method archiveNote is used to archive Note by ID
+     * @param callback is the callback for controller
+     */
+
+    archive = (noteID, token, callback) => {
+            return Note.archiveNote(noteID, (error, result) => {
+                if (error) {
+                    logger.error("Some error occurred");
+                    return callback(new Error("Some error occurred"), null);
+                } else {
+                    console.log("key in ser", key)
+                    helper.updateRedisData(token, key)
+                    return callback(null, result);
+                }
+            })
+        }
+        /**
+         * @description unArchive Note by id and return response to controller 
+         * @method unArchiveNote is used to archive Note by ID
+         * @param callback is the callback for controller
+         */
+
+    unArchive = (noteID, token, callback) => {
+        return Note.unArchiveNote(noteID, (error, result) => {
+            if (error) {
+                logger.error("Some error occurred");
+                return callback(new Error("Some error occurred"), null);
+            } else {
+                console.log("key in ser", key)
+                helper.updateRedisData(token, key)
+                return callback(null, result);
+            }
+        })
+    }
 
     /**
      * @description Delete Note by id and return response to controller

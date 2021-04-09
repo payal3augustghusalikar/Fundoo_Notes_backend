@@ -297,8 +297,90 @@ class NoteController {
 
 
 
+    /**
+     * @message archive note  with id
+     * @method archive is service class method
+     * @param response is used to send the response
+     */
+    archiveNote(req, res) {
+
+        try {
+            const noteID = req.params.noteId;
+            const token = req.headers.authorization.split(" ")[1];
+            return noteService.archive(noteID, token, (error, data) => {
+                return (
+                    error ?
+                    (logger.warn("note not found with id " + noteID),
+                        res.send({
+                            status_code: status.Not_Found,
+                            message: "note not found with id " + noteID,
+                        })) :
+                    logger.info("note archive successfully!"),
+                    res.send({
+                        status_code: status.Success,
+                        message: "note archive successfully!",
+                    })
+                );
+            });
+        } catch (error) {
+            return (
+                error.kind === "ObjectId" || error.title === "NotFound" ?
+                (logger.error("could not found note with id" + noteID),
+                    res.send({
+                        status_code: status.Not_Found,
+                        message: "note not found with id " + noteID,
+                    })) :
+                logger.error("Could not archive note with id " + noteID),
+                res.send({
+                    status_code: status.Internal_Server_Error,
+                    message: "Could not archive note with id " + noteID,
+                })
+            );
+        }
+    }
 
 
+    /**
+     * @message unArchive note  with id
+     * @method unArchive is service class method
+     * @param response is used to send the response
+     */
+    unArchiveNote(req, res) {
+
+        try {
+            const noteID = req.params.noteId;
+            const token = req.headers.authorization.split(" ")[1];
+            return noteService.unArchive(noteID, token, (error, data) => {
+                return (
+                    error ?
+                    (logger.warn("note not found with id " + noteID),
+                        res.send({
+                            status_code: status.Not_Found,
+                            message: "note not found with id " + noteID,
+                        })) :
+                    logger.info("note unArchived successfully!"),
+                    res.send({
+                        status_code: status.Success,
+                        message: "note unArchived successfully!",
+                    })
+                );
+            });
+        } catch (error) {
+            return (
+                error.kind === "ObjectId" || error.title === "NotFound" ?
+                (logger.error("could not found note with id" + noteID),
+                    res.send({
+                        status_code: status.Not_Found,
+                        message: "note not found with id " + noteID,
+                    })) :
+                logger.error("Could not unArchive note with id " + noteID),
+                res.send({
+                    status_code: status.Internal_Server_Error,
+                    message: "Could not unArchive note with id " + noteID,
+                })
+            );
+        }
+    }
 
 
 
@@ -333,6 +415,7 @@ class NoteController {
                             message: "note not found with id : " + req.params.noteId + error,
                         })) :
                     logger.info("Label added to note successfully !"),
+                    console.log("success", data),
                     res.send({
                         success: true,
                         message: "Label added to note successfully ! !" + error,
@@ -466,12 +549,12 @@ class NoteController {
             return noteService.removeNote(noteID, token, (error, data) => {
                 return (
                     error ?
-                    (logger.warn("note not found with id " + noteID),
-                        res.send({
-                            status_code: status.Not_Found,
-                            message: "note not found with id " + noteID,
-                        })) :
-                    logger.info("note deleted successfully!"),
+                    // (logger.warn("note not found with id " + noteID),
+                    res.send({
+                        status_code: status.Not_Found,
+                        message: "note not found with id " + noteID,
+                    }) :
+                    // logger.info("note deleted successfully!"),
                     res.send({
                         status_code: status.Success,
                         message: "note deleted successfully!",

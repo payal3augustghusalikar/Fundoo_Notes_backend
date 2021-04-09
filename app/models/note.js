@@ -61,6 +61,7 @@ class NoteModel {
      * @param {*} callback
      */
     create = (noteInfo, callback) => {
+        console.log("create")
         const note = new Note({
             title: noteInfo.title,
             description: noteInfo.description,
@@ -187,11 +188,40 @@ class NoteModel {
      * @param {*} callback
      */
     removeNote = (noteID, callback) => {
+        console.log("remoiove")
         return Note.findByIdAndUpdate(
             noteID, { isDeleted: true }, { new: true },
             callback
         );
     };
+
+
+    /**
+     * @description archive note temporary by setting isArchived flag true
+     * @param {*} noteID
+     * @param {*} callback
+     */
+    archiveNote = (noteID, callback) => {
+        return Note.findByIdAndUpdate(
+            noteID, { isArchived: true }, { new: true },
+            callback
+        );
+    };
+
+
+    /**
+     * @description unArchive note temporary by setting isArchived flag false
+     * @param {*} noteID
+     * @param {*} callback
+     */
+    unArchiveNote = (noteID, callback) => {
+        return Note.findByIdAndUpdate(
+            noteID, { isArchived: false }, { new: true },
+            callback
+        );
+    };
+
+
 
     /**
      * @description remove note temporary by setting isdeleted flag true
